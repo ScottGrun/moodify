@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import logo from '../../assets/logo.svg';
-import profilePic from '../../assets/profile-pic.svg';
 import downArrow from '../../assets/down-arrow.svg';
 
 const HeaderContainer = styled.div`
@@ -30,8 +29,8 @@ const HeaderContainer = styled.div`
       align-items: center;
 
       img {
-        width: 30px;
-        height: 30px;
+        width: 35px;
+        height: 35px;
         border-radius: 50%;
       }
     }
@@ -64,20 +63,12 @@ const HeaderContainer = styled.div`
   }
 `;
 
-export default function(Header) {
+export default function Header() {
 
   return(
     <HeaderContainer>
       <img src={logo} />
-      <div className='profile'>
-        <div className='image-container'>
-          <img src={profilePic} />
-        </div>
-        <div className='profile-name'>Eric Romar</div>
-        <div className='profile-dropdown'>
-          <img src={downArrow} />
-        </div>
-      </div>
+      <Header />
     </HeaderContainer>
   );
 };

@@ -19,6 +19,7 @@ const HeaderContainer = styled.div`
 
   .menu {
     display: none;
+    height: 36px;
   }
 
   @media(max-width: 768px) {
@@ -30,8 +31,6 @@ const HeaderContainer = styled.div`
       display: block;
     }
   }
-
-
 `;
 
 export default function(Header) {

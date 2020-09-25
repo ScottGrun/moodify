@@ -9,7 +9,3 @@ export default {
 const Template = (args) => <Header {...args} />;
 
 export const FirstStory = Template.bind({});
-
-FirstStory.args = {
-  
-};
