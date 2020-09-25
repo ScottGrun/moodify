@@ -1,14 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import { useCookies } from 'react-cookie';
-import { useRecoilState } from 'recoil';
-const { codeTokenState, accessTokenState } = require('../state/atoms');
+import { StateContext } from '../App';
 
 const Landing = () => {
   const [ cookies, setCookie, removeCookie ] = useCookies(['cookie-name']);
-  const [ codeToken, setCodeToken ] = useRecoilState(codeTokenState);
-  const [ accessToken, setAccessToken ] = useRecoilState(accessTokenState);
+  const [ accessToken, setAccessToken ] = useContext(StateContext).AccessToken;
 
   const ComponentContainer = styled.div`
     /* stylez point */

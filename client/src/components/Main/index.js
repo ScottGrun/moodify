@@ -1,13 +1,11 @@
-import React from 'react';
+import React, { useEffect, useContext } from 'react';
 import { useCookies } from 'react-cookie';
 import axios from 'axios';
-import { useRecoilState } from 'recoil';
-const { codeTokenState, accessTokenState } = require('../../state/atoms');
+import { StateContext } from '../../App';
 
 const Main = () => {
   const [ cookies, setCookie, removeCookie ] = useCookies(['cookie-name']);
-  const [ codeToken, setCodeToken ] = useRecoilState(codeTokenState);
-  const [ accessToken, setAccessToken ] = useRecoilState(accessTokenState);
+  const [ accessToken, setAccessToken ] = useContext(StateContext).AccessToken;
 
   const getTrack = () => {
     axios.post(`http://localhost:9000/data/track`, {
