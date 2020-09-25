@@ -20,8 +20,8 @@ const Main = () => {
 
   const logout = () => {
     removeCookie('accessToken');
-    setCodeToken(null);
     setAccessToken(null);
+    window.location = 'http://localhost:3000';
   };
 
   return (

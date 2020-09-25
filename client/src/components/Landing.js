@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import axios from 'axios';
-import { styled } from 'styled-components';
+import styled from 'styled-components';
 import { useCookies } from 'react-cookie';
 import { useRecoilState } from 'recoil';
 const { codeTokenState, accessTokenState } = require('../state/atoms');
@@ -33,6 +33,7 @@ const Landing = () => {
         removeCookie('code');
         setCookie('accessToken', access_token)
         setAccessToken(access_token);
+        window.location = 'http://localhost:3000';
       }
     })
     .catch(err => console.log(err));
@@ -46,14 +47,15 @@ const Landing = () => {
       const params = getQuery.split('&');
       const code = params[0].substring(5);
       setCookie('code', code);
+      window.location.reload();
     }
   },[]);
 
   useEffect(() => {
-    if (cookies.code) {
+    if (cookies.code && !cookies.accessToken) {
       getAccessToken(cookies.code);
     }
-  },[cookies.code]);
+  },[]);
 
   return(
     <div>
