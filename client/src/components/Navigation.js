@@ -62,6 +62,7 @@ const NavigationContainer = styled.div`
   }
 
   .profile-dropdown-container {
+    display: none;
     position: absolute;
     bottom: 100px;
     left: 35px;
@@ -73,6 +74,10 @@ const NavigationContainer = styled.div`
 
     .header {
       display: flex;
+    }
+
+    .profile-dropdown-container {
+      display: block;
     }
   }
 `;
