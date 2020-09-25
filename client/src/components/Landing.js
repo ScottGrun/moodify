@@ -4,6 +4,9 @@ import styled from 'styled-components';
 import { useCookies } from 'react-cookie';
 import { StateContext } from '../App';
 
+// components
+import Header from './Main/Header';
+
 const Landing = () => {
   const [ cookies, setCookie, removeCookie ] = useCookies(['cookie-name']);
   const [ accessToken, setAccessToken ] = useContext(StateContext).AccessToken;
@@ -57,6 +60,7 @@ const Landing = () => {
 
   return(
     <div>
+      <Header />
       <h1>Welcome to my Landing Page!</h1>
       <button onClick={login}>Login with Spotify!</button>
     </div>
