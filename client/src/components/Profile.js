@@ -55,6 +55,14 @@ const ProfileContainer = styled.div`
       }
     }
   }
+
+  @media(max-width: 768px) {
+    background-color: #1C1D20;
+
+    .header {
+      display: flex;
+    }
+  }
 `;
 
 export default function Profile() {

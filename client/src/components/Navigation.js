@@ -1,42 +1,122 @@
 import React from 'react';
 import styled from 'styled-components';
+
+// components
+import Profile from './Profile';
+
+// images
 import musicIcon from '../assets/music-icon.svg';
+import logo from '../assets/logo.svg';
+import leftArrow from '../assets/left-arrow.svg';
 
 const NavigationContainer = styled.div`
-  
+  height: 100vh;
+  width: 200px;
+  color: white;
+  padding: 20px;
+  z-index: 2;
+  position: relative;
+
+  .header {
+    display: none;
+    margin-bottom: 30px;
+    justify-content: space-between;
+
+    .minimize {
+      position: absolute;
+      right: 10px;
+    }
+  }
+
+  & > .section:not(:last-child) {
+    margin-bottom: 60px;
+  }
+
+  .title {
+    margin-bottom: 25px;
+    font-size: 18px;
+    letter-spacing: -0.2px;
+  }
+
+  li {
+    list-style: none;
+    margin-bottom: 25px;
+    font-size: 14px;
+    letter-spacing: 0.28px;
+
+    a {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      color: #ccc;
+
+      img {
+        margin-right: 25px;
+        width: 20px;
+        height: 20px;
+      }
+
+      p{
+      }
+    }
+  }
+
+  .profile-dropdown-container {
+    position: absolute;
+    bottom: 100px;
+    left: 35px;
+  }
+
+  @media(max-width: 768px) {
+    width: 282px;
+    background-color: #1C1D20;
+
+    .header {
+      display: flex;
+    }
+  }
 `;
 
 export default function Navigation() {
-  const playlists = ['Playlist 1', 'Playlist 2', 'Playlist 3', 'Playlist 4', 'Playlist 5']
+  const playlists = ['Public playlist', 'Melancholy', 'Alternative', 'New Playlist'];
 
   return(
     <NavigationContainer>
-      <div className='browse-music'>
-        <h4>Browse Music</h4>
+      <div className='header'>
+        <img src={logo} className='logo'/>
+        <img src={leftArrow} className='minimize' />
+      </div>
+      <div className='section browse-music'>
+        <h3 className='title'>Browse Music</h3>
         <ul className="categories">
           <li>
-            <a><img /><p>Discover</p></a>
+            <a href='/' targer='blank'><img src={musicIcon} /><p>Discover</p></a>
           </li>
           <li>
-            <a><img /><p>Artists</p></a>
+            <a href='/' targer='blank'><img src={musicIcon} /><p>Artists</p></a>
           </li>
           <li>
-            <a><img /><p>Albums</p></a>
+            <a href='/' targer='blank'><img src={musicIcon} /><p>Albums</p></a>
           </li>
         </ul>
       </div>
-      <div className='my-playlists'>My Playlists</div>
-      <ul className='playlists'>
-        {
-          playlists.map(playlist => {
-            return (
-              <li>
-                <a><img src={musicIcon} /><p>{playlist}</p></a>
-              </li>
-            );
-          })
-        }
-      </ul>
+      <div className='section my-playlists'>
+        <h3 className='title'>My Playlists</h3>
+        <ul className='playlists'>
+          {
+            playlists.map(playlist => {
+              return (
+                <li>
+                  <a href='/' targer='blank'><img src={musicIcon} /><p>{playlist}</p></a>
+                </li>
+              );
+            })
+          }
+        </ul>
+      </div>
+      <div className='profile-dropdown-container'>
+        <Profile />
+      </div>
     </NavigationContainer>
   );
 };
