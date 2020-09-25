@@ -1,16 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import logo from '../../assets/logo.svg';
-import profilePic from '../../assets/profile-pic.svg';
-import downArrow from '../../assets/down-arrow.svg';
+import profilePic from '../assets/profile-pic.svg';
+import downArrow from '../assets/down-arrow.svg';
 
-const HeaderContainer = styled.div`
-  width: 100%;
-  max-width: 1440px;
-  display: flex;
-  justify-content: space-between;
-  padding: 20px;
-
+const ProfileContainer = styled.div`
   .profile {
     display: flex;
     width: 160px;
@@ -64,11 +57,10 @@ const HeaderContainer = styled.div`
   }
 `;
 
-export default function(Header) {
+export default function(Profile) {
 
   return(
-    <HeaderContainer>
-      <img src={logo} />
+    <ProfileContainer>
       <div className='profile'>
         <div className='image-container'>
           <img src={profilePic} />
@@ -78,6 +70,6 @@ export default function(Header) {
           <img src={downArrow} />
         </div>
       </div>
-    </HeaderContainer>
+    </ProfileContainer>
   );
 };
