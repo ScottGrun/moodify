@@ -13,6 +13,31 @@ addDecorator(style =>
 
 configure(req, module)
 
+const customViewports = {
+  desktop: {
+    name: 'Desktop',
+    styles: {
+      width: '1440px',
+      height: '1039px'
+    }
+  },
+  tablet: {
+    name: 'Tablet',
+    styles: {
+      width: '768px',
+      height: '1024px'
+    }
+  },
+  phone: {
+    name: 'Phone',
+    styles: {
+      width: '375px',
+      height: '667px'
+    }
+  }
+}
+
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
+  viewport: { viewports: customViewports },
 }
