@@ -88,6 +88,7 @@ const PlaylistItem = (props) => {
       <StyledSongCoverContainer>
         <StyledSongImage src={props.imageUrl} />
       </StyledSongCoverContainer>
+
       <OverlayContainer>
         <img src={PlayButton} />
       </OverlayContainer>
@@ -95,7 +96,6 @@ const PlaylistItem = (props) => {
         <SongName>{props.songName}</SongName>
         <ArtistName>{props.artistName}</ArtistName>
       </SongMetaData>
-
       <AudioFeatures>
         <p>{props.bpm}</p>
         <p>{props.energy}</p>
