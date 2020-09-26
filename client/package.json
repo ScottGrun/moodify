@@ -19,6 +19,7 @@
     "react-scripts": "3.4.3",
     "react-three-fiber": "^5.0.1",
     "recoil": "0.0.13",
+    "spotify-web-api-node": "^4.0.0",
     "styled-components": "^5.2.0",
     "three": "^0.120.1"
   },

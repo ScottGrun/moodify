@@ -9,8 +9,7 @@ border-bottom: solid 1px white;
 `
 
 const StyledPlaylistContainer = styled.div`
- display: flex;
-  align-items: center;
+  max-width: 800px;
 `
 
 const ColumnHeaderContainer = styled.div `
@@ -44,10 +43,11 @@ color: #FFFFFF;
 `
 
 const PlaylistItemContainer = (props) => {
+
   const songs = props.songs.map((song) => <PlaylistItem {...song} />);
 
   return (
-    <div>
+    <StyledPlaylistContainer>
       <StyledHeader>
         <SectionHeader>Yours Songs</SectionHeader>
       <ColumnHeaderContainer>
@@ -60,7 +60,7 @@ const PlaylistItemContainer = (props) => {
       </ColumnHeaderContainer>
       </StyledHeader>
       <div>{songs}</div>
-    </div>
+    </StyledPlaylistContainer>
   );
 };
 
