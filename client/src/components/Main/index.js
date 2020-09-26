@@ -3,9 +3,15 @@ import { useCookies } from 'react-cookie';
 import axios from 'axios';
 import { StateContext } from '../../App';
 
+
+
+
 const Main = () => {
   const [ cookies, setCookie, removeCookie ] = useCookies(['cookie-name']);
   const [ accessToken, setAccessToken ] = useContext(StateContext).AccessToken;
+
+
+ 
 
   const getTrack = () => {
     axios.post(`http://localhost:9000/data/track`, {

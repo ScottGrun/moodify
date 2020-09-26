@@ -68,6 +68,7 @@ const StyledPlaylistItem = styled.div`
   background-color: #3c4051;
   height: 45px;
   border-radius: 5px;
+  margin: 12px 0;
 
   &:hover {
     cursor: pointer;
