@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import downArrow from '../assets/down-arrow.svg';
-import profilePic from '../assets/profile-pic.svg';
+import downArrow from '../../assets/down-arrow.svg';
+import profilePic from '../../assets/profile-pic.svg';
 
 const ProfileContainer = styled.div`
   .profile {

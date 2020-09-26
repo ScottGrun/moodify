@@ -2,8 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import Profile from './Profile';
 
-import logo from '../assets/logo.svg';
-import menu from '../assets/menu.svg';
+import logo from '../../assets/logo.svg';
+import menu from '../../assets/menu.svg';
 
 const HeaderContainer = styled.div`
   width: 100%;

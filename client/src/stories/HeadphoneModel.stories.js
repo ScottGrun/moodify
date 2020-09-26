@@ -1,11 +1,11 @@
 import React from "react";
-import HeadphoneModel from '../components/HeadphoneModel';
+import TurntableModel from '../components/Landing/TurntableModel';
 
 export default {
-  title: "HeadphoneModel",
-  component: HeadphoneModel,
+  title: "TurntableModel",
+  component: TurntableModel,
 };
 
-const Template = (args) => <HeadphoneModel {...args} />;
+const Template = (args) => <TurntableModel {...args} />;
 
-export const Headphones = Template.bind({});
+export const Turntable = Template.bind({});

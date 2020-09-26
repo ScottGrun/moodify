@@ -3,11 +3,10 @@ import styled from 'styled-components';
 import { Section } from './Section';
 import { Canvas, useFrame } from 'react-three-fiber';
 import { Html, useGLTFLoader } from 'drei';
-import turntable from '../assets/turntable.glb';
+import turntable from '../../assets/turntable.glb';
+import state from '../../state';
 
-import state from '../state';
-
-const HeadphoneModelContainer = styled.div`
+const TurntableModelContainer = styled.div`
   width: 100%;
   height: 100vh;
   
@@ -76,7 +75,7 @@ const HTMLContent = ({ domContent, children, modelPath, positionY }) => {
   );
 };
 
-export default function HeadphoneModel() {
+export default function TurntableModel() {
   const domContent = useRef();
   const scrollArea = useRef();
   const onScroll = (e) => (state.top.current = e.target.scrollTop);
@@ -84,7 +83,7 @@ export default function HeadphoneModel() {
   useEffect(() => void onScroll({ target: scrollArea.current }),[]);
 
   return(
-    <HeadphoneModelContainer>
+    <TurntableModelContainer>
       <Canvas colorManagement camera={{ position: [0, 0, 115], fov: 85 }}>
         <Lights />
         <Suspense fallback={null}>
@@ -96,10 +95,10 @@ export default function HeadphoneModel() {
           </HTMLContent>
         </Suspense>
       </Canvas>
-      <div className="scrollArea" ref={scrollArea} onScroll={onScroll}>
+      <div className="scrollArea" ref={scrollArea} >
         <div style={{position: 'sticky', top: 0}} ref={domContent}></div>
         <div style={{height: `${state.sections * 100}vh`}}></div>
       </div>
-    </HeadphoneModelContainer>
+    </TurntableModelContainer>
   );
 };

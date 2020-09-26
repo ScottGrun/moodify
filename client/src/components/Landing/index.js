@@ -2,17 +2,20 @@ import React, { useEffect, useContext } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import { useCookies } from 'react-cookie';
-import { StateContext } from '../App';
+import { StateContext } from '../../App';
 
-// components
-import Header from './Header';
+import TurntableModel from './TurntableModel';
 
 const Landing = () => {
   const [ cookies, setCookie, removeCookie ] = useCookies(['cookie-name']);
   const [ accessToken, setAccessToken ] = useContext(StateContext).AccessToken;
 
-  const ComponentContainer = styled.div`
-    /* stylez point */
+  const LandingPageContainer = styled.div`
+    .turntable-container {
+      display: absolute;
+      top: 0;
+      left: 0;
+    }
   `;
 
   const login = () => {
@@ -49,7 +52,7 @@ const Landing = () => {
       const params = getQuery.split('&');
       const code = params[0].substring(5);
       setCookie('code', code);
-      // window.location.reload();
+      window.location.reload();
     }
   },[]);
 
@@ -61,11 +64,13 @@ const Landing = () => {
   },[]);
 
   return(
-    <div>
-      <Header />
+    <LandingPageContainer>
       <h1>Welcome to my Landing Page!</h1>
       <button onClick={login}>Login with Spotify!</button>
-    </div>
+      <div className='turntable-container'>
+        <TurntableModel />
+      </div>
+    </LandingPageContainer>
   );
 
 };

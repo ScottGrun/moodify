@@ -3,15 +3,13 @@ import { useCookies } from 'react-cookie';
 import axios from 'axios';
 import { StateContext } from '../../App';
 
-
+// components
+import Header from './Header';
 
 
 const Main = () => {
   const [ cookies, setCookie, removeCookie ] = useCookies(['cookie-name']);
   const [ accessToken, setAccessToken ] = useContext(StateContext).AccessToken;
-
-
- 
 
   const getTrack = () => {
     axios.post(`http://localhost:9000/data/track`, {
@@ -30,6 +28,7 @@ const Main = () => {
 
   return (
     <div>
+      <Header />
       <h1>This is the Main Page.</h1>
       <button onClick={getTrack}>Get a track!</button>
       <button onClick={logout}>Logout</button>

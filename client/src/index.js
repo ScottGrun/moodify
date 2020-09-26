@@ -10,7 +10,6 @@ ReactDOM.render(
     <CookiesProvider>
         <GlobalStyle />
         <App />
-        <div>hi</div>
     </CookiesProvider>
   </React.StrictMode>,
   document.getElementById('root')
