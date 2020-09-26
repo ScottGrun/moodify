@@ -111,7 +111,7 @@ export default function Navigation() {
           {
             playlists.map(playlist => {
               return (
-                <li>
+                <li key={playlist}>
                   <a href='/' targer='blank'><img src={musicIcon} /><p>{playlist}</p></a>
                 </li>
               );

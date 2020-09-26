@@ -16,27 +16,46 @@ const SlidersContainer = styled.div`
     width: 100%;
     color: white;
 
-    p {
-      margin-bottom: 40px;
-    }
+    /* p {
+      margin-bottom: 5px;
+    } */
 
     .slider-container {
       width: 100%;
-    }
-  }
 
-  .MuiSlider-colorPrimary {
-    color: #2ED689;
+      .MuiSlider-colorPrimary {
+        color: #2ED689;
+      }
+
+      .MuiSlider-markLabelActive {
+        display: none;
+      }
+
+      .labelStyleOuter {
+        width: '30px';
+        height: '30px;';
+        border-radius: '50% 50% 50% 0';
+        background-color: red;
+        position: absolute;
+        transform: 'rotate(-45deg)';
+        top: '-40px';
+        left: '-9px';
+      }
+
+      .labelStyleInner {
+
+      }
+    }
   }
 `;
 
 export default function Sliders() {
-  const [ value1, setValue1 ] = useState([20, 75]);
-  const [ value2, setValue2 ] = useState([20, 75]);
-  const [ value3, setValue3 ] = useState([20, 75]);
-  const [ value4, setValue4 ] = useState([20, 75]);
-  const [ value5, setValue5 ] = useState([20, 75]);
-  const [ value6, setValue6 ] = useState([20, 75]);
+  const [ value1, setValue1 ] = useState([10, 40]);
+  const [ value2, setValue2 ] = useState([20, 50]);
+  const [ value3, setValue3 ] = useState([30, 60]);
+  const [ value4, setValue4 ] = useState([40, 70]);
+  const [ value5, setValue5 ] = useState([50, 80]);
+  const [ value6, setValue6 ] = useState([60, 90]);
 
   return (
     <SlidersContainer>
@@ -58,6 +77,14 @@ export default function Sliders() {
             onChange={(event, val) => setValue1(val)}
             valueLabelDisplay="auto"
             aria-labelledby="range-slider"
+            valueLabelDisplay='auto'
+            label={
+              <div className='labelStyleOuter'>
+                <div className='labelStyleInner'>
+                  73
+                </div>
+              </div>
+            }
           />
         </div>
         <div className='slider-container'>
@@ -69,6 +96,7 @@ export default function Sliders() {
             onChange={(event, val) => setValue2(val)}
             valueLabelDisplay="auto"
             aria-labelledby="range-slider"
+            valueLabelDisplay='off'
           />
         </div>
         <div className='slider-container'>
@@ -80,6 +108,7 @@ export default function Sliders() {
             onChange={(event, val) => setValue3(val)}
             valueLabelDisplay="auto"
             aria-labelledby="range-slider"
+            valueLabelDisplay='off'
           />
         </div>
         <div className='slider-container'>
@@ -91,6 +120,7 @@ export default function Sliders() {
             onChange={(event, val) => setValue4(val)}
             valueLabelDisplay="auto"
             aria-labelledby="range-slider"
+            valueLabelDisplay='off'
           />
         </div>
         <div className='slider-container'>
@@ -102,6 +132,7 @@ export default function Sliders() {
             onChange={(event, val) => setValue5(val)}
             valueLabelDisplay="auto"
             aria-labelledby="range-slider"
+            valueLabelDisplay='off'
           />
         </div>
         <div className='slider-container'>
@@ -113,6 +144,7 @@ export default function Sliders() {
             onChange={(event, val) => setValue6(val)}
             valueLabelDisplay="auto"
             aria-labelledby="range-slider"
+            valueLabelDisplay='off'
           />
         </div>
       </div>
