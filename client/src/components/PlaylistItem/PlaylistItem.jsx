@@ -53,6 +53,11 @@ const AudioFeatures = styled.div`
   font-family: Inter;
   font-size: 11px;
   font-weight: normal;
+
+  p {
+    width: 40px;
+    text-align: center;
+  }
 `;
 
 const SongMetaData = styled.div`
@@ -67,6 +72,7 @@ const StyledPlaylistItem = styled.div`
   align-items: center;
   background-color: #3c4051;
   height: 45px;
+  width: 100%;
   border-radius: 5px;
   margin: 12px 0;
 

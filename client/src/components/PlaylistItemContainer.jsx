@@ -14,10 +14,7 @@ const StyledPlaylistContainer = styled.div`
 `
 
 const ColumnHeaderContainer = styled.div `
-  width: 360px;
-  display: flex;
-  position: absolute;
-  right: 0px;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -26,6 +23,10 @@ const ColumnHeaderContainer = styled.div `
   font-size: 11px;
   font-weight: normal;
 
+  p {
+    width: 75px;
+    text-align: center;
+  }
 `
 
 const SectionHeader = styled.h2`
@@ -50,12 +51,12 @@ const PlaylistItemContainer = (props) => {
       <StyledHeader>
         <SectionHeader>Yours Songs</SectionHeader>
       <ColumnHeaderContainer>
+        <p>Speechiness</p>
         <p>TEST</p>
         <p>TEST</p>
         <p>TEST</p>
         <p>TEST</p>
         <p>TEST</p>
-
       </ColumnHeaderContainer>
       </StyledHeader>
       <div>{songs}</div>
