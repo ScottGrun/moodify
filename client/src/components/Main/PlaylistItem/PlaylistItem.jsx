@@ -55,7 +55,7 @@ const AudioFeatures = styled.div`
   font-weight: normal;
 
   p {
-    width: 40px;
+    width: 15px;
     text-align: center;
   }
 `;
@@ -93,15 +93,15 @@ const PlaylistItem = (props) => {
   return (
     <StyledPlaylistItem>
       <StyledSongCoverContainer>
-        <StyledSongImage src={props.imageUrl} />
+        <StyledSongImage src={props.img} />
       </StyledSongCoverContainer>
 
       <OverlayContainer>
         <img src={PlayButton} />
       </OverlayContainer>
       <SongMetaData>
-        <SongName>{props.songName}</SongName>
-        <ArtistName>{props.artistName}</ArtistName>
+        <SongName>{props.name}</SongName>
+        <ArtistName>{props.artist}</ArtistName>
       </SongMetaData>
       <AudioFeatures>
         <p>{props.bpm}</p>
