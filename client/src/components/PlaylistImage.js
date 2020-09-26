@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-
 const PlayListImageContainer = styled.div`
   width: 100%;
   max-width: 684px;
@@ -56,8 +55,10 @@ const PlayListImageContainer = styled.div`
 `;
 
 export default function PlaylistImage() {
+  const randomImageFromSpotify = 'https://i.imgur.com/iuyq8dP.png'
+
   return(
-    <PlayListImageContainer playlistImage={'https://i.imgur.com/iuyq8dP.png'}>
+    <PlayListImageContainer playlistImage={randomImageFromSpotify}>
       <div className='dark-overlay' />
       <div className='playlist-text'>
         <h2 className='playlist-name'>
