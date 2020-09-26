@@ -10,13 +10,17 @@
     "axios": "^0.20.0",
     "cookie-parser": "^1.4.5",
     "dotenv": "^8.2.0",
+    "drei": "^1.5.7",
+    "lerp": "^1.0.3",
     "react": "^16.13.1",
     "react-cookie": "^4.0.3",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
+    "react-three-fiber": "^5.0.1",
     "recoil": "0.0.13",
-    "styled-components": "^5.2.0"
+    "styled-components": "^5.2.0",
+    "three": "^0.120.1"
   },
   "scripts": {
     "start": "react-scripts start",

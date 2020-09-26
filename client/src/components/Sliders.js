@@ -16,10 +16,6 @@ const SlidersContainer = styled.div`
     width: 100%;
     color: white;
 
-    /* p {
-      margin-bottom: 5px;
-    } */
-
     .slider-container {
       width: 100%;
 

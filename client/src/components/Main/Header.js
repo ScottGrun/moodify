@@ -64,11 +64,9 @@ const HeaderContainer = styled.div`
 `;
 
 export default function Header() {
-
   return(
     <HeaderContainer>
       <img src={logo} />
-      <Header />
     </HeaderContainer>
   );
 };

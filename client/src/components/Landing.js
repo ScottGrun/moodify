@@ -5,7 +5,7 @@ import { useCookies } from 'react-cookie';
 import { StateContext } from '../App';
 
 // components
-import Header from './Main/Header';
+import Header from './Header';
 
 const Landing = () => {
   const [ cookies, setCookie, removeCookie ] = useCookies(['cookie-name']);
@@ -41,6 +41,7 @@ const Landing = () => {
   };
 
   useEffect(() => {
+    console.log('1sdoifjsodifj')
     const url = window.location.search;
     const getQuery = url.split('?')[1];
 
@@ -48,11 +49,12 @@ const Landing = () => {
       const params = getQuery.split('&');
       const code = params[0].substring(5);
       setCookie('code', code);
-      window.location.reload();
+      // window.location.reload();
     }
   },[]);
 
   useEffect(() => {
+    console.log('2sdoifjsodifj')
     if (cookies.code && !cookies.accessToken) {
       getAccessToken(cookies.code);
     }
