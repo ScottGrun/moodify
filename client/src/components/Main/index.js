@@ -3,10 +3,10 @@ import { useCookies } from 'react-cookie';
 import axios from 'axios';
 import { StateContext } from '../../App';
 import SpotifyWebApi from 'spotify-web-api-node';
+import Header from './Header';
 
 // Components
-import PlaylistItem from '../PlaylistItem/PlaylistItem';
-import PlaylistItemContainer from '../PlaylistItemContainer';
+import PlaylistItemContainer from './PlaylistItemContainer';
 const Main = () => {
   const [cookies, setCookie, removeCookie] = useCookies(['cookie-name']);
   const [accessToken, setAccessToken] = useContext(StateContext).AccessToken;
@@ -36,7 +36,7 @@ const Main = () => {
     });
 
     spotifyApi.setAccessToken(
-      'BQBpHOFctZv0VTgzqToym-0cYv1tAi1SjO88mbRthYcTqGNZn9hmtrB1V-00Kh39NSoTWmowrbL7Rd0WiqWuxH8CNOoq7hMtoX_ecaJLY7w42rG94wpY6n1Iw12RLtnyTGjmtZp56FhKn7mz9-U3gp5mwr8XOuv-HWAcp_RrUWbvbZAoq98BgpJ4REETgKXHijXKUo_VmHUct_ZHtBfl5IXlxA4b85bNpYAAaMMC1mT_ynDTyQ',
+      'BQAmWSYvw05w302hr175efYLQdapA8ODn4lYyDhE6101DkqoqwrWT9_GEdTB_chTvZcn1a_5hv_ssFolntrbn-B2bcl8Uwwa9vaeLdoXtxKs-V2jFHaojQo249ZxWrnQmZIYKJeEa6kEi-leVt7SGFsN_CdzgAVAO_Ri',
     );
     let totalSongs = 0;
     const allSongs = [];

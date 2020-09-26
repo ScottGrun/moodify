@@ -24,7 +24,7 @@ router.get('/login', (req, res) => {
   const state = generateRandomString(16);
   res.cookie(stateKey, state);
 
-  const scope = 'playlist-read-private';
+  const scope = 'playlist-read-private streaming user-read-email user-read-private';
   res.send('https://accounts.spotify.com/authorize?' +
     querystring.stringify({
       response_type: 'code',

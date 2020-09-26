@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import PlaylistItem from '../components/PlaylistItem/PlaylistItem';
+import PlaylistItem from './PlaylistItem';
 
 const StyledHeader = styled.div`
  display: flex;

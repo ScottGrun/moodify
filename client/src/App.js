@@ -5,8 +5,6 @@ import Main from './components/Main';
 
 export const StateContext = React.createContext();
 
-
-
 export default function App() {
   
   const [ cookies, setCookie, removeCookie ] = useCookies(['cookie-name']);
