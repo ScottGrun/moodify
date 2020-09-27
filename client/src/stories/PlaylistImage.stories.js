@@ -1,5 +1,5 @@
 import React from "react";
-import PlaylistImage from "../components/PlaylistImage";
+import PlaylistImage from "../components/Main/PlaylistImage";
 
 export default {
   title: "PlaylistImage",
