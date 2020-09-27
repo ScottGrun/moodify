@@ -1,5 +1,5 @@
 import React from "react";
-import Sliders from '../components/Sliders';
+import Sliders from '../components/Main/Sliders';
 
 export default {
   title: "Sliders",

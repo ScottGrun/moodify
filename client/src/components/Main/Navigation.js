@@ -5,9 +5,9 @@ import styled from 'styled-components';
 import Profile from './Profile';
 
 // images
-import musicIcon from '../assets/music-icon.svg';
-import logo from '../assets/logo.svg';
-import leftArrow from '../assets/left-arrow.svg';
+import musicIcon from '../../assets/music-icon.svg';
+import logo from '../../assets/logo.svg';
+import leftArrow from '../../assets/left-arrow.svg';
 
 const NavigationContainer = styled.div`
   height: 100vh;

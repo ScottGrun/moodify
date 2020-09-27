@@ -1,5 +1,5 @@
 import React from "react";
-import PlaylistItem from "../components/PlaylistItem/PlaylistItem";
+import PlaylistItem from "../components/Main/PlaylistItem";
 
 export default {
   title: "Playlist Item",
