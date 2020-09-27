@@ -29,8 +29,10 @@ const PresetItem = styled.div`
   width: 80px;
 
   .preset-image {
-    height: 80px;
-    width: 80px;
+    /* height: 100%;
+    width: 100%; */
+    height: auto;
+    width: auto;
   }
 
   @media(max-width: 768px) {
