@@ -191,8 +191,10 @@ const Main = () => {
       .then((res) => {
         setTracks({
           loading: true,
-          songs: res.data,
+          songs: res.data.songs,
         });
+
+        setChartValues(res.data.averages);
       });
   };
 

@@ -105,15 +105,18 @@ const getAverageAudioFeatures = (songs) => {
   };
 
   songs.forEach((song) => {
-    playlistAudioFeaturesAverages.energy += song.energy;
-    playlistAudioFeaturesAverages.danceability += song.danceability;
-    playlistAudioFeaturesAverages.valence += song.valence;
-    playlistAudioFeaturesAverages.speechiness += song.speechiness;
-    playlistAudioFeaturesAverages.loudness += song.loudness;
+    playlistAudioFeaturesAverages.energy += song.audio.energy;
+    playlistAudioFeaturesAverages.danceability += song.audio.danceability;
+    playlistAudioFeaturesAverages.valence += song.audio.valence;
+    playlistAudioFeaturesAverages.speechiness += song.audio.speechiness;
+    playlistAudioFeaturesAverages.loudness += song.audio.loudness;
   });
 
-  
-  console.log(playlistAudioFeaturesAverages)
+  for (const key in playlistAudioFeaturesAverages) {
+    playlistAudioFeaturesAverages[key] = Math.round(
+      (playlistAudioFeaturesAverages[key] / songs.length) * 100,
+    );
+  }
 
   return Object.values(playlistAudioFeaturesAverages);
 };
@@ -175,68 +178,17 @@ router.post('/', (req, res) => {
     .then(() => {
       //Send data -
       console.log(allSongs.length);
-      res.send(allSongs);
-      console.log(getMinMax(allSongs));
-      console.log('--averages---')
-      console.log(getAverageAudioFeatures(allSongs));
-      console.log('-----done-----');
+      res.send({
+        songs: allSongs,
+        minMax: getMinMax(allSongs),
+        averages: getAverageAudioFeatures(allSongs),
+      });
+      console.log('---------done---------')
+      // console.log(getMinMax(allSongs));
+      // console.log('--averages---');
+      // console.log(getAverageAudioFeatures(allSongs));
+      // console.log('-----done-----');
     });
 });
 
 module.exports = router;
-
-// let playlistAudioFeaturesAverages = {
-//   energy: 0,
-//   danceability: 0,
-//   valence: 0,
-//   speechiness: 0,
-//   loudness: 0,
-// };
-
-// res.data.forEach((song) => {
-//   playlistAudioFeaturesAverages.energy += song.energy;
-//   playlistAudioFeaturesAverages.danceability += song.danceability;
-//   playlistAudioFeaturesAverages.valence += song.valence;
-//   playlistAudioFeaturesAverages.speechiness += song.speechiness;
-//   playlistAudioFeaturesAverages.loudness += song.loudness;
-
-//   if (song.audio.energy > playlistAudioFeaturesMinMax.energy[1]) {
-//     playlistAudioFeaturesMinMax.energy[1] = song.audio.energy;
-//   } else if (song.audio.energy < playlistAudioFeaturesMinMax.energy[0]) {
-//     playlistAudioFeaturesMinMax.energy[1] = song.audio.energy;
-//   }
-
-//   if (song.audio.danceability > playlistAudioFeaturesMinMax.danceability[1]) {
-//     playlistAudioFeaturesMinMax.danceability[1] = song.audio.danceability;
-//   } else if (song.audio.danceability < playlistAudioFeaturesMinMax.danceability[0]) {
-//     playlistAudioFeaturesMinMax.danceability[1] = song.audio.danceability;
-//   }
-
-//   if (song.audio.valence > playlistAudioFeaturesMinMax.valence[1]) {
-//     playlistAudioFeaturesMinMax.valence[1] = song.audio.valence;
-//   } else if (song.audio.valence < playlistAudioFeaturesMinMax.valence[0]) {
-//     playlistAudioFeaturesMinMax.valence[1] = song.audio.valence;
-//   }
-
-//   if (song.audio.speechiness > playlistAudioFeaturesMinMax.speechiness[1]) {
-//     playlistAudioFeaturesMinMax.speechiness[1] = song.audio.speechiness;
-//   } else if (song.audio.speechiness < playlistAudioFeaturesMinMax.speechiness[0]) {
-//     playlistAudioFeaturesMinMax.speechiness[1] = song.audio.speechiness;
-//   }
-
-//   if (song.audio.loudness > playlistAudioFeaturesMinMax.loudness[1]) {
-//     playlistAudioFeaturesMinMax.loudness[1] = song.audio.loudness;
-//   } else if (song.audio.loudness < playlistAudioFeaturesMinMax.loudness[0]) {
-//     playlistAudioFeaturesMinMax.loudness[1] = song.audio.loudness;
-//   }
-// });
-
-// for (const key in playlistAudioFeaturesMinMax) {
-//   if (key === 'loudness') {
-//     playlistAudioFeaturesMinMax[key][1] = (60 + playlistAudioFeaturesMinMax[key][1]) / 60;
-//   }
-//   playlistAudioFeaturesMinMax[key][1] = playlistAudioFeaturesMinMax[key][1] * 100;
-// }
-
-// setChartValues();
-// });
