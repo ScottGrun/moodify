@@ -13,21 +13,20 @@ const RadarChartContainer = styled.div`
 `;
 
 export default function RadarChart(props) {
-  const [ chartValues, setChartValues ] = useContext(StateContext).ChartValues;
-  const [ chartData, setChartData ] = useContext(StateContext).ChartData;
+  const [chartValues, setChartValues] = useContext(StateContext).ChartValues;
+  const [chartData, setChartData] = useContext(StateContext).ChartData;
 
   const chart = () => {
     setChartData({
-      labels: ['BPM', 'Speechiness', 'Energy', 'Valence', 'Danceability', 'Loudness'],
+      labels: ['Speechiness', 'Energy', 'Valence', 'Danceability', 'Loudness'],
       datasets: [
         {
           data: [
-            chartValues[0],
-            chartValues[1],
-            chartValues[2],
-            chartValues[3],
-            chartValues[4],
-            chartValues[5]
+            chartValues[0][1],
+            chartValues[1][1],
+            chartValues[2][1],
+            chartValues[3][1],
+            chartValues[4][1],
           ],
           backgroundColor: 'rgba(50, 246, 152, 0.7)',
           borderColor: 'rgb(50, 246, 152)',
@@ -35,51 +34,53 @@ export default function RadarChart(props) {
           pointBackgroundColor: 'rgb(50, 246, 152)',
           pointBorderWidth: 1,
           fontColor: '#fff',
-        }
-      ]
+        },
+      ],
     });
   };
 
   const chartOptions = {
     responsive: true,
     legend: {
-      display: false
+      display: false,
     },
     scale: {
       ticks: {
-        callback: function() {return ""},
-        backdropColor: "rgba(0, 0, 0, 0)",
+        callback: function () {
+          return '';
+        },
+        backdropColor: 'rgba(0, 0, 0, 0)',
         beginAtZero: true,
         min: 0,
         max: 100,
       },
       pointLabels: {
-        fontColor: 'white'
+        fontColor: 'white',
       },
       gridLines: {
-        color: 'white'
+        color: 'white',
       },
       angleLines: {
-        color: 'white'
-      }
+        color: 'white',
+      },
     },
     tooltips: {
-        callbacks: {
-           label: function(tooltipItem) {
-                  return tooltipItem.yLabel;
-           }
-        }
-    }
-  }
+      callbacks: {
+        label: function (tooltipItem) {
+          return tooltipItem.yLabel;
+        },
+      },
+    },
+  };
 
   useEffect(() => {
     chart();
-  },[])
+  }, [chartValues]);
 
-  return(
+  return (
     <RadarChartContainer>
       <h2>Curate Your Playlist</h2>
       <Radar data={chartData} options={chartOptions} />
     </RadarChartContainer>
   );
-};
+}

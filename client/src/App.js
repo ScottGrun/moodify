@@ -11,7 +11,7 @@ export default function App() {
   const [ accessToken, setAccessToken ] = useState(null);
   const [ chartData, setChartData ] = useState({});
   const [ chartValues, setChartValues ] = useState([0,0,0, 0,0,0]);
-  const [ userTracks, setUserTracks ] = useState([]);
+  const [ userTracks, setUserTracks ] = useState({ loading: false, songs: []});
 
   if (cookies.accessToken && !accessToken) {
     setAccessToken(cookies.accessToken);

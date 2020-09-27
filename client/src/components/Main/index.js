@@ -180,7 +180,8 @@ const MainContainer = styled.div`
 const Main = () => {
   const [cookies, setCookie, removeCookie] = useCookies(['cookie-name']);
   const [accessToken, setAccessToken] = useContext(StateContext).AccessToken;
-  const [userTracks, setTracks] = useState({ loading: false, songs: [] });
+  const [userTracks, setTracks] = useContext(StateContext).UserTracks;
+  const [chartValues, setChartValues] = useContext(StateContext).ChartValues;
 
   const getTrack = () => {
     axios
@@ -188,7 +189,10 @@ const Main = () => {
         accessToken,
       })
       .then((res) => {
-        setTracks({ loading: true, songs: res.data });
+        setTracks({
+          loading: true,
+          songs: res.data,
+        });
       });
   };
 
@@ -202,9 +206,7 @@ const Main = () => {
     window.location = 'http://localhost:3000';
   };
 
-  const toggleMenu = () => {
-    
-  };
+  const toggleMenu = () => {};
 
   return (
     <MainContainer>
@@ -228,7 +230,7 @@ const Main = () => {
           </div>
           <div className="sliders-container">
             <Sliders />
-            <button className='create-playlist-btn'>Create Playlist</button>
+            <button className="create-playlist-btn">Create Playlist</button>
           </div>
           <div className="presets-container">
             <PresetsContainer />
