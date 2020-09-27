@@ -11,7 +11,6 @@ const spotifyApi = new SpotifyWebApi({
 });
 
 const parseAudioFeatures = async (songList) => {
-  console.log('hit audio features');
   let data = await spotifyApi.getAudioFeaturesForTracks(songList).then(
     (res) => {
       return res.body.audio_features;
@@ -54,13 +53,14 @@ router.post('/', (req, res) => {
       //Push first 50 songs into array
       let songs = parseSongs(data.body.items);
       let songIds = songs.map((song) => song.id);
-      
-      parseAudioFeatures(songIds).then((audio_features)=> {
-        let parsedSongs = songs.forEach((song, idx) => ({...song, audio_features: audio_features[idx]}))
-        allSongs.push(...parsedSongs);
+
+      parseAudioFeatures(songIds).then((features) => {
+        songs.forEach((song, idx) => {
+          song['audio'] = features[idx];
+        });
+        allSongs.push(...songs);
       });
 
-      
       //Makes the required network requests till all songs fetched (50 per request)
       for (let i = 1; i * 50 <= songCount; i++) {
         await spotifyApi
@@ -70,7 +70,15 @@ router.post('/', (req, res) => {
           })
           .then(
             (data) => {
-              allSongs.push(...parseSongs(data.body.items));
+              let songs = parseSongs(data.body.items);
+              let songIds = songs.map((song) => song.id);
+
+              parseAudioFeatures(songIds).then((features) => {
+                songs.forEach((song, idx) => {
+                  song['audio'] = features[idx];
+                });
+                allSongs.push(...songs);
+              });
             },
             (err) => {
               console.log('Something went wrong!', err);
@@ -81,8 +89,7 @@ router.post('/', (req, res) => {
     .then(() => {
       //Send data -
       console.log(allSongs.length);
-      console.log(allSongs[0]);
-
+      res.send(allSongs);
       console.log('-----done-----');
     });
 });
