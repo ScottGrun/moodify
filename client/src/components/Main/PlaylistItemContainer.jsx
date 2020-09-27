@@ -28,7 +28,7 @@ const ColumnHeaderContainer = styled.div `
 `
 
 const SectionHeader = styled.h2`
-width: 275px;
+width: 345px;
 font-family: Inter;
 font-style: normal;
 font-weight: 900;
