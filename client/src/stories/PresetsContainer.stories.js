@@ -1,5 +1,5 @@
 import React from "react";
-import PresetsContainer from "../components/Presets/PresetsContainer";
+import PresetsContainer from "../components/Main/PresetsContainer";
 
 export default {
   title: "Presets Container",

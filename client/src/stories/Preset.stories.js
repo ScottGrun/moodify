@@ -1,5 +1,5 @@
 import React from "react";
-import Preset from "../components/Presets/Preset";
+import Preset from "../components/Main/Preset";
 
 export default {
   title: "Preset",

@@ -2,91 +2,84 @@ import React, { useEffect, useContext, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import axios from 'axios';
 import { StateContext } from '../../App';
-import SpotifyWebApi from 'spotify-web-api-node';
-import Header from './Header';
+import styled from 'styled-components';
 
 // Components
+import Header from './Header';
+import Navigation from './Navigation';
+import PlaylistImage from './PlaylistImage';
 import PlaylistItemContainer from './PlaylistItemContainer';
+import RadarChart from './RadarChart';
+import Sliders from './Sliders';
+import PresetsContainer from './PresetsContainer';
+
+const MainContainer = styled.div`
+  position: relative;
+  height: 100%:
+  width: 100%;
+  display: flex;
+  justify-content: center;
+
+  .logout {
+    position: absolute;
+    top: 0;
+  }
+
+  .main-content {
+    width: 100%;
+    max-width: 1440px;
+    margin-top: 80px;
+    display: flex;
+
+    .playlists-container {
+      width: 100%;
+      max-width: 684px;
+      margin: 15px 30px;
+
+      .playlist-image-container {
+        width: 100%;
+        margin-bottom: 30px;
+      }
+    }
+
+    .playlist-customization-container {
+      color: white;
+
+      .radar-chart-container {
+
+      }
+
+      .sliders-container {
+        height: 400px;
+        width: 400px;
+      }
+
+      .create-playlist-btn {
+        width: 100%;
+        margin-top: 60px;
+        border: 2px solid white;
+        font-size: 14px;
+        letter-spacing: 0.2px;
+        height: 40px;
+        background-color: transparent;
+        color: white;
+        border-radius: 4px;
+        font-weight: 600;
+      }
+
+      .presets-container {
+        width: 100%;
+        margin-top: 45px;
+      }
+    }
+  }
+`;
+
 const Main = () => {
   const [cookies, setCookie, removeCookie] = useCookies(['cookie-name']);
   const [accessToken, setAccessToken] = useContext(StateContext).AccessToken;
   const [userTracks, setTracks] = useState([]);
-
-  const parseSongs = (songList) => {
-    const songs = songList.map((song) => ({
-      name: song.track.name,
-      id: song.track.id,
-      artist: song.track.artists[0].name,
-      img: song.track.album.images[2].url,
-    }));
-    return songs;
-  };
-
-  const parseAudioFeatures = (songList) => {
-    const songsWithAudioFeatures = songList.map(song => song.id);
-    return songsWithAudioFeatures;
-  };
-
-  useEffect(() => {
-    // credentials are optional
-    var spotifyApi = new SpotifyWebApi({
-      clientId: '0308728f27674395b181e8b7680b9e04',
-      clientSecret: '952434dcc1c14fbfbe00af6ac6d5edd7',
-      redirectUri: 'http://localhost:3000/',
-    });
-
-    spotifyApi.setAccessToken(
-      'BQAmWSYvw05w302hr175efYLQdapA8ODn4lYyDhE6101DkqoqwrWT9_GEdTB_chTvZcn1a_5hv_ssFolntrbn-B2bcl8Uwwa9vaeLdoXtxKs-V2jFHaojQo249ZxWrnQmZIYKJeEa6kEi-leVt7SGFsN_CdzgAVAO_Ri',
-    );
-    let totalSongs = 0;
-    const allSongs = [];
-    spotifyApi
-      .getMySavedTracks({
-        limit: 50,
-        offset: 1,
-      })
-      .then(
-        function (data) {
-          console.log('Done!');
-          totalSongs = data.body.total;
-          allSongs.push(...parseSongs(data.body.items));
-          for (let i = 1; i * 50 <= totalSongs; i++) {
-            spotifyApi
-              .getMySavedTracks({
-                limit: 50,
-                offset: i * 50,
-              })
-              .then(
-                function (data) {
-                  console.log('Done!');
-                  allSongs.push(...parseSongs(data.body.items));
-                },
-                function (err) {
-                  console.log('Something went wrong!', err);
-                },
-              ).then(()=>{
-                setTracks(allSongs)
-
-              })
-          }
-        },
-        function (err) {
-          console.log('Something went wrong!', err);
-        },
-      )
-      console.log(allSongs);
-  }, []);
-
-  const getTrack = () => {
-    axios
-      .post(`http://localhost:9000/data/track`, {
-        accessToken,
-      })
-      .then((res) => {
-        console.log(res.data);
-      });
-  };
-
+  
   const logout = () => {
     removeCookie('accessToken');
     setAccessToken(null);
@@ -94,13 +87,33 @@ const Main = () => {
   };
 
   return (
-    <div>
+    <MainContainer>
+      <button className='logout' onClick={logout}>Logout</button>
       <Header />
-      <h1>This is the Main Page.</h1>
-      <button onClick={getTrack}>Get a track!</button>
-      <button onClick={logout}>Logout</button>
-      <PlaylistItemContainer songs={userTracks} />
-    </div>
+      <div className='main-content'>
+        <Navigation />
+
+        <div className='playlists-container'>
+          <div className='playlist-image-container'>
+            <PlaylistImage />
+          </div>
+          <PlaylistItemContainer songs={userTracks} />
+        </div>
+
+        <div className='playlist-customization-container'>
+          <div className='radar-chart-container'>
+            <RadarChart />
+          </div>
+          <div className='sliders-container'>
+            <Sliders />
+          </div>
+          <button className='create-playlist-btn'>Create Playlist</button>
+          <div className='presets-container'>
+            <PresetsContainer />
+          </div>
+        </div>
+      </div>
+    </MainContainer>
   );
 };
 

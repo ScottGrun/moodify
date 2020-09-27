@@ -3,13 +3,13 @@ import styled from 'styled-components';
 import PlaylistItem from './PlaylistItem';
 
 const StyledHeader = styled.div`
- display: flex;
+  display: flex;
   align-items: center;
-border-bottom: solid 1px white;
+  border-bottom: solid 1px white;
 `
 
 const StyledPlaylistContainer = styled.div`
-  max-width: 800px;
+  max-width: 684px;
 `
 
 const ColumnHeaderContainer = styled.div `
@@ -51,12 +51,12 @@ const PlaylistItemContainer = (props) => {
       <StyledHeader>
         <SectionHeader>Yours Songs</SectionHeader>
       <ColumnHeaderContainer>
+        <p>BPM</p>
+        <p>Energy</p>
+        <p>Valence</p>
+        <p>Acoustic</p>
+        <p>Loudness</p>
         <p>Speechiness</p>
-        <p>TEST</p>
-        <p>TEST</p>
-        <p>TEST</p>
-        <p>TEST</p>
-        <p>TEST</p>
       </ColumnHeaderContainer>
       </StyledHeader>
       <div>{songs}</div>
