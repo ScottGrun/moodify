@@ -26,6 +26,8 @@ const OverlayContainer = styled.div`
 
 const SongName = styled.h4`
   font-family: "Inter";
+  display: block;
+  width: 100%;
   font-weight: 500;
   font-size: 14px;
   line-height: 16px;
@@ -55,7 +57,7 @@ const AudioFeatures = styled.div`
   font-weight: normal;
 
   p {
-    width: 15px;
+    width: 75px;
     text-align: center;
   }
 `;
@@ -65,6 +67,11 @@ const SongMetaData = styled.div`
   flex-wrap: wrap;
   align-items: center;
   margin-left: 12px;
+  width: 275px;
+  max-width: 275px;
+
+ 
+
 `;
 
 const StyledPlaylistItem = styled.div`
@@ -91,7 +98,7 @@ const StyledPlaylistItem = styled.div`
 
 const PlaylistItem = (props) => {
   return (
-    <StyledPlaylistItem>
+    <StyledPlaylistItem >
       <StyledSongCoverContainer>
         <StyledSongImage src={props.img} />
       </StyledSongCoverContainer>

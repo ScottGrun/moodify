@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { StateContext } from '../../App';
 import styled from 'styled-components';
 import Slider from '@material-ui/core/Slider';
+
 const SlidersContainer = styled.div`
   width: 100%;
   height: 100%;

@@ -11,6 +11,7 @@ export default function App() {
   const [ accessToken, setAccessToken ] = useState(null);
   const [ chartData, setChartData ] = useState({});
   const [ chartValues, setChartValues ] = useState([0,0,0, 0,0,0]);
+  const [ userTracks, setUserTracks ] = useState([]);
 
   if (cookies.accessToken && !accessToken) {
     setAccessToken(cookies.accessToken);
@@ -21,6 +22,7 @@ export default function App() {
       AccessToken: [ accessToken, setAccessToken ],
       ChartData: [ chartData, setChartData ],
       ChartValues: [ chartValues, setChartValues ],
+      UserTracks: [ userTracks, setUserTracks ]
     } }>
       { accessToken
         ? <Main />

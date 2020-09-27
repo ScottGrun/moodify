@@ -9,7 +9,10 @@ const StyledHeader = styled.div`
 `
 
 const StyledPlaylistContainer = styled.div`
+<<<<<<< HEAD
   max-width: 684px;
+=======
+>>>>>>> 5651c99b93a1cbd624e68f5d6f31b53b4bb2ddf0
 `
 
 const ColumnHeaderContainer = styled.div `
@@ -29,7 +32,7 @@ const ColumnHeaderContainer = styled.div `
 `
 
 const SectionHeader = styled.h2`
-width: 275px;
+width: 345px;
 font-family: Inter;
 font-style: normal;
 font-weight: 900;
@@ -43,8 +46,10 @@ color: #FFFFFF;
 `
 
 const PlaylistItemContainer = (props) => {
+console.log(props.songs);
+const songs = props.songs.map((song) => <PlaylistItem key={song.id} bpm={12} energy={212} valence={212} acousticness={12} loudness={123} danceability={102}{...song} />);
 
-  const songs = props.songs.map((song) => <PlaylistItem {...song} />);
+
 
   return (
     <StyledPlaylistContainer>

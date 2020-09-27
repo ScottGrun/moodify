@@ -21,8 +21,15 @@ const MainContainer = styled.div`
   justify-content: center;
 
   .logout {
-    position: absolute;
-    top: 0;
+    position: fixed;
+    top: 40px;
+    right: 40px;
+    width: 100px;
+    height: 40px;
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 
   .main-content {
@@ -78,7 +85,7 @@ const MainContainer = styled.div`
 const Main = () => {
   const [cookies, setCookie, removeCookie] = useCookies(['cookie-name']);
   const [accessToken, setAccessToken] = useContext(StateContext).AccessToken;
-  const [userTracks, setTracks] = useState([]);
+  const [userTracks, setUserTracks] = useContext(StateContext).UserTracks;
   
   const logout = () => {
     removeCookie('accessToken');
