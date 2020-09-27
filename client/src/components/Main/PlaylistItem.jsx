@@ -91,7 +91,7 @@ const StyledPlaylistItem = styled.div`
 
 const PlaylistItem = (props) => {
   return (
-    <StyledPlaylistItem>
+    <StyledPlaylistItem >
       <StyledSongCoverContainer>
         <StyledSongImage src={props.img} />
       </StyledSongCoverContainer>

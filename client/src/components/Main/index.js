@@ -10,7 +10,7 @@ import PlaylistItemContainer from './PlaylistItemContainer';
 const Main = () => {
   const [cookies, setCookie, removeCookie] = useCookies(['cookie-name']);
   const [accessToken, setAccessToken] = useContext(StateContext).AccessToken;
-  const [userTracks, setTracks] = useState([]);
+  const [userTracks, setTracks] = useState({ loading: false, songs: [] });
 
   const parseSongs = (songList) => {
     const songs = songList.map((song) => ({
@@ -23,9 +23,12 @@ const Main = () => {
   };
 
   const parseAudioFeatures = (songList) => {
-    const songsWithAudioFeatures = songList.map(song => song.id);
+    const songsWithAudioFeatures = songList.map((song) => song.id);
     return songsWithAudioFeatures;
   };
+  const allSongs = [];
+
+
 
   useEffect(() => {
     // credentials are optional
@@ -36,10 +39,9 @@ const Main = () => {
     });
 
     spotifyApi.setAccessToken(
-      'BQAmWSYvw05w302hr175efYLQdapA8ODn4lYyDhE6101DkqoqwrWT9_GEdTB_chTvZcn1a_5hv_ssFolntrbn-B2bcl8Uwwa9vaeLdoXtxKs-V2jFHaojQo249ZxWrnQmZIYKJeEa6kEi-leVt7SGFsN_CdzgAVAO_Ri',
+      'BQAXdEVH1sKvRg_UB-UaNZQd2vRnJ0LBtCEEqBZdU5l6PZvgBPHNsNkTfIPdFoF3vTDhj7DxkplPyxsXsVZPdBwBtra5hkgtcWzlOux_JxHZ5RdtcsfY2k3jrQWK-ifSiGscQKS_mD0aPOcnCHFTeN773TNPaUWGTODVxLu9p-E3RzSfC9gntu80IUwTfd7_HSO1w4D8FAAcTh_nO8s_Wq4Tzlwlfrp_uy7WMeQMraFb4A5nXQ',
     );
     let totalSongs = 0;
-    const allSongs = [];
     spotifyApi
       .getMySavedTracks({
         limit: 50,
@@ -64,17 +66,22 @@ const Main = () => {
                 function (err) {
                   console.log('Something went wrong!', err);
                 },
-              ).then(()=>{
-                setTracks(allSongs)
-
-              })
+              );
           }
+          console.log('test');
         },
         function (err) {
           console.log('Something went wrong!', err);
         },
       )
-      console.log(allSongs);
+      .then(() => {
+        setTracks(prev => ({...prev, songs: allSongs}));
+
+        setTimeout(()=>{
+          setTracks(prev => ({loading:true, songs: allSongs}));
+
+        }, 2000)
+      });
   }, []);
 
   const getTrack = () => {
@@ -99,7 +106,7 @@ const Main = () => {
       <h1>This is the Main Page.</h1>
       <button onClick={getTrack}>Get a track!</button>
       <button onClick={logout}>Logout</button>
-      <PlaylistItemContainer songs={userTracks} />
+      {userTracks.loading && <PlaylistItemContainer songs={userTracks.songs} />}
     </div>
   );
 };

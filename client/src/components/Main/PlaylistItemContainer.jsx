@@ -9,7 +9,6 @@ border-bottom: solid 1px white;
 `
 
 const StyledPlaylistContainer = styled.div`
-  max-width: 800px;
 `
 
 const ColumnHeaderContainer = styled.div `
@@ -43,8 +42,10 @@ color: #FFFFFF;
 `
 
 const PlaylistItemContainer = (props) => {
+console.log(props.songs);
+const songs = props.songs.map((song) => <PlaylistItem key={song.id} bpm={12} energy={212} valence={212} acousticness={12} loudness={123} danceability={102}{...song} />);
 
-  const songs = props.songs.map((song) => <PlaylistItem {...song} />);
+
 
   return (
     <StyledPlaylistContainer>
