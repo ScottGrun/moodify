@@ -62,14 +62,14 @@ export default function Sliders() {
 
   return (
     <SlidersContainer>
-      <div className='values-container'>
+      {/* <div className='values-container'>
         <h1>BPM: min={value1[0]} max={value1[1]}</h1>
         <h1>Speechiness: min={value2[0]} max={value2[1]}</h1>
         <h1>Energy: min={value3[0]} max={value3[1]}</h1>
         <h1>Valence: min={value4[0]} max={value4[1]}</h1>
         <h1>Danceability: min={value5[0]} max={value5[1]}</h1>
         <h1>Loudness: min={value6[0]} max={value6[1]}</h1>
-      </div>
+      </div> */}
       <div className='sliders'>
         <div className='slider-container'>
           <p>BPM</p>

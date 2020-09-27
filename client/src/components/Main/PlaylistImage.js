@@ -52,6 +52,10 @@ const PlayListImageContainer = styled.div`
       text-align: right;
     }
   }
+
+  @media(max-width: 768px) {
+    display: none;
+  }
 `;
 
 export default function PlaylistImage() {
