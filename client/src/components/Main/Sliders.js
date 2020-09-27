@@ -92,7 +92,7 @@ export default function Sliders() {
             onChange={(event, val) => setValue2(val)}
             valueLabelDisplay="auto"
             aria-labelledby="range-slider"
-            valueLabelDisplay='off'
+            valueLabelDisplay='auto'
           />
         </div>
         <div className='slider-container'>
@@ -104,7 +104,7 @@ export default function Sliders() {
             onChange={(event, val) => setValue3(val)}
             valueLabelDisplay="auto"
             aria-labelledby="range-slider"
-            valueLabelDisplay='off'
+            valueLabelDisplay='auto'
           />
         </div>
         <div className='slider-container'>
@@ -116,7 +116,7 @@ export default function Sliders() {
             onChange={(event, val) => setValue4(val)}
             valueLabelDisplay="auto"
             aria-labelledby="range-slider"
-            valueLabelDisplay='off'
+            valueLabelDisplay='auto'
           />
         </div>
         <div className='slider-container'>
@@ -128,7 +128,7 @@ export default function Sliders() {
             onChange={(event, val) => setValue5(val)}
             valueLabelDisplay="auto"
             aria-labelledby="range-slider"
-            valueLabelDisplay='off'
+            valueLabelDisplay='auto'
           />
         </div>
         <div className='slider-container'>
@@ -140,7 +140,7 @@ export default function Sliders() {
             onChange={(event, val) => setValue6(val)}
             valueLabelDisplay="auto"
             aria-labelledby="range-slider"
-            valueLabelDisplay='off'
+            valueLabelDisplay='auto'
           />
         </div>
       </div>
