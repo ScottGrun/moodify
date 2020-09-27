@@ -69,8 +69,13 @@ const NavigationContainer = styled.div`
   }
 
   @media(max-width: 768px) {
-    width: 282px;
+    min-width: 282px;
     background-color: #1C1D20;
+    position: absolute;
+    left: 0;
+    display: none;
+    z-index: 100;
+    margin-top: -80px;
 
     .header {
       display: flex;

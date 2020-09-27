@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { StateContext } from '../../App';
 import styled from 'styled-components';
 import Slider from '@material-ui/core/Slider';
+
 const SlidersContainer = styled.div`
-  max-width: 394px;
   width: 100%;
+  height: 100%;
 
   .values-container {
     width: 100%;
@@ -46,12 +48,17 @@ const SlidersContainer = styled.div`
 `;
 
 export default function Sliders() {
+  const [ chartValues, setChartValues ] = useContext(StateContext).ChartValues;
   const [ value1, setValue1 ] = useState([10, 40]);
   const [ value2, setValue2 ] = useState([20, 50]);
   const [ value3, setValue3 ] = useState([30, 60]);
   const [ value4, setValue4 ] = useState([40, 70]);
   const [ value5, setValue5 ] = useState([50, 80]);
   const [ value6, setValue6 ] = useState([60, 90]);
+
+  // useEffect(() => {
+  //   setChartValues([value1[1], value2[1], value3[1], value4[1], value5[1], value6[1]]);
+  // },[value1[1], value2[1], value3[1], value4[1], value5[1], value6[1]]);
 
   return (
     <SlidersContainer>

@@ -3,12 +3,16 @@ import styled from 'styled-components';
 import PlaylistItem from './PlaylistItem';
 
 const StyledHeader = styled.div`
- display: flex;
+  display: flex;
   align-items: center;
-border-bottom: solid 1px white;
+  border-bottom: solid 1px white;
 `
 
 const StyledPlaylistContainer = styled.div`
+<<<<<<< HEAD
+  max-width: 684px;
+=======
+>>>>>>> 5651c99b93a1cbd624e68f5d6f31b53b4bb2ddf0
 `
 
 const ColumnHeaderContainer = styled.div `
@@ -52,12 +56,12 @@ const songs = props.songs.map((song) => <PlaylistItem key={song.id} bpm={12} ene
       <StyledHeader>
         <SectionHeader>Yours Songs</SectionHeader>
       <ColumnHeaderContainer>
+        <p>BPM</p>
+        <p>Energy</p>
+        <p>Valence</p>
+        <p>Acoustic</p>
+        <p>Loudness</p>
         <p>Speechiness</p>
-        <p>TEST</p>
-        <p>TEST</p>
-        <p>TEST</p>
-        <p>TEST</p>
-        <p>TEST</p>
       </ColumnHeaderContainer>
       </StyledHeader>
       <div>{songs}</div>

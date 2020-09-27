@@ -12,6 +12,10 @@ const HeaderContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: fixed;
+  top: 0;
+  z-index: 100;
+  background-color: #191F35;
 
   .profile {
     margin-right: 20px;
