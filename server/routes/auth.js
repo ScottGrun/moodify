@@ -10,7 +10,7 @@ const client_secret = process.env.CLIENT_SECRET;
 const redirect_uri = `http://localhost:3000/`;
 var stateKey = 'spotify_auth_state';
 
-var generateRandomString = function(length) {
+var generateRandomString = function (length) {
   var text = '';
   var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
@@ -24,22 +24,23 @@ router.get('/login', (req, res) => {
   const state = generateRandomString(16);
   res.cookie(stateKey, state);
 
-  const scope = 'playlist-read-private streaming user-read-email user-read-private';
-  res.send('https://accounts.spotify.com/authorize?' +
-    querystring.stringify({
-      response_type: 'code',
-      client_id,
-      scope,
-      redirect_uri,
-      state,
-      show_dialog: true
-    })
-  )
+  const scope = 'playlist-read-private streaming user-read-email user-read-private user-library-read';
+  res.send(
+    'https://accounts.spotify.com/authorize?' +
+      querystring.stringify({
+        response_type: 'code',
+        client_id,
+        scope,
+        redirect_uri,
+        state,
+        show_dialog: true,
+      }),
+  );
 });
 
 router.post('/token', (req, res) => {
   const code = req.body.code;
-  
+
   var authOptions = {
     url: 'https://accounts.spotify.com/api/token',
     form: {
@@ -47,21 +48,20 @@ router.post('/token', (req, res) => {
       redirect_uri: redirect_uri,
       grant_type: 'authorization_code',
       client_id,
-      client_secret
+      client_secret,
     },
-    json: true
+    json: true,
   };
 
-  request.post(authOptions, function(error, response, body) {
+  request.post(authOptions, function (error, response, body) {
     if (!error && response.statusCode === 200) {
-
       var access_token = body.access_token,
-          refresh_token = body.refresh_token;
+        refresh_token = body.refresh_token;
 
       var options = {
         url: 'https://api.spotify.com/v1/me',
-        headers: { 'Authorization': 'Bearer ' + access_token },
-        json: true
+        headers: { Authorization: 'Bearer ' + access_token },
+        json: true,
       };
 
       // use the access token to access the Spotify Web API
@@ -72,14 +72,14 @@ router.post('/token', (req, res) => {
       // we can also pass the token to the browser to make requests from there
       res.send(access_token);
     } else {
-      res.send('/#' +
-        querystring.stringify({
-          error: 'invalid_token'
-        }));
+      res.send(
+        '/#' +
+          querystring.stringify({
+            error: 'invalid_token',
+          }),
+      );
     }
   });
 });
-
-
 
 module.exports = router;
