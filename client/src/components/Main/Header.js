@@ -26,7 +26,7 @@ const HeaderContainer = styled.div`
     height: 36px;
   }
 
-  @media(max-width: 768px) {
+  @media(max-width: 1300px) {
     .profile {
       display: none;
     }

@@ -11,7 +11,8 @@ import leftArrow from '../../assets/left-arrow.svg';
 
 const NavigationContainer = styled.div`
   height: 100vh;
-  width: 200px;
+  min-width: 200px;
+  max-width: 200px;
   color: white;
   padding: 20px;
   z-index: 2;
@@ -68,8 +69,9 @@ const NavigationContainer = styled.div`
     left: 35px;
   }
 
-  @media(max-width: 768px) {
+  @media(max-width: 1300px) {
     min-width: 282px;
+    max-width: 282px;
     background-color: #1C1D20;
     position: absolute;
     left: 0;
