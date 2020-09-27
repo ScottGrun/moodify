@@ -9,10 +9,6 @@ const StyledHeader = styled.div`
 `
 
 const StyledPlaylistContainer = styled.div`
-<<<<<<< HEAD
-  max-width: 684px;
-=======
->>>>>>> 5651c99b93a1cbd624e68f5d6f31b53b4bb2ddf0
 `
 
 const ColumnHeaderContainer = styled.div `
@@ -58,10 +54,10 @@ const songs = props.songs.map((song) => <PlaylistItem key={song.id} bpm={12} ene
       <ColumnHeaderContainer>
         <p>BPM</p>
         <p>Energy</p>
+        <p>Danceability</p>
         <p>Valence</p>
-        <p>Acoustic</p>
-        <p>Loudness</p>
         <p>Speechiness</p>
+        <p>Loudness</p>
       </ColumnHeaderContainer>
       </StyledHeader>
       <div>{songs}</div>

@@ -1,6 +1,6 @@
-import React from "react";
-import styled from "styled-components";
-import PlayButton from "../../assets/icons/PlayButton.svg";
+import React from 'react';
+import styled from 'styled-components';
+import PlayButton from '../../assets/icons/PlayButton.svg';
 const StyledSongCoverContainer = styled.div`
   position: relative;
   height: 100%;
@@ -25,7 +25,7 @@ const OverlayContainer = styled.div`
 `;
 
 const SongName = styled.h4`
-  font-family: "Inter";
+  font-family: 'Inter';
   display: block;
   width: 100%;
   font-weight: 500;
@@ -69,9 +69,6 @@ const SongMetaData = styled.div`
   margin-left: 12px;
   width: 275px;
   max-width: 275px;
-
- 
-
 `;
 
 const StyledPlaylistItem = styled.div`
@@ -98,7 +95,7 @@ const StyledPlaylistItem = styled.div`
 
 const PlaylistItem = (props) => {
   return (
-    <StyledPlaylistItem >
+    <StyledPlaylistItem>
       <StyledSongCoverContainer>
         <StyledSongImage src={props.img} />
       </StyledSongCoverContainer>
@@ -111,12 +108,12 @@ const PlaylistItem = (props) => {
         <ArtistName>{props.artist}</ArtistName>
       </SongMetaData>
       <AudioFeatures>
-        <p>{props.bpm}</p>
-        <p>{props.energy}</p>
-        <p>{props.valence}</p>
-        <p>{props.acousticness}</p>
-        <p>{props.loudness}</p>
-        <p>{props.danceability}</p>
+        <p>{props.audio.tempo}</p>
+        <p>{Math.trunc(props.audio.energy * 100)}</p>
+        <p>{Math.trunc(props.audio.danceability * 100)}</p>
+        <p>{Math.trunc(props.audio.valence)}</p>
+        <p>{Math.trunc(props.audio.speechiness * 100)}</p>
+        <p>{Math.trunc(props.audio.loudness)}db</p>
       </AudioFeatures>
     </StyledPlaylistItem>
   );

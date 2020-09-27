@@ -93,7 +93,7 @@ const Main = () => {
         accessToken,
       })
       .then((res) => {
-        console.log(res.data);
+        setTracks({ loading: true, songs: res.data });
       });
   };
 
@@ -101,8 +101,6 @@ const Main = () => {
     getTrack();
   }, []);
 
-  const [userTracks, setUserTracks] = useContext(StateContext).UserTracks;
-  
   const logout = () => {
     removeCookie('accessToken');
     setAccessToken(null);
@@ -111,27 +109,29 @@ const Main = () => {
 
   return (
     <MainContainer>
-      <button className='logout' onClick={logout}>Logout</button>
+      <button className="logout" onClick={logout}>
+        Logout
+      </button>
       <Header />
-      <div className='main-content'>
+      <div className="main-content">
         <Navigation />
 
-        <div className='playlists-container'>
-          <div className='playlist-image-container'>
+        <div className="playlists-container">
+          <div className="playlist-image-container">
             <PlaylistImage />
           </div>
-          <PlaylistItemContainer songs={userTracks} />
+          {userTracks.loading && <PlaylistItemContainer songs={userTracks.songs} />}
         </div>
 
-        <div className='playlist-customization-container'>
-          <div className='radar-chart-container'>
+        <div className="playlist-customization-container">
+          <div className="radar-chart-container">
             <RadarChart />
           </div>
-          <div className='sliders-container'>
+          <div className="sliders-container">
             <Sliders />
           </div>
-          <button className='create-playlist-btn'>Create Playlist</button>
-          <div className='presets-container'>
+          <button className="create-playlist-btn">Create Playlist</button>
+          <div className="presets-container">
             <PresetsContainer />
           </div>
         </div>
