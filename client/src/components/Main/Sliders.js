@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { StateContext } from '../../App';
+import {mapRange} from '../../helpers/mapRange';
+
 import styled from 'styled-components';
 import Slider from '@material-ui/core/Slider';
 
@@ -58,7 +60,7 @@ export default function Sliders() {
   const [valence, setValence] = useState([0, 0]);
 
   useEffect(() => {
-    if (playlistMinMax) {
+    if (playlistMinMax.tempo) {
       setTempo(playlistMinMax.tempo);
       setDanceability(playlistMinMax.danceability);
       setEnergy(playlistMinMax.energy);
@@ -145,8 +147,8 @@ export default function Sliders() {
         <div className="slider-container">
           <p>Loudness</p>
           <Slider
-            min={0}
-            max={100}
+            min={-60}
+            max={0}
             value={loudness}
             onChange={(event, val) => setLoudness(val)}
             valueLabelDisplay="auto"
