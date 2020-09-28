@@ -19,6 +19,8 @@ const LandingPageContainer = styled.div`
   align-items: center;
   background-color: #191F35;
   overflow: hidden;
+  background-image: url('https://i.imgur.com/pafOlyj.jpg');
+  background-size: contain;
 
   .section1 {
     width: 100%;
@@ -26,6 +28,16 @@ const LandingPageContainer = styled.div`
     position: relative;
     display: flex;
     justify-content: center;
+
+    .overlay {
+      height: 100%;
+      width: 100%;
+      background-color: rgba(0,0,0,.4);
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 5;
+    }
 
     .content-container {
       position: relative;
@@ -82,6 +94,7 @@ const LandingPageContainer = styled.div`
         bottom: 0;
         left: calc(50% - 425px);
         transform-origin: center;
+        z-index: 8;
 
         img {
           width: 800px;
@@ -93,6 +106,7 @@ const LandingPageContainer = styled.div`
         position: absolute;
         bottom: 0;
         left: -232px;
+        z-index: 9;
       }
 
       /* .turntable-container {
