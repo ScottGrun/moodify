@@ -36,7 +36,7 @@ const Lights = () => {
   return (
     <>
       <ambientLight intensity={.3} />;
-      <directionalLight position={[10, 10, 5]} intensity={1} />;
+      <directionalLight position={[10, 10, 5]} intensity={.9} />;
       <directionalLight position={[0, 10, 0]} intensity={.5} />;
       <spotLight position={[1000, 0, 0]} intensity={1} />
     </>
@@ -50,7 +50,7 @@ const HTMLContent = ({ children, modelPath, positionY }) => {
   return(
     <Section factor={1.5} offset={1}>
       <group position={[0, positionY, 0]}>
-        <mesh ref={ref} position={[0, 30, 0]}>
+        <mesh ref={ref} position={[0, 30, 10]}>
           <Model modelPath={modelPath}/>
         </mesh>
         <Html fullscreen>
@@ -65,7 +65,7 @@ export default function TurntableModel() {
 
   return(
     <TurntableModelContainer>
-      <Canvas colorManagement camera={{ position: [0, 30, 115], fov: 81 }}>
+      <Canvas colorManagement camera={{ position: [0, 30, 115], fov: 80.5 }}>
         <Lights />
         <Suspense fallback={null}>
           <HTMLContent 
