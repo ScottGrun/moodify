@@ -18,7 +18,7 @@ export default function RadarChart(props) {
 
   const chart = () => {
     setChartData({
-      labels: ['Energy',  'Danceability', 'Valence', 'Speechiness',  'Loudness'],
+      labels: ['Energy',  'Danceability', 'Valence', 'Speechiness',  'Bass'],
       datasets: [
         {
           data: chartValues,
