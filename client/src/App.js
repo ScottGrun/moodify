@@ -12,6 +12,7 @@ export default function App() {
   const [ chartData, setChartData ] = useState({});
   const [ chartValues, setChartValues ] = useState([0,0,0, 0,0,0]);
   const [ userTracks, setUserTracks ] = useState({ loading: false, songs: []});
+  const [ openNav, setOpenNav ] = useState(false);
 
   if (cookies.accessToken && !accessToken) {
     setAccessToken(cookies.accessToken);
@@ -22,7 +23,8 @@ export default function App() {
       AccessToken: [ accessToken, setAccessToken ],
       ChartData: [ chartData, setChartData ],
       ChartValues: [ chartValues, setChartValues ],
-      UserTracks: [ userTracks, setUserTracks ]
+      UserTracks: [ userTracks, setUserTracks ],
+      OpenNav: [ openNav, setOpenNav ]
     } }>
       { accessToken
         ? <Main />
