@@ -49,7 +49,6 @@ const SlidersContainer = styled.div`
 `;
 
 export default function Sliders() {
-  const [chartValues, setChartValues] = useContext(StateContext).ChartValues;
   const [playlistMinMax, setPlaylistMinMax] = useContext(StateContext).PlaylistMinMax;
 
   const [tempo, setTempo] = useState([0, 0]);
@@ -59,16 +58,19 @@ export default function Sliders() {
   const [loudness, setLoudness] = useState([0, 0]);
   const [valence, setValence] = useState([0, 0]);
 
+
   useEffect(() => {
-    if (playlistMinMax.tempo) {
-      setTempo(playlistMinMax.tempo);
-      setDanceability(playlistMinMax.danceability);
-      setEnergy(playlistMinMax.energy);
-      setInstrumentalness(playlistMinMax.instrumentalness);
-      setLoudness(playlistMinMax.loudness);
-      setValence(playlistMinMax.valence);
+    if (playlistMinMax.data.tempo) {
+      setTempo(playlistMinMax.data.tempo);
+      setDanceability(playlistMinMax.data.danceability);
+      setEnergy(playlistMinMax.data.energy);
+      setInstrumentalness(playlistMinMax.data.instrumentalness);
+      setLoudness(playlistMinMax.data.loudness);
+      setValence(playlistMinMax.data.valence);
     }
-  }, [playlistMinMax]);
+  }, [playlistMinMax.loaded]);
+  
+
 
   // useEffect(() => {
   //   setChartValues([value1[1], value2[1], value3[1], value4[1], value5[1], value6[1]]);
@@ -82,10 +84,13 @@ export default function Sliders() {
           <Slider
             min={0}
             max={
-              playlistMinMax.tempo && playlistMinMax.tempo[1] > 250 ? playlistMinMax.tempo[1] : 250
+              playlistMinMax.data.tempo && playlistMinMax.data.tempo[1] > 250 ? playlistMinMax.data.tempo[1] : 250
             }
             value={tempo}
-            onChange={(event, val) => setTempo(val)}
+            step={5}
+            marks={myMarks}
+            onChangeCommitted= {(event, val) => {setTempo(val); setPlaylistMinMax(prev => ({...prev, data:{...prev.data, tempo: val}}))}}
+            onChange={(event, val) => {setTempo(val)}}
             valueLabelDisplay="auto"
             aria-labelledby="range-slider"
             valueLabelDisplay="auto"
@@ -114,6 +119,7 @@ export default function Sliders() {
             min={0}
             max={100}
             value={energy}
+            onChangeCommitted={(event, val) => {setEnergy(val); setPlaylistMinMax(prev => ({...prev, data:{...prev.data, energy: val}}))}}
             onChange={(event, val) => setEnergy(val)}
             valueLabelDisplay="auto"
             aria-labelledby="range-slider"

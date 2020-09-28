@@ -223,9 +223,8 @@ const Main = () => {
           loading: true,
           songs: res.data.songs,
         });
-
         setChartValues(res.data.averages);
-        setPlaylistMinMax(res.data.minMax);
+        setPlaylistMinMax({data: res.data.minMax, loaded: true});
       });
   };
 
@@ -256,6 +255,7 @@ const Main = () => {
           <div className="playlist-image-container">
             <PlaylistImage />
           </div>
+          
           {userTracks.loading && <PlaylistItemContainer songs={userTracks.songs} />}
         </div>
 
@@ -267,9 +267,9 @@ const Main = () => {
             <Sliders />
             <button className="create-playlist-btn">Create Playlist</button>
           </div>
-          <div className="presets-container">
+          {/* <div className="presets-container">
             <PresetsContainer />
-          </div>
+          </div> */}
         </div>
       </div>
     </MainContainer>
