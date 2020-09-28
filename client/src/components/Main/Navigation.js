@@ -1,5 +1,15 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
+import clsx from 'clsx';
+import { makeStyles } from '@material-ui/core/styles';
+import Drawer from '@material-ui/core/Drawer';
+import Button from '@material-ui/core/Button';
+import List from '@material-ui/core/List';
+import Divider from '@material-ui/core/Divider';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import { StateContext } from '../../App';
 
 // components
 import Profile from './Profile';
@@ -16,17 +26,11 @@ const NavigationContainer = styled.div`
   color: white;
   padding: 20px;
   z-index: 2;
-  position: relative;
 
   .header {
     display: none;
     margin-bottom: 30px;
     justify-content: space-between;
-
-    .minimize {
-      position: absolute;
-      right: 10px;
-    }
   }
 
   & > .section:not(:last-child) {
@@ -73,11 +77,14 @@ const NavigationContainer = styled.div`
     min-width: 282px;
     max-width: 282px;
     background-color: #1C1D20;
-    position: absolute;
-    left: 0;
-    display: none;
+    position: fixed;
+    top: 0;
+    right: -280px;
     z-index: 100;
-    margin-top: -80px;
+    transition: all 0.5s ease-in-out;
+    ${({ open }) => open && `
+      transform: translateX(-282px);
+    `}
 
     .header {
       display: flex;
@@ -91,12 +98,12 @@ const NavigationContainer = styled.div`
 
 export default function Navigation() {
   const playlists = ['Public playlist', 'Melancholy', 'Alternative', 'New Playlist'];
+  const [ openNav, setOpenNav ] = useContext(StateContext).OpenNav;
 
   return(
-    <NavigationContainer>
+    <NavigationContainer open={openNav}>
       <div className='header'>
         <img src={logo} className='logo'/>
-        <img src={leftArrow} className='minimize' />
       </div>
       <div className='section browse-music'>
         <h3 className='title'>Browse Music</h3>
@@ -129,6 +136,7 @@ export default function Navigation() {
       <div className='profile-dropdown-container'>
         <Profile />
       </div>
+
     </NavigationContainer>
   );
 };

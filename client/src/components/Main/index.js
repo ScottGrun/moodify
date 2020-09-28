@@ -12,6 +12,7 @@ import PlaylistItemContainer from './PlaylistItemContainer';
 import RadarChart from './RadarChart';
 import Sliders from './Sliders';
 import PresetsContainer from './PresetsContainer';
+import OpenMenu from './OpenMenu';
 
 const MainContainer = styled.div`
   position: relative;
@@ -19,6 +20,7 @@ const MainContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
+  overflow: hidden;
 
   .logout {
     position: fixed;
@@ -32,6 +34,27 @@ const MainContainer = styled.div`
     }
   }
 
+  .overlay {
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 11;
+    display: none;
+    background-color: rgba(0,0,0,0.6);
+  }
+
+  .open-menu {
+    display: none;
+    width: 30px;
+    height: 30px;
+    position: fixed;
+    top: 25px;
+    right: 25px;
+    z-index: 9999;
+  }
+
   .main-content {
     width: 100%;
     max-width: 1440px;
@@ -40,20 +63,19 @@ const MainContainer = styled.div`
     justify-content: center;
 
     .playlists-container {
-      width: 100%;
+      width: 35vw;
       max-width: 684px;
       margin: 15px 30px;
 
       .playlist-image-container {
-        width: 100%;
         margin-bottom: 30px;
       }
     }
 
     .playlist-customization-container {
-      color: white;
-      width: 100%;
+      width: 35vw;
       margin: 0 30px;
+      color: white;
 
       .radar-chart-container {
         width: 100%;
@@ -90,6 +112,16 @@ const MainContainer = styled.div`
   }
 
   @media(max-width: 1300px) {
+    .overlay {
+      ${({ open }) => open && `
+        display: block;
+      `}
+    }
+
+    .open-menu {
+      display: block;
+    }
+
     .main-content {
 
       .playlists-container {
@@ -130,7 +162,7 @@ const MainContainer = styled.div`
       max-width: 700px;
 
       .playlists-container {
-        width: 100%;
+        width: calc(100% - 30px);
 
         .playlist-image-container {
           display: none;
@@ -181,6 +213,7 @@ const Main = () => {
   const [cookies, setCookie, removeCookie] = useCookies(['cookie-name']);
   const [accessToken, setAccessToken] = useContext(StateContext).AccessToken;
   const [userTracks, setTracks] = useState({ loading: false, songs: [] });
+  const [openNav, setOpenNav] = useContext(StateContext).OpenNav;
 
   const getTrack = () => {
     axios
@@ -202,15 +235,15 @@ const Main = () => {
     window.location = 'http://localhost:3000';
   };
 
-  const toggleMenu = () => {
-    
-  };
-
   return (
-    <MainContainer>
+    <MainContainer open={openNav}>
       <button className="logout" onClick={logout}>
         Logout
       </button>
+      <div className='overlay' onClick={() => setOpenNav(!openNav)}></div>
+      <div className='open-menu' onClick={() => setOpenNav(!openNav)}>
+        <OpenMenu open={openNav}/>
+      </div>
       <Header />
       <div className="main-content">
         <Navigation />
