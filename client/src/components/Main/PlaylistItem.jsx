@@ -108,10 +108,10 @@ const PlaylistItem = (props) => {
         <ArtistName>{props.artist}</ArtistName>
       </SongMetaData>
       <AudioFeatures>
-        <p>{props.audio.tempo}</p>
+        <p>{Math.trunc(props.audio.tempo)}</p>
         <p>{Math.trunc(props.audio.energy * 100)}</p>
         <p>{Math.trunc(props.audio.danceability * 100)}</p>
-        <p>{Math.trunc(props.audio.valence)}</p>
+        <p>{props.audio.valence}</p>
         <p>{Math.trunc(props.audio.speechiness * 100)}</p>
         <p>{Math.trunc(props.audio.loudness)}db</p>
       </AudioFeatures>

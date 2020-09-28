@@ -212,7 +212,8 @@ const MainContainer = styled.div`
 const Main = () => {
   const [cookies, setCookie, removeCookie] = useCookies(['cookie-name']);
   const [accessToken, setAccessToken] = useContext(StateContext).AccessToken;
-  const [userTracks, setTracks] = useState({ loading: false, songs: [] });
+  const [userTracks, setTracks] = useContext(StateContext).UserTracks;
+  const [chartValues, setChartValues] = useContext(StateContext).ChartValues;
   const [openNav, setOpenNav] = useContext(StateContext).OpenNav;
 
   const getTrack = () => {
@@ -221,7 +222,12 @@ const Main = () => {
         accessToken,
       })
       .then((res) => {
-        setTracks({ loading: true, songs: res.data });
+        setTracks({
+          loading: true,
+          songs: res.data.songs,
+        });
+
+        setChartValues(res.data.averages);
       });
   };
 
@@ -234,7 +240,7 @@ const Main = () => {
     setAccessToken(null);
     window.location = 'http://localhost:3000';
   };
-
+  
   return (
     <MainContainer open={openNav}>
       <button className="logout" onClick={logout}>
@@ -261,7 +267,7 @@ const Main = () => {
           </div>
           <div className="sliders-container">
             <Sliders />
-            <button className='create-playlist-btn'>Create Playlist</button>
+            <button className="create-playlist-btn">Create Playlist</button>
           </div>
           <div className="presets-container">
             <PresetsContainer />
