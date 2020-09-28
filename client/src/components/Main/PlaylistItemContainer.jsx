@@ -57,7 +57,7 @@ const songs = props.songs.map((song) => <PlaylistItem key={song.id} bpm={12} ene
         <p>Danceability</p>
         <p>Valence</p>
         <p>Speechiness</p>
-        <p>Loudness</p>
+        <p>Bass</p>
       </ColumnHeaderContainer>
       </StyledHeader>
       <div>{songs}</div>

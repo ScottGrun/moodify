@@ -106,7 +106,8 @@ const getAverageAudioFeatures = (songs) => {
 
   for (const key in playlistAudioFeaturesAverages) {
     if (key === 'loudness') {
-      playlistAudioFeaturesAverages[key] = (playlistAudioFeaturesAverages[key] / songs.length) + 60;
+      
+      playlistAudioFeaturesAverages[key] = Math.abs(playlistAudioFeaturesAverages[key] / songs.length);
     } else {
       playlistAudioFeaturesAverages[key] = Math.round(
         (playlistAudioFeaturesAverages[key] / songs.length) * 100,
