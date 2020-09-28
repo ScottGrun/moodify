@@ -42,7 +42,7 @@ const MainContainer = styled.div`
     left: 0;
     z-index: 11;
     display: none;
-    background-color: rgba(0,0,0,0.6);
+    background-color: rgba(0, 0, 0, 0.6);
   }
 
   .open-menu {
@@ -99,7 +99,7 @@ const MainContainer = styled.div`
 
           &:hover {
             cursor: pointer;
-            background-color: #2ED689;
+            background-color: #2ed689;
           }
         }
       }
@@ -111,9 +111,11 @@ const MainContainer = styled.div`
     }
   }
 
-  @media(max-width: 1300px) {
+  @media (max-width: 1300px) {
     .overlay {
-      ${({ open }) => open && `
+      ${({ open }) =>
+        open &&
+        `
         display: block;
       `}
     }
@@ -123,12 +125,10 @@ const MainContainer = styled.div`
     }
 
     .main-content {
-
       .playlists-container {
         width: 50%;
 
         .playlist-image-container {
-
         }
       }
 
@@ -136,25 +136,21 @@ const MainContainer = styled.div`
         width: 50%;
 
         .radar-chart-container {
-
         }
 
         .sliders-container {
-
         }
 
         .create-playlist-btn {
-
         }
 
         .presets-container {
-
         }
       }
     }
   }
 
-  @media(max-width: 1226px) {
+  @media (max-width: 1226px) {
     .main-content {
       display: flex;
       flex-direction: column-reverse;
@@ -215,6 +211,7 @@ const Main = () => {
   const [userTracks, setTracks] = useContext(StateContext).UserTracks;
   const [chartValues, setChartValues] = useContext(StateContext).ChartValues;
   const [openNav, setOpenNav] = useContext(StateContext).OpenNav;
+  const [playlistMinMax, setPlaylistMinMax] = useContext(StateContext).PlaylistMinMax;
 
   const getTrack = () => {
     axios
@@ -226,8 +223,8 @@ const Main = () => {
           loading: true,
           songs: res.data.songs,
         });
-
         setChartValues(res.data.averages);
+        setPlaylistMinMax({data: res.data.minMax, loaded: true});
       });
   };
 
@@ -240,15 +237,15 @@ const Main = () => {
     setAccessToken(null);
     window.location = 'http://localhost:3000';
   };
-  
+
   return (
     <MainContainer open={openNav}>
       <button className="logout" onClick={logout}>
         Logout
       </button>
-      <div className='overlay' onClick={() => setOpenNav(!openNav)}></div>
-      <div className='open-menu' onClick={() => setOpenNav(!openNav)}>
-        <OpenMenu open={openNav}/>
+      <div className="overlay" onClick={() => setOpenNav(!openNav)}></div>
+      <div className="open-menu" onClick={() => setOpenNav(!openNav)}>
+        <OpenMenu open={openNav} />
       </div>
       <Header />
       <div className="main-content">
@@ -258,6 +255,7 @@ const Main = () => {
           <div className="playlist-image-container">
             <PlaylistImage />
           </div>
+          
           {userTracks.loading && <PlaylistItemContainer songs={userTracks.songs} />}
         </div>
 
@@ -269,9 +267,9 @@ const Main = () => {
             <Sliders />
             <button className="create-playlist-btn">Create Playlist</button>
           </div>
-          <div className="presets-container">
+          {/* <div className="presets-container">
             <PresetsContainer />
-          </div>
+          </div> */}
         </div>
       </div>
     </MainContainer>

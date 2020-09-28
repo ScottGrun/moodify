@@ -1,6 +1,8 @@
-import React from 'react';
 import styled from 'styled-components';
 import PlayButton from '../../assets/icons/PlayButton.svg';
+import React, { useContext, useState, useEffect } from 'react';
+import { StateContext } from '../../App';
+
 const StyledSongCoverContainer = styled.div`
   position: relative;
   height: 100%;
@@ -94,29 +96,47 @@ const StyledPlaylistItem = styled.div`
 `;
 
 const PlaylistItem = (props) => {
-  return (
-    <StyledPlaylistItem>
-      <StyledSongCoverContainer>
-        <StyledSongImage src={props.img} />
-      </StyledSongCoverContainer>
+  const [playlistMinMax, setPlaylistMinMax] = useContext(StateContext).PlaylistMinMax;
 
-      <OverlayContainer>
-        <img src={PlayButton} />
-      </OverlayContainer>
-      <SongMetaData>
-        <SongName>{props.name}</SongName>
-        <ArtistName>{props.artist}</ArtistName>
-      </SongMetaData>
-      <AudioFeatures>
-        <p>{Math.trunc(props.audio.tempo)}</p>
-        <p>{Math.trunc(props.audio.energy * 100)}</p>
-        <p>{Math.trunc(props.audio.danceability * 100)}</p>
-        <p>{props.audio.valence}</p>
-        <p>{Math.trunc(props.audio.speechiness * 100)}</p>
-        <p>{Math.trunc(props.audio.loudness)}db</p>
-      </AudioFeatures>
-    </StyledPlaylistItem>
-  );
+  const matchFilter = () => {
+    if (
+      props.audio.energy * 100 <= playlistMinMax.data.energy[1] &&
+      props.audio.energy * 100 >= playlistMinMax.data.energy[0] &&
+      props.audio.tempo <= playlistMinMax.data.tempo[1] &&
+      props.audio.tempo  >= playlistMinMax.data.tempo[0] 
+    ) {
+      return true;
+    }
+    return false;
+  };
+
+  if (playlistMinMax.data.tempo && matchFilter()) {
+    return (
+      <StyledPlaylistItem>
+        <StyledSongCoverContainer>
+          <StyledSongImage src={props.img} />
+        </StyledSongCoverContainer>
+
+        <OverlayContainer>
+          <img src={PlayButton} />
+        </OverlayContainer>
+        <SongMetaData>
+          <SongName>{props.name}</SongName>
+          <ArtistName>{props.artist}</ArtistName>
+        </SongMetaData>
+        <AudioFeatures>
+          <p>{Math.trunc(props.audio.tempo)}</p>
+          <p>{Math.trunc(props.audio.energy * 100)}</p>
+          <p>{Math.trunc(props.audio.danceability * 100)}</p>
+          <p>{props.audio.valence}</p>
+          <p>{Math.trunc(props.audio.instrumentalness * 100)}</p>
+          <p>{Math.trunc(props.audio.loudness)}db</p>
+        </AudioFeatures>
+      </StyledPlaylistItem>
+    );
+  }
+
+  return null;
 };
 
 export default PlaylistItem;

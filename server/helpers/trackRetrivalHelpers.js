@@ -1,4 +1,3 @@
-const e = require('express');
 const spotifyApi = require('./spotifyApiHelper');
 
 const parseAudioFeatures = async (songList) => {
@@ -75,14 +74,14 @@ const getMinMax = (songs) => {
 
   for (const key in playlistAudioFeaturesMinMax) {
     if (key === 'loudness') {
-      playlistAudioFeaturesMinMax[key][1] = (60 + playlistAudioFeaturesMinMax[key][1]) / 60;
+      playlistAudioFeaturesMinMax[key][1] = Math.trunc((60 + playlistAudioFeaturesMinMax[key][1]) / 60);
     } else if (key !== 'tempo') {
-      playlistAudioFeaturesMinMax[key][1] = Math.round(playlistAudioFeaturesMinMax[key][1] * 100);
-      playlistAudioFeaturesMinMax[key][0] = Math.round(playlistAudioFeaturesMinMax[key][0] * 100);
+      playlistAudioFeaturesMinMax[key][1] = Math.trunc(Math.round(playlistAudioFeaturesMinMax[key][1] * 100));
+      playlistAudioFeaturesMinMax[key][0] = Math.trunc(Math.round(playlistAudioFeaturesMinMax[key][0] * 100));
     }
   }
 
-  return Object.values(playlistAudioFeaturesMinMax);
+  return playlistAudioFeaturesMinMax;
 };
 
 //Get average audio features for playlist
@@ -100,14 +99,14 @@ const getAverageAudioFeatures = (songs) => {
     playlistAudioFeaturesAverages.danceability += song.audio.danceability;
     playlistAudioFeaturesAverages.valence += song.audio.valence;
     playlistAudioFeaturesAverages.speechiness += song.audio.speechiness;
-    playlistAudioFeaturesAverages.loudness += song.audio.loudness;
+    playlistAudioFeaturesAverages.loudness += song.audio.loudness + 60;
     console.log(playlistAudioFeaturesAverages.loudness);
   });
 
   for (const key in playlistAudioFeaturesAverages) {
     if (key === 'loudness') {
-      
-      playlistAudioFeaturesAverages[key] = Math.abs(playlistAudioFeaturesAverages[key] / songs.length);
+
+      playlistAudioFeaturesAverages[key] = playlistAudioFeaturesAverages[key] / songs.length;
     } else {
       playlistAudioFeaturesAverages[key] = Math.round(
         (playlistAudioFeaturesAverages[key] / songs.length) * 100,

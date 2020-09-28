@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { StateContext } from '../../App';
+import {mapRange} from '../../helpers/mapRange';
+
 import styled from 'styled-components';
 import Slider from '@material-ui/core/Slider';
 
@@ -22,7 +24,7 @@ const SlidersContainer = styled.div`
       width: 100%;
 
       .MuiSlider-colorPrimary {
-        color: #2ED689;
+        color: #2ed689;
       }
 
       .MuiSlider-markLabelActive {
@@ -41,20 +43,34 @@ const SlidersContainer = styled.div`
       }
 
       .labelStyleInner {
-
       }
     }
   }
 `;
 
 export default function Sliders() {
-  const [ chartValues, setChartValues ] = useContext(StateContext).ChartValues;
-  const [ value1, setValue1 ] = useState([10, 40]);
-  const [ value2, setValue2 ] = useState([20, 50]);
-  const [ value3, setValue3 ] = useState([30, 60]);
-  const [ value4, setValue4 ] = useState([40, 70]);
-  const [ value5, setValue5 ] = useState([50, 80]);
-  const [ value6, setValue6 ] = useState([60, 90]);
+  const [playlistMinMax, setPlaylistMinMax] = useContext(StateContext).PlaylistMinMax;
+
+  const [tempo, setTempo] = useState([0, 0]);
+  const [danceability, setDanceability] = useState([0, 0]);
+  const [energy, setEnergy] = useState([0, 0]);
+  const [instrumentalness, setInstrumentalness] = useState([0, 0]);
+  const [loudness, setLoudness] = useState([0, 0]);
+  const [valence, setValence] = useState([0, 0]);
+
+
+  useEffect(() => {
+    if (playlistMinMax.data.tempo) {
+      setTempo(playlistMinMax.data.tempo);
+      setDanceability(playlistMinMax.data.danceability);
+      setEnergy(playlistMinMax.data.energy);
+      setInstrumentalness(playlistMinMax.data.instrumentalness);
+      setLoudness(playlistMinMax.data.loudness);
+      setValence(playlistMinMax.data.valence);
+    }
+  }, [playlistMinMax.loaded]);
+  
+
 
   // useEffect(() => {
   //   setChartValues([value1[1], value2[1], value3[1], value4[1], value5[1], value6[1]]);
@@ -62,95 +78,91 @@ export default function Sliders() {
 
   return (
     <SlidersContainer>
-      {/* <div className='values-container'>
-        <h1>BPM: min={value1[0]} max={value1[1]}</h1>
-        <h1>Speechiness: min={value2[0]} max={value2[1]}</h1>
-        <h1>Energy: min={value3[0]} max={value3[1]}</h1>
-        <h1>Valence: min={value4[0]} max={value4[1]}</h1>
-        <h1>Danceability: min={value5[0]} max={value5[1]}</h1>
-        <h1>Loudness: min={value6[0]} max={value6[1]}</h1>
-      </div> */}
-      <div className='sliders'>
-        <div className='slider-container'>
+      <div className="sliders">
+        <div className="slider-container">
           <p>BPM</p>
-          <Slider 
+          <Slider
             min={0}
-            max={100}
-            value={value1}
-            onChange={(event, val) => setValue1(val)}
+            max={
+              playlistMinMax.data.tempo && playlistMinMax.data.tempo[1] > 250 ? playlistMinMax.data.tempo[1] : 250
+            }
+            value={tempo}
+            step={5}
+            marks={myMarks}
+            onChangeCommitted= {(event, val) => {setTempo(val); setPlaylistMinMax(prev => ({...prev, data:{...prev.data, tempo: val}}))}}
+            onChange={(event, val) => {setTempo(val)}}
             valueLabelDisplay="auto"
             aria-labelledby="range-slider"
-            valueLabelDisplay='auto'
+            valueLabelDisplay="auto"
             label={
-              <div className='labelStyleOuter'>
-                <div className='labelStyleInner'>
-                  73
-                </div>
+              <div className="labelStyleOuter">
+                <div className="labelStyleInner">73</div>
               </div>
             }
           />
         </div>
-        <div className='slider-container'>
-          <p>Speechiness</p>
-          <Slider 
+        <div className="slider-container">
+          <p>instrumentalness</p>
+          <Slider
             min={0}
             max={100}
-            value={value2}
-            onChange={(event, val) => setValue2(val)}
+            value={instrumentalness}
+            onChange={(event, val) => setInstrumentalness(val)}
             valueLabelDisplay="auto"
             aria-labelledby="range-slider"
-            valueLabelDisplay='auto'
+            valueLabelDisplay="auto"
           />
         </div>
-        <div className='slider-container'>
+        <div className="slider-container">
           <p>Energy</p>
-          <Slider 
+          <Slider
             min={0}
             max={100}
-            value={value3}
-            onChange={(event, val) => setValue3(val)}
+            value={energy}
+            onChangeCommitted={(event, val) => {setEnergy(val); setPlaylistMinMax(prev => ({...prev, data:{...prev.data, energy: val}}))}}
+            onChange={(event, val) => setEnergy(val)}
             valueLabelDisplay="auto"
             aria-labelledby="range-slider"
-            valueLabelDisplay='auto'
+            valueLabelDisplay="auto"
           />
         </div>
-        <div className='slider-container'>
+        <div className="slider-container">
           <p>Valence</p>
-          <Slider 
+          <Slider
             min={0}
             max={100}
-            value={value4}
-            onChange={(event, val) => setValue4(val)}
+            value={valence}
+            onChange={(event, val) => setValence(val)}
             valueLabelDisplay="auto"
             aria-labelledby="range-slider"
-            valueLabelDisplay='auto'
+            valueLabelDisplay="auto"
           />
         </div>
-        <div className='slider-container'>
+        <div className="slider-container">
           <p>Danceability</p>
-          <Slider 
+          <Slider
             min={0}
             max={100}
-            value={value5}
-            onChange={(event, val) => setValue5(val)}
+            value={danceability}
+            onChange={(event, val) => setDanceability(val)}
             valueLabelDisplay="auto"
             aria-labelledby="range-slider"
-            valueLabelDisplay='auto'
+            valueLabelDisplay="auto"
           />
         </div>
-        <div className='slider-container'>
+        <div className="slider-container">
           <p>Loudness</p>
-          <Slider 
-            min={0}
-            max={100}
-            value={value6}
-            onChange={(event, val) => setValue6(val)}
+          <Slider
+            min={-60}
+            max={0}
+            value={loudness}
+            onChange={(event, val) => setLoudness(val)}
             valueLabelDisplay="auto"
             aria-labelledby="range-slider"
-            valueLabelDisplay='auto'
+            valueLabelDisplay="auto"
           />
         </div>
       </div>
     </SlidersContainer>
   );
-};
+}
