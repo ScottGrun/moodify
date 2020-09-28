@@ -48,12 +48,25 @@ const SlidersContainer = styled.div`
 
 export default function Sliders() {
   const [chartValues, setChartValues] = useContext(StateContext).ChartValues;
-  const [value1, setValue1] = useState([10, 40]);
-  const [value2, setValue2] = useState([20, 50]);
-  const [value3, setValue3] = useState([30, 60]);
-  const [value4, setValue4] = useState([40, 70]);
-  const [value5, setValue5] = useState([50, 80]);
-  const [value6, setValue6] = useState([60, 90]);
+  const [playlistMinMax, setPlaylistMinMax] = useContext(StateContext).PlaylistMinMax;
+
+  const [tempo, setTempo] = useState([0, 0]);
+  const [danceability, setDanceability] = useState([0, 0]);
+  const [energy, setEnergy] = useState([0, 0]);
+  const [instrumentalness, setInstrumentalness] = useState([0, 0]);
+  const [loudness, setLoudness] = useState([0, 0]);
+  const [valence, setValence] = useState([0, 0]);
+
+  useEffect(() => {
+    if (playlistMinMax) {
+      setTempo(playlistMinMax.tempo);
+      setDanceability(playlistMinMax.danceability);
+      setEnergy(playlistMinMax.energy);
+      setInstrumentalness(playlistMinMax.instrumentalness);
+      setLoudness(playlistMinMax.loudness);
+      setValence(playlistMinMax.valence);
+    }
+  }, [playlistMinMax]);
 
   // useEffect(() => {
   //   setChartValues([value1[1], value2[1], value3[1], value4[1], value5[1], value6[1]]);
@@ -61,15 +74,16 @@ export default function Sliders() {
 
   return (
     <SlidersContainer>
-
       <div className="sliders">
         <div className="slider-container">
           <p>BPM</p>
           <Slider
             min={0}
-            max={100}
-            value={value1}
-            onChange={(event, val) => setValue1(val)}
+            max={
+              playlistMinMax.tempo && playlistMinMax.tempo[1] > 250 ? playlistMinMax.tempo[1] : 250
+            }
+            value={tempo}
+            onChange={(event, val) => setTempo(val)}
             valueLabelDisplay="auto"
             aria-labelledby="range-slider"
             valueLabelDisplay="auto"
@@ -85,8 +99,8 @@ export default function Sliders() {
           <Slider
             min={0}
             max={100}
-            value={value2}
-            onChange={(event, val) => setValue2(val)}
+            value={instrumentalness}
+            onChange={(event, val) => setInstrumentalness(val)}
             valueLabelDisplay="auto"
             aria-labelledby="range-slider"
             valueLabelDisplay="auto"
@@ -97,8 +111,8 @@ export default function Sliders() {
           <Slider
             min={0}
             max={100}
-            value={value3}
-            onChange={(event, val) => setValue3(val)}
+            value={energy}
+            onChange={(event, val) => setEnergy(val)}
             valueLabelDisplay="auto"
             aria-labelledby="range-slider"
             valueLabelDisplay="auto"
@@ -109,8 +123,8 @@ export default function Sliders() {
           <Slider
             min={0}
             max={100}
-            value={value4}
-            onChange={(event, val) => setValue4(val)}
+            value={valence}
+            onChange={(event, val) => setValence(val)}
             valueLabelDisplay="auto"
             aria-labelledby="range-slider"
             valueLabelDisplay="auto"
@@ -121,8 +135,8 @@ export default function Sliders() {
           <Slider
             min={0}
             max={100}
-            value={value5}
-            onChange={(event, val) => setValue5(val)}
+            value={danceability}
+            onChange={(event, val) => setDanceability(val)}
             valueLabelDisplay="auto"
             aria-labelledby="range-slider"
             valueLabelDisplay="auto"
@@ -133,8 +147,8 @@ export default function Sliders() {
           <Slider
             min={0}
             max={100}
-            value={value6}
-            onChange={(event, val) => setValue6(val)}
+            value={loudness}
+            onChange={(event, val) => setLoudness(val)}
             valueLabelDisplay="auto"
             aria-labelledby="range-slider"
             valueLabelDisplay="auto"
