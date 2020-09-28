@@ -1,4 +1,3 @@
-const e = require('express');
 const spotifyApi = require('./spotifyApiHelper');
 
 const parseAudioFeatures = async (songList) => {
@@ -30,7 +29,7 @@ const getMinMax = (songs) => {
     energy: [songs[0].audio.energy, 0],
     danceability: [songs[0].audio.danceability, 0],
     valence: [songs[0].audio.valence, 0],
-    speechiness: [songs[0].audio.speechiness, 0],
+    instrumentalness: [songs[0].audio.instrumentalness, 0],
     loudness: [songs[0].audio.loudness, 0],
     tempo: [songs[0].audio.tempo, 0],
   };
@@ -54,10 +53,10 @@ const getMinMax = (songs) => {
       playlistAudioFeaturesMinMax.valence[0] = song.audio.valence;
     }
 
-    if (song.audio.speechiness > playlistAudioFeaturesMinMax.speechiness[1]) {
-      playlistAudioFeaturesMinMax.speechiness[1] = song.audio.speechiness;
-    } else if (song.audio.speechiness < playlistAudioFeaturesMinMax.speechiness[0]) {
-      playlistAudioFeaturesMinMax.speechiness[0] = song.audio.speechiness;
+    if (song.audio.instrumentalness > playlistAudioFeaturesMinMax.instrumentalness[1]) {
+      playlistAudioFeaturesMinMax.instrumentalness[1] = song.audio.instrumentalness;
+    } else if (song.audio.instrumentalness < playlistAudioFeaturesMinMax.instrumentalness[0]) {
+      playlistAudioFeaturesMinMax.instrumentalness[0] = song.audio.instrumentalness;
     }
 
     if (song.audio.loudness > playlistAudioFeaturesMinMax.loudness[1]) {
@@ -82,7 +81,7 @@ const getMinMax = (songs) => {
     }
   }
 
-  return Object.values(playlistAudioFeaturesMinMax);
+  return playlistAudioFeaturesMinMax;
 };
 
 //Get average audio features for playlist
@@ -91,7 +90,7 @@ const getAverageAudioFeatures = (songs) => {
     energy: 0,
     danceability: 0,
     valence: 0,
-    speechiness: 0,
+    instrumentalness: 0,
     loudness: 0,
   };
 
@@ -99,15 +98,15 @@ const getAverageAudioFeatures = (songs) => {
     playlistAudioFeaturesAverages.energy += song.audio.energy;
     playlistAudioFeaturesAverages.danceability += song.audio.danceability;
     playlistAudioFeaturesAverages.valence += song.audio.valence;
-    playlistAudioFeaturesAverages.speechiness += song.audio.speechiness;
-    playlistAudioFeaturesAverages.loudness += song.audio.loudness;
+    playlistAudioFeaturesAverages.instrumentalness += song.audio.instrumentalness;
+    playlistAudioFeaturesAverages.loudness += song.audio.loudness + 60;
     console.log(playlistAudioFeaturesAverages.loudness);
   });
 
   for (const key in playlistAudioFeaturesAverages) {
     if (key === 'loudness') {
       
-      playlistAudioFeaturesAverages[key] = Math.abs(playlistAudioFeaturesAverages[key] / songs.length);
+      playlistAudioFeaturesAverages[key] = playlistAudioFeaturesAverages[key] / songs.length;
     } else {
       playlistAudioFeaturesAverages[key] = Math.round(
         (playlistAudioFeaturesAverages[key] / songs.length) * 100,

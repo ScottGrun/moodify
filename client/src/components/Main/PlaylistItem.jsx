@@ -112,7 +112,7 @@ const PlaylistItem = (props) => {
         <p>{Math.trunc(props.audio.energy * 100)}</p>
         <p>{Math.trunc(props.audio.danceability * 100)}</p>
         <p>{props.audio.valence}</p>
-        <p>{Math.trunc(props.audio.speechiness * 100)}</p>
+        <p>{Math.trunc(props.audio.instrumentalness * 100)}</p>
         <p>{Math.trunc(props.audio.loudness)}db</p>
       </AudioFeatures>
     </StyledPlaylistItem>
