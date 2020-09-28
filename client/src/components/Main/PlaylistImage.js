@@ -25,7 +25,7 @@ const PlayListImageContainer = styled.div`
     color: white;
     width: 90%;
     max-width: 365px;
-    z-index: 99;
+    z-index: 9;
 
     .playlist-name {
       font-size: 24px;
