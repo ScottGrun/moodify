@@ -1,33 +1,31 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import { useCookies } from 'react-cookie';
 import { StateContext } from '../../App';
 
 import logo from '../../assets/logo.svg';
-import TurntableModel from './TurntableModel';
+// import TurntableModel from './TurntableModel';
+import vinylRecord from '../../assets/vinyl-record.png';
+import hand from '../../assets/hand.png';
+import Parallax from './Parallax';
 
-const Landing = () => {
-  const [ cookies, setCookie, removeCookie ] = useCookies(['cookie-name']);
-  const [ accessToken, setAccessToken ] = useContext(StateContext).AccessToken;
+const LandingPageContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #191F35;
+  overflow: hidden;
 
-  const LandingPageContainer = styled.div`
+  .section1 {
     width: 100%;
     height: 100vh;
+    position: relative;
     display: flex;
     justify-content: center;
-    align-items: center;
-    background-image: url('https://images.hdqwalls.com/wallpapers/abstract-dark-colorful-subtle-4k-xo.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-
-    .overlay {
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0,0,0,0.4);
-      position: absolute;
-    }
 
     .content-container {
       position: relative;
@@ -42,6 +40,7 @@ const Landing = () => {
         width: 200px;
         height: 100px;
         left: 30px;
+        z-index: 100;
       }
 
       .cta-container {
@@ -50,6 +49,7 @@ const Landing = () => {
         justify-content: center;
         align-items: center;
         width: 100%;
+        z-index: 100;
 
         .cta {
           max-width: 432px;
@@ -77,12 +77,35 @@ const Landing = () => {
         }
       }
 
-      .turntable-container {
+      .vinyl-record {
+        position: absolute;
+        bottom: 0;
+        left: calc(50% - 425px);
+        transform-origin: center;
+
+        img {
+          width: 800px;
+          height: 800px;
+        }
+      }
+
+      .hand {
+        position: absolute;
+        bottom: 0;
+        left: -232px;
+      }
+
+      /* .turntable-container {
         height: 100vh;
         width: 100%;
-      }
+      } */
     }
-  `;
+  }
+`;
+
+const Landing = () => {
+  const [ cookies, setCookie, removeCookie ] = useCookies(['cookie-name']);
+  const [ accessToken, setAccessToken ] = useContext(StateContext).AccessToken;
 
   const login = () => {
     axios.get(`http://localhost:9000/auth/login`)
@@ -129,21 +152,38 @@ const Landing = () => {
     }
   },[]);
 
+  const [rotation, setRotation] = useState(0);
+  const handleResize = () => setRotation(window.innerWidth)//setRotation(window.innerWidth);
+
+  useEffect(() => {
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  },[]);
+
   return(
     <LandingPageContainer>
-      <div className='overlay' />
-      <div className='content-container'>
-        <img className='logo' src={logo} />
-        <div className='cta-container'>
-          <div className='cta'>
-            <h1>Create your perfect mood with Moodify.</h1>
-            <button onClick={login}>Login With Spotify</button>
+      <section className='section1'>
+        <div className='overlay' />
+        <div className='content-container'>
+          <img className='logo' src={logo} />
+          <div className='cta-container'>
+            <div className='cta'>
+              <h1>Create your perfect mood with Moodify.</h1>
+              <button onClick={login}>Login With Spotify</button>
+            </div>
+          </div>
+          <div 
+            className='vinyl-record'
+            style={{ transform: `rotateZ(${ rotation * -0.7 }deg)` }}>
+            <img src={vinylRecord} />
+          </div>
+          <div className='hand'>
+            <img src={hand} />
           </div>
         </div>
-        <div className='turntable-container'>
-          <TurntableModel />
-        </div>
-      </div>
+      </section>
+      <Parallax />
     </LandingPageContainer>
   );
 
