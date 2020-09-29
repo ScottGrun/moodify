@@ -100,7 +100,6 @@ const getAverageAudioFeatures = (songs) => {
     playlistAudioFeaturesAverages.valence += song.audio.valence;
     playlistAudioFeaturesAverages.speechiness += song.audio.speechiness;
     playlistAudioFeaturesAverages.loudness += song.audio.loudness + 60;
-    console.log(playlistAudioFeaturesAverages.loudness);
   });
 
   for (const key in playlistAudioFeaturesAverages) {
