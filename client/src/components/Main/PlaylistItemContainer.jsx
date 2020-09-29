@@ -47,12 +47,13 @@ const SectionHeader = styled.h2`
 `;
 
 const PlaylistItemContainer = (props) => {
-  let count = 0;
   const [playlistMinMax, setPlaylistMinMax] = useContext(StateContext).PlaylistMinMax;
-  const [songs, setSongs] = useState([]);
-
-  console.log(playlistMinMax);
-
+  const [userTracks, setUserTracks] = useContext(StateContext).UserTracks;
+  const [filteredTracks, setFilteredTracks] = useContext(StateContext).FilteredTracks;
+  
+  const getFilteredTracks = (userTracks, playlistMinMax) => {
+    console.log(userTracks, playlistMinMax);
+  };
 
   // let tempSongs = playlistMinMax.data.tempo
   //   ? props.songs
@@ -70,14 +71,14 @@ const PlaylistItemContainer = (props) => {
   //       })
   //   : [];
 
-  let tempSongs = props.songs.map((song) => <PlaylistItem key={song.id} {...song} />);
+  let tempSongs = userTracks.songs.map((song, index) => <PlaylistItem key={index} {...song} />);
 
   return (
     <StyledPlaylistContainer>
       <StyledHeader>
         <SectionHeader>Yours Songs</SectionHeader>
         <ColumnHeaderContainer>
-          <p>BPM</p>
+          <p onClick={() => getFilteredTracks(userTracks, filteredTracks)}>BPM</p>
           <p>Energy</p>
           <p>Danceability</p>
           <p>Valence</p>
@@ -85,7 +86,7 @@ const PlaylistItemContainer = (props) => {
           <p>Loudness</p>
         </ColumnHeaderContainer>
       </StyledHeader>
-      <div className='song-list'>{songs}</div>
+      <div className='song-list'>{tempSongs}</div>
     </StyledPlaylistContainer>
   );
 };

@@ -1,6 +1,7 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { StateContext } from '../../App';
+import axios from 'axios';
 
 const CreatePlaylistModalContainer = styled.div`
   width: 100%;
@@ -147,10 +148,25 @@ const CreatePlaylistModalContainer = styled.div`
 `;
 
 export default function CreatePlaylistModal() {
-  const [ openCreatePlaylistModal, setOpenCreatePlaylistModal ] = useContext(StateContext).OpenCreatePlaylistModal;
+  const [accessToken, setAccessToken] = useContext(StateContext).AccessToken;
+  const [openCreatePlaylistModal, setOpenCreatePlaylistModal] = useContext(StateContext).OpenCreatePlaylistModal;
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
+  const [filteredTracks, setFilteredTracks] = useContext(StateContext).FilteredTracks;
 
-  const savePlaylist = () => {
-    console.log('Saving playlist!');
+  const savePlaylist = (filteredTracks) => {
+    axios
+      .post(`http://localhost:9000/create/playlist`, {
+        accessToken,
+        name,
+        description,
+        songs: filteredTracks,
+        imageUrl 
+      })
+      .then((res) => {
+        console.log(res);
+      });
   };
 
   return(
@@ -167,15 +183,15 @@ export default function CreatePlaylistModal() {
         <div className='form'>
           <label>
             Playlist Name
-            <input placeholder={'A super awesome playlist.'}/>
+            <input placeholder={'A super awesome playlist.'} value={name} onChange={e => setName(e.target.value)}/>
           </label>
           <label>
             Image URL
-            <input placeholder='A super awesome playlist.'/>
+            <input placeholder='A super awesome playlist.' value={imageUrl} onChange={e => setImageUrl(e.target.value)}/>
           </label>
           <label>
             Description
-            <textarea placeholder='A super awesome playlist.'/>
+            <textarea placeholder='A super awesome playlist.' value={description} onChange={e => setDescription(e.target.value)}/>
           </label>
           <div className='update-weekly'>
             <input type='checkbox' />
@@ -184,7 +200,7 @@ export default function CreatePlaylistModal() {
               <p>Automatically update your playlist every Monday with new music that matches your filters.</p>
             </div>
           </div>
-          <button className='save-playlist' onClick={savePlaylist}>Save Playlist</button>
+          <button className='save-playlist' onClick={() => savePlaylist(filteredTracks)}>Save Playlist</button>
         </div>
       </div>
     </CreatePlaylistModalContainer>

@@ -89,7 +89,7 @@ export default function Sliders() {
             value={tempo}
             step={5}
             // marks={myMarks}
-            onChangeCommitted= {(event, val) => {setTempo(val); setPlaylistMinMax(prev => ({...prev, data:{...prev.data, tempo: val}}))}}
+            onChangeCommitted= {(event, val) => {setPlaylistMinMax(prev => ({...prev, data:{...prev.data, tempo: val}}))}}
             onChange={(event, val) => {setTempo(val)}}
             valueLabelDisplay="auto"
             aria-labelledby="range-slider"
@@ -119,7 +119,7 @@ export default function Sliders() {
             min={0}
             max={100}
             value={energy}
-            onChangeCommitted={(event, val) => {setEnergy(val); setPlaylistMinMax(prev => ({...prev, data:{...prev.data, energy: val}}))}}
+            onChangeCommitted={(event, val) => {setPlaylistMinMax(prev => ({...prev, data:{...prev.data, energy: val}}))}}
             onChange={(event, val) => setEnergy(val)}
             valueLabelDisplay="auto"
             aria-labelledby="range-slider"
