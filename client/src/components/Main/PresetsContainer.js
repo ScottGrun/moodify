@@ -1,6 +1,15 @@
 import React from "react";
 import styled from "styled-components";
 import Preset from './Preset';
+// import Swiper React components
+import SwiperCore, { Pagination } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
+// import Swiper styles
+import 'swiper/swiper.scss';
+// import additional styles if needed
+// import '../../styles/swiper.css';
+// install Pagination module
+SwiperCore.use([Pagination]);
 
 const PresetsContainer = styled.div`
   display: flex;
@@ -106,17 +115,27 @@ const presetsData = [
   } 
 ];
 
-export default function Presets() {
+export default function Presets(props) {
 
   const sortedPresets = presetsData.sort((a, b) => b.times_applied - a.times_applied); 
 
-  const presets = sortedPresets.map((preset) => <Preset {...preset} />);
+  const presets = sortedPresets.map((preset) => <SwiperSlide><Preset {...preset} /></SwiperSlide>);
 
   return(
     <PresetsContainer>
       <h2>Popular Presets</h2>
       <div className='presets'>
-        {presets}
+        <div className='swiper-button-prev'/>
+        <Swiper
+          spaceBetween={50}
+          slidesPerView={3}
+          onSlideChange={() => console.log('slide change')}
+          onSwiper={(swiper) => console.log(swiper)}
+        >
+          {presets}
+        </Swiper>
+        <div className='swiper-button-next'/>
+        <div className='pagination'/>
       </div>
     </PresetsContainer>
   );

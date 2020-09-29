@@ -13,6 +13,7 @@
     "dotenv": "^8.2.0",
     "drei": "^1.5.7",
     "lerp": "^1.0.3",
+    "node-sass": "^4.14.1",
     "react": "^16.13.1",
     "react-chartjs-2": "^2.10.0",
     "react-cookie": "^4.0.3",
@@ -23,6 +24,7 @@
     "recoil": "0.0.13",
     "spotify-web-api-node": "^4.0.0",
     "styled-components": "^5.2.0",
+    "swiper": "^6.3.2",
     "three": "^0.120.1"
   },
   "scripts": {
