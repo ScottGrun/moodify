@@ -20,7 +20,7 @@ const LandingPageContainer = styled.div`
   background-color: #191F35;
   overflow: hidden;
   background-image: url('https://i.imgur.com/pafOlyj.jpg');
-  background-size: contain;
+  background-size: cover;
 
   .section1 {
     width: 100%;
@@ -72,8 +72,8 @@ const LandingPageContainer = styled.div`
           }
 
           button {
-            width: 238px;
-            height: 52px;
+            width: 200px;
+            height: 45px;
             font-size: 18px;
             color: white;
             background-color: #17C274;
@@ -108,11 +108,6 @@ const LandingPageContainer = styled.div`
         left: -232px;
         z-index: 9;
       }
-
-      /* .turntable-container {
-        height: 100vh;
-        width: 100%;
-      } */
     }
   }
 `;
@@ -167,7 +162,15 @@ const Landing = () => {
   },[]);
 
   const [rotation, setRotation] = useState(0);
-  const handleResize = () => setRotation(window.innerWidth)//setRotation(window.innerWidth);
+  const [offsetY, setOffsetY] = useState(0);
+  const handleResize = () => setRotation(window.innerWidth)
+  const handleScroll = () => setOffsetY(window.pageYOffset);
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  },[]);
 
   useEffect(() => {
     window.addEventListener('resize', handleResize);
@@ -189,10 +192,12 @@ const Landing = () => {
           </div>
           <div 
             className='vinyl-record'
-            style={{ transform: `rotateZ(${ rotation * -0.7 }deg)` }}>
+            style={{ transform: `rotateZ(${ rotation * 0.1 + offsetY * 0.05 }deg)` }}>
             <img src={vinylRecord} />
           </div>
-          <div className='hand'>
+          <div 
+            className='hand'
+            style={{ transform: `translateY(${ offsetY * -0.5 }px)` }}>
             <img src={hand} />
           </div>
         </div>

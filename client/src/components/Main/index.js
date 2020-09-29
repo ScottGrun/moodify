@@ -13,6 +13,7 @@ import RadarChart from './RadarChart';
 import Sliders from './Sliders';
 import PresetsContainer from './PresetsContainer';
 import OpenMenu from './OpenMenu';
+import CreatePlaylistModal from './CreatePlaylistModal';
 
 const MainContainer = styled.div`
   position: relative;
@@ -34,6 +35,20 @@ const MainContainer = styled.div`
     }
   }
 
+  .cyp-overlay {
+    position: fixed;
+    height: 100vh;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(0,0,0,0.4);
+    z-index: 11;
+    display: none;
+    ${({ openCYP }) => openCYP && `
+      display: block;
+    `}
+  }
+
   .overlay {
     height: 100vh;
     width: 100vw;
@@ -43,6 +58,10 @@ const MainContainer = styled.div`
     z-index: 11;
     display: none;
     background-color: rgba(0,0,0,0.6);
+  }
+
+  .create-playlist-modal {
+    z-index: 12;
   }
 
   .open-menu {
@@ -113,7 +132,7 @@ const MainContainer = styled.div`
 
   @media(max-width: 1300px) {
     .overlay {
-      ${({ open }) => open && `
+      ${({ openNav }) => openNav && `
         display: block;
       `}
     }
@@ -123,33 +142,12 @@ const MainContainer = styled.div`
     }
 
     .main-content {
-
       .playlists-container {
         width: 50%;
-
-        .playlist-image-container {
-
-        }
       }
 
       .playlist-customization-container {
         width: 50%;
-
-        .radar-chart-container {
-
-        }
-
-        .sliders-container {
-
-        }
-
-        .create-playlist-btn {
-
-        }
-
-        .presets-container {
-
-        }
       }
     }
   }
@@ -215,6 +213,8 @@ const Main = () => {
   const [userTracks, setTracks] = useContext(StateContext).UserTracks;
   const [chartValues, setChartValues] = useContext(StateContext).ChartValues;
   const [openNav, setOpenNav] = useContext(StateContext).OpenNav;
+  const [openCreatePlaylistModal, setOpenCreatePlaylistModal] = useContext(StateContext).OpenCreatePlaylistModal;
+  
 
   const getTrack = () => {
     axios
@@ -242,10 +242,14 @@ const Main = () => {
   };
   
   return (
-    <MainContainer open={openNav}>
+    <MainContainer openNav={openNav} openCYP={openCreatePlaylistModal}>
       <button className="logout" onClick={logout}>
         Logout
       </button>
+      <div className='create-playlist-modal'>
+        <CreatePlaylistModal />
+      </div>
+      <div className='cyp-overlay' onClick={() => setOpenCreatePlaylistModal(!openCreatePlaylistModal)}></div>
       <div className='overlay' onClick={() => setOpenNav(!openNav)}></div>
       <div className='open-menu' onClick={() => setOpenNav(!openNav)}>
         <OpenMenu open={openNav}/>
@@ -267,7 +271,7 @@ const Main = () => {
           </div>
           <div className="sliders-container">
             <Sliders />
-            <button className="create-playlist-btn">Create Playlist</button>
+            <button className="create-playlist-btn" onClick={() => setOpenCreatePlaylistModal(true)}>Create Playlist</button>
           </div>
           <div className="presets-container">
             <PresetsContainer />

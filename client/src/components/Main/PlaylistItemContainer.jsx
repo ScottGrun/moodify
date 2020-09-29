@@ -9,7 +9,11 @@ const StyledHeader = styled.div`
 `
 
 const StyledPlaylistContainer = styled.div`
-`
+  .song-list {
+    height: calc(100vh - 400px);
+    overflow-y: scroll;
+  }
+`;
 
 const ColumnHeaderContainer = styled.div `
   width: 100%;
@@ -28,17 +32,17 @@ const ColumnHeaderContainer = styled.div `
 `
 
 const SectionHeader = styled.h2`
-width: 345px;
-font-family: Inter;
-font-style: normal;
-font-weight: 900;
-font-size: 18px;
-line-height: 28px;
-/* identical to box height, or 156% */
+  width: 345px;
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 900;
+  font-size: 18px;
+  line-height: 28px;
+  /* identical to box height, or 156% */
 
-letter-spacing: 0.2px;
+  letter-spacing: 0.2px;
 
-color: #FFFFFF;
+  color: #FFFFFF;
 `
 
 const PlaylistItemContainer = (props) => {
@@ -60,7 +64,7 @@ const songs = props.songs.map((song) => <PlaylistItem key={song.id} bpm={12} ene
         <p>Bass</p>
       </ColumnHeaderContainer>
       </StyledHeader>
-      <div>{songs}</div>
+      <div className='song-list'>{songs}</div>
     </StyledPlaylistContainer>
   );
 };

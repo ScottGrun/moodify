@@ -4,9 +4,6 @@ import Profile from './Profile';
 import { StateContext } from '../../App';
 
 import logo from '../../assets/logo.svg';
-import menu from '../../assets/menu.svg';
-import OpenMenu from './OpenMenu';
-import Navigation from './Navigation';
 
 const HeaderContainer = styled.div`
   width: 100%;
