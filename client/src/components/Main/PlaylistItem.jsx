@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import PlayButton from '../../assets/icons/PlayButton.svg';
 import React, { useContext, useState, useEffect } from 'react';
 import { StateContext } from '../../App';
@@ -74,6 +74,7 @@ const SongMetaData = styled.div`
 `;
 
 const StyledPlaylistItem = styled.div`
+  position: relative;
   display: flex;
   align-items: center;
   background-color: #3c4051;
@@ -95,27 +96,63 @@ const StyledPlaylistItem = styled.div`
   }
 `;
 
+const playProgress = keyframes`
+from {
+  width: 0%;
+}
+
+to {
+ width: 100%;
+}
+`;
+
+
+const StyledProgressContainer = styled.div`
+  position: absolute;
+  display: flex;
+  width: 100%;
+  height: 3px;
+  padding-left: 45px;
+  bottom: 0px;
+  width: 100%;
+  border-radius: 0px 0px 5px;
+  z-index: 100;
+
+  div {
+    width: 0%;
+    background-color: #2ed589;
+    animation: ${playProgress} 30s linear;
+  }
+
+  @keyframes play-progress {
+    0% {
+      width: 0px;
+    }
+    100% {
+      width: 200px;
+    }
+  }
+`;
+
 const PlaylistItem = (props) => {
-  const [playlistMinMax, setPlaylistMinMax] = useContext(StateContext).PlaylistMinMax;
   const [playing, setPlaying] = useState(false);
-  const [songPreview, setPreview] = useState(null)
+  const [songPreview, setPreview] = useState(null);
 
   const playPreview = () => {
-
     let song = null;
 
-    if(!songPreview){
+    if (!songPreview) {
       song = new Audio(props.previewUrl);
       setPreview(song);
-    }else {
+    } else {
       song = songPreview;
     }
 
     if (playing === false) {
-      setPlaying(prev => true);
+      setPlaying((prev) => true);
       song.play();
-    } else if (playing === true){
-      setPlaying(prev => false);
+    } else if (playing === true) {
+      setPlaying((prev) => false);
       song.pause();
     }
   };
@@ -141,6 +178,9 @@ const PlaylistItem = (props) => {
         <p>{Math.trunc(props.audio.instrumentalness * 100)}</p>
         <p>{Math.trunc(props.audio.loudness)}db</p>
       </AudioFeatures>
+      <StyledProgressContainer>
+        <div></div>
+      </StyledProgressContainer>
     </StyledPlaylistItem>
   );
 };

@@ -54,8 +54,8 @@ const PlaylistItemContainer = (props) => {
   let renderSongs = [];
   if (playlistMinMax.loaded && userTracks.loading) {
     renderSongs = userTracks.songs
-      .filter(song => matchFilter(song, playlistMinMax))
-      .map((song, index) => <PlaylistItem key={index} {...song} />);
+      .filter((song) => matchFilter(song, playlistMinMax))
+      .map((song, index) => <PlaylistItem key={index} {...song} />).slice(0, 50);
   }
 
   return (
@@ -71,12 +71,8 @@ const PlaylistItemContainer = (props) => {
           <p>Loudness</p>
         </ColumnHeaderContainer>
       </StyledHeader>
-      <div className='song-list'>
-        {
-          renderSongs.length === 0
-          ? <img src='https://i.imgur.com/xwQzRkv.gif' />
-          : renderSongs
-        }
+      <div className="song-list">
+        {renderSongs.length === 0 ? <img src="https://i.imgur.com/xwQzRkv.gif" /> : renderSongs}
       </div>
     </StyledPlaylistContainer>
   );
