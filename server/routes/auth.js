@@ -20,6 +20,7 @@ var generateRandomString = function (length) {
   return text;
 };
 
+
 router.get('/login', (req, res) => {
   const state = generateRandomString(16);
   res.cookie(stateKey, state);
