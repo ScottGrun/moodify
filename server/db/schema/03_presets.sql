@@ -11,7 +11,7 @@ CREATE TABLE presets (
   energy FLOAT NOT NULL, -- 0.0 to 1.0
   instrumentalness FLOAT NOT NULL, -- 0.0 to 1.0
   loudness FLOAT NOT NULL, -- -60.0 - 0.0
-  instrumentalness FLOAT NOT NULL, -- 0.0 to 1.0
+  speechiness FLOAT NOT NULL, -- 0.0 to 1.0
   valence FLOAT NOT NULL, -- 0.0 to 1.0
   tempo FLOAT NOT NULL, -- 0.0 +
   times_applied INTEGER,
