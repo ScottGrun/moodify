@@ -19,6 +19,8 @@ const parseSongs = (songList) => {
     id: song.track.id,
     artist: song.track.artists[0].name,
     img: song.track.album.images[2].url,
+    previewUrl: song.track.preview_url,
+    uri: song.track.uri
   }));
   return songs;
 };

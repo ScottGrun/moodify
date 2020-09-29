@@ -97,26 +97,44 @@ const StyledPlaylistItem = styled.div`
 
 const PlaylistItem = (props) => {
   const [playlistMinMax, setPlaylistMinMax] = useContext(StateContext).PlaylistMinMax;
+  const [playing, setPlaying] = useState(false);
+  const [songPreview, setPreview] = useState(null)
+
+  const playPreview = () => {
+
+    let song = null;
+
+    if(!songPreview){
+      song = new Audio(props.previewUrl);
+      setPreview(song);
+    }else {
+      song = songPreview;
+    }
+
+    if (playing === false) {
+      setPlaying(prev => true);
+      song.play();
+    } else if (playing === true){
+      setPlaying(prev => false);
+      song.pause();
+    }
+
+  };
 
   const matchFilter = () => {
     if (
       props.audio.energy * 100 <= playlistMinMax.data.energy[1] &&
       props.audio.energy * 100 >= playlistMinMax.data.energy[0] &&
-
       props.audio.tempo <= playlistMinMax.data.tempo[1] &&
-      props.audio.tempo  >= playlistMinMax.data.tempo[0] &&
-
+      props.audio.tempo >= playlistMinMax.data.tempo[0] &&
       props.audio.instrumentalness * 100 <= playlistMinMax.data.instrumentalness[1] &&
       props.audio.instrumentalness * 100 >= playlistMinMax.data.instrumentalness[0] &&
-
       props.audio.loudness <= playlistMinMax.data.loudness[1] &&
-      props.audio.loudness  >= playlistMinMax.data.loudness[0] &&
-
-      props.audio.danceability * 100  <= playlistMinMax.data.danceability[1] &&
-      props.audio.danceability  * 100  >= playlistMinMax.data.danceability[0] &&
-
+      props.audio.loudness >= playlistMinMax.data.loudness[0] &&
+      props.audio.danceability * 100 <= playlistMinMax.data.danceability[1] &&
+      props.audio.danceability * 100 >= playlistMinMax.data.danceability[0] &&
       props.audio.valence * 100 <= playlistMinMax.data.valence[1] &&
-      props.audio.valence * 100 >= playlistMinMax.data.valence[0] 
+      props.audio.valence * 100 >= playlistMinMax.data.valence[0]
     ) {
       return true;
     }
@@ -125,7 +143,7 @@ const PlaylistItem = (props) => {
 
   if (playlistMinMax.data.tempo && matchFilter()) {
     return (
-      <StyledPlaylistItem>
+      <StyledPlaylistItem onClick={playPreview}>
         <StyledSongCoverContainer>
           <StyledSongImage src={props.img} />
         </StyledSongCoverContainer>
