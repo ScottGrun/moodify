@@ -1,5 +1,6 @@
 require('dotenv').config();
 
+const axios = require('axios');
 const express = require('express');
 const spotifyApi = require('../helpers/spotifyApiHelper');
 const router = express.Router();
@@ -15,7 +16,7 @@ const generateString = (length) => {
   return string;
 }
 
-router.post('/playlist', (req, res) => {
+router.post('/playlist', async (req, res) => {
   let { accessToken, name, description, songs, imageUrl } = req.body;
   if (!name) name = generateString(8);
   if (!description) description = '';
@@ -25,16 +26,37 @@ router.post('/playlist', (req, res) => {
     return;
   };
 
-  console.log('Name:', name, 'Description:', description, 'ImageUrl:', imageUrl, songs, accessToken);
+  // console.log('Name:', name, 'Description:', description, 'ImageUrl:', imageUrl, songs, accessToken);
 
-  spotifyApi.setAccessToken(accessToken);
+  // get current user id
+  const user_id = await axios.get('https://api.spotify.com/v1/me', {
+    headers: { Authorization: 'Bearer ' + accessToken },
+  }).then(res => res.data.id);
 
-  spotifyApi.getUserPlaylists('jeffreycao')
-  .then(function(data) {
-    console.log('Retrieved playlists', data.body);
-  },function(err) {
-    console.log('Something went wrong!', err);
-  });
+  // create playlist
+  const playlist_id = await axios({
+    method: 'post',
+    url: `https://api.spotify.com/v1/users/${user_id}/playlists`,
+    headers: { Authorization: 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
+    data: { name, description }
+  }).then(playlist => playlist.data.id);
+
+  let songsAdded = 0;
+
+  //add songs to playlist
+  while (songsAdded < songs.length) {
+    // IE. uris=spotify:track:4iV5W9uYEdYUVa79Axb7Rh, spotify:track:1301WleyT98MSxVHPZCA6M
+    const uris = songs.splice(songsAdded, songsAdded + 100).join(', ');
+
+    await axios({
+      method: 'post',
+      url: `https://api.spotify.com/v1/playlists/${playlist_id}/tracks?uris=${uris}`,
+      headers: { Authorization: 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
+      data: { name, description }
+    });
+  };
+
+  console.log(playlist_id);
 });
 
 module.exports = router;
