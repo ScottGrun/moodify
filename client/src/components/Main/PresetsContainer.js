@@ -2,17 +2,19 @@ import React from "react";
 import styled from "styled-components";
 import Preset from './Preset';
 // import Swiper React components
-import SwiperCore, { Pagination } from 'swiper';
+import SwiperCore, { Navigation, Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 // import Swiper styles
 import 'swiper/swiper.scss';
-// import additional styles if needed
-// import '../../styles/swiper.css';
-// install Pagination module
-SwiperCore.use([Pagination]);
+import 'swiper/swiper-bundle.css';
+// import additional styles
+import '../../styles/swiper.css';
+// install Navigation and Pagination modules
+SwiperCore.use([Navigation, Pagination]);
 
 const PresetsContainer = styled.div`
   display: flex;
+  position: relative;
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
@@ -115,7 +117,7 @@ const presetsData = [
   } 
 ];
 
-export default function Presets(props) {
+export default function Presets() {
 
   const sortedPresets = presetsData.sort((a, b) => b.times_applied - a.times_applied); 
 
@@ -125,17 +127,27 @@ export default function Presets(props) {
     <PresetsContainer>
       <h2>Popular Presets</h2>
       <div className='presets'>
-        <div className='swiper-button-prev'/>
+        <div className='swiper-button-prev swiper-button-white' />
         <Swiper
+          navigation={{
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          }}
+          pagination={{
+            el: '.swiper-pagination',
+            type: 'bullets',
+            clickable: true,
+          }}
           spaceBetween={50}
           slidesPerView={3}
+          slidesPerGroup={3}
           onSlideChange={() => console.log('slide change')}
           onSwiper={(swiper) => console.log(swiper)}
         >
           {presets}
         </Swiper>
-        <div className='swiper-button-next'/>
-        <div className='pagination'/>
+        <div className='swiper-button-next swiper-button-white' />
+        <div className='swiper-pagination swiper-pagination-white'/>
       </div>
     </PresetsContainer>
   );
