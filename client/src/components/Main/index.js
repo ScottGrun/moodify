@@ -283,9 +283,9 @@ const Main = () => {
             <Sliders />
             <button className="create-playlist-btn" onClick={() => setOpenCreatePlaylistModal(true)}>Create Playlist</button>
           </div>
-          {/* <div className="presets-container">
+          <div className="presets-container">
             <PresetsContainer />
-          </div> */}
+          </div>
         </div>
       </div>
     </MainContainer>
