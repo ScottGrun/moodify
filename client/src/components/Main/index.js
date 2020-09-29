@@ -215,7 +215,6 @@ const Main = () => {
   const [openNav, setOpenNav] = useContext(StateContext).OpenNav;
   const [openCreatePlaylistModal, setOpenCreatePlaylistModal] = useContext(StateContext).OpenCreatePlaylistModal;
   const [playlistMinMax, setPlaylistMinMax] = useContext(StateContext).PlaylistMinMax;
-  const [filteredTracks, setFilteredTracks] = useContext(StateContext).FilteredTracks;
 
   const getTracks = () => {
     axios

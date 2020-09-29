@@ -17,16 +17,13 @@ const generateString = (length) => {
 }
 
 router.post('/playlist', async (req, res) => {
-  let { accessToken, name, description, songs, imageUrl } = req.body;
+  let { accessToken, name, description, uris, imageUrl } = req.body;
   if (!name) name = generateString(8);
   if (!description) description = '';
-  if (!imageUrl) imageUrl = 'https://i.imgur.com/GixTJ15_d.webp?maxwidth=728&fidelity=grand';
-  if (!songs) {
+  if (songs.length === 0) {
     console.log('no songs');
     return;
   };
-
-  // console.log('Name:', name, 'Description:', description, 'ImageUrl:', imageUrl, songs, accessToken);
 
   // get current user id
   const user_id = await axios.get('https://api.spotify.com/v1/me', {
@@ -41,12 +38,12 @@ router.post('/playlist', async (req, res) => {
     data: { name, description }
   }).then(playlist => playlist.data.id);
 
-  let songsAdded = 0;
-
   //add songs to playlist
-  while (songsAdded < songs.length) {
+  let songsAdded = 0;
+  while (songsAdded < uris.length) {
     // IE. uris=spotify:track:4iV5W9uYEdYUVa79Axb7Rh, spotify:track:1301WleyT98MSxVHPZCA6M
     const uris = songs.splice(songsAdded, songsAdded + 100).join(', ');
+    console.log(uris);
 
     await axios({
       method: 'post',
@@ -54,9 +51,9 @@ router.post('/playlist', async (req, res) => {
       headers: { Authorization: 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
       data: { name, description }
     });
-  };
 
-  console.log(playlist_id);
+    songsAdded += 100;
+  };
 });
 
 module.exports = router;

@@ -15,7 +15,6 @@ export default function App() {
   const [ openNav, setOpenNav ] = useState(false);
   const [ openCreatePlaylistModal, setOpenCreatePlaylistModal ] = useState(false);
   const [ playlistMinMax, setPlaylistMinMax ] = useState({data:{}, loaded: false});
-  const [ filteredTracks, setFilteredTracks ] = useState([]);
 
   if (cookies.accessToken && !accessToken) {
     setAccessToken(cookies.accessToken);
@@ -30,7 +29,6 @@ export default function App() {
       OpenNav: [ openNav, setOpenNav ],
       OpenCreatePlaylistModal: [ openCreatePlaylistModal, setOpenCreatePlaylistModal ],
       PlaylistMinMax: [playlistMinMax, setPlaylistMinMax],
-      FilteredTracks: [filteredTracks, setFilteredTracks]
     } }>
       { accessToken
         ? <Main />

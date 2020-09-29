@@ -96,60 +96,29 @@ const StyledPlaylistItem = styled.div`
 `;
 
 const PlaylistItem = (props) => {
-  const [playlistMinMax, setPlaylistMinMax] = useContext(StateContext).PlaylistMinMax;
+  return (
+    <StyledPlaylistItem>
+      <StyledSongCoverContainer>
+        <StyledSongImage src={props.img} />
+      </StyledSongCoverContainer>
 
-  const matchFilter = () => {
-    if (
-      props.audio.energy * 100 <= playlistMinMax.data.energy[1] &&
-      props.audio.energy * 100 >= playlistMinMax.data.energy[0] &&
-
-      props.audio.tempo <= playlistMinMax.data.tempo[1] &&
-      props.audio.tempo  >= playlistMinMax.data.tempo[0] &&
-
-      props.audio.instrumentalness * 100 <= playlistMinMax.data.instrumentalness[1] &&
-      props.audio.instrumentalness * 100 >= playlistMinMax.data.instrumentalness[0] &&
-
-      props.audio.loudness <= playlistMinMax.data.loudness[1] &&
-      props.audio.loudness  >= playlistMinMax.data.loudness[0] &&
-
-      props.audio.danceability * 100  <= playlistMinMax.data.danceability[1] &&
-      props.audio.danceability  * 100  >= playlistMinMax.data.danceability[0] &&
-
-      props.audio.valence * 100 <= playlistMinMax.data.valence[1] &&
-      props.audio.valence * 100 >= playlistMinMax.data.valence[0] 
-    ) {
-      return true;
-    }
-    return false;
-  };
-
-  if (playlistMinMax.data.tempo && matchFilter()) {
-    return (
-      <StyledPlaylistItem>
-        <StyledSongCoverContainer>
-          <StyledSongImage src={props.img} />
-        </StyledSongCoverContainer>
-
-        <OverlayContainer>
-          <img src={PlayButton} />
-        </OverlayContainer>
-        <SongMetaData>
-          <SongName>{props.name}</SongName>
-          <ArtistName>{props.artist}</ArtistName>
-        </SongMetaData>
-        <AudioFeatures>
-          <p>{Math.trunc(props.audio.tempo)}</p>
-          <p>{Math.trunc(props.audio.energy * 100)}</p>
-          <p>{Math.trunc(props.audio.danceability * 100)}</p>
-          <p>{props.audio.valence}</p>
-          <p>{Math.trunc(props.audio.instrumentalness * 100)}</p>
-          <p>{Math.trunc(props.audio.loudness)}db</p>
-        </AudioFeatures>
-      </StyledPlaylistItem>
-    );
-  }
-
-  return null;
+      <OverlayContainer>
+        <img src={PlayButton} />
+      </OverlayContainer>
+      <SongMetaData>
+        <SongName>{props.name}</SongName>
+        <ArtistName>{props.artist}</ArtistName>
+      </SongMetaData>
+      <AudioFeatures>
+        <p>{Math.trunc(props.audio.tempo)}</p>
+        <p>{Math.trunc(props.audio.energy * 100)}</p>
+        <p>{Math.trunc(props.audio.danceability * 100)}</p>
+        <p>{props.audio.valence}</p>
+        <p>{Math.trunc(props.audio.instrumentalness * 100)}</p>
+        <p>{Math.trunc(props.audio.loudness)}db</p>
+      </AudioFeatures>
+    </StyledPlaylistItem>
+  );
 };
 
 export default PlaylistItem;
