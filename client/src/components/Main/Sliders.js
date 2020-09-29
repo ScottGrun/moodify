@@ -107,6 +107,7 @@ export default function Sliders() {
             min={0}
             max={100}
             value={instrumentalness}
+            onChangeCommitted= {(event, val) => {setPlaylistMinMax(prev => ({...prev, data:{...prev.data, instrumentalness: val}}))}}
             onChange={(event, val) => setInstrumentalness(val)}
             valueLabelDisplay="auto"
             aria-labelledby="range-slider"
@@ -132,6 +133,7 @@ export default function Sliders() {
             min={0}
             max={100}
             value={valence}
+            onChangeCommitted={(event, val) => {setPlaylistMinMax(prev => ({...prev, data:{...prev.data, valence: val}}))}}
             onChange={(event, val) => setValence(val)}
             valueLabelDisplay="auto"
             aria-labelledby="range-slider"
@@ -144,6 +146,7 @@ export default function Sliders() {
             min={0}
             max={100}
             value={danceability}
+            onChangeCommitted={(event, val) => {setPlaylistMinMax(prev => ({...prev, data:{...prev.data, danceability: val}}))}}
             onChange={(event, val) => setDanceability(val)}
             valueLabelDisplay="auto"
             aria-labelledby="range-slider"
@@ -156,6 +159,7 @@ export default function Sliders() {
             min={-60}
             max={0}
             value={loudness}
+            onChangeCommitted={(event, val) => {setPlaylistMinMax(prev => ({...prev, data:{...prev.data, loudness: val}}))}}
             onChange={(event, val) => setLoudness(val)}
             valueLabelDisplay="auto"
             aria-labelledby="range-slider"
