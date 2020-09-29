@@ -103,7 +103,7 @@ const PlaylistItem = (props) => {
       props.audio.energy * 100 <= playlistMinMax.data.energy[1] &&
       props.audio.energy * 100 >= playlistMinMax.data.energy[0] &&
       props.audio.tempo <= playlistMinMax.data.tempo[1] &&
-      props.audio.tempo  >= playlistMinMax.data.tempo[0] 
+      props.audio.tempo >= playlistMinMax.data.tempo[0]
     ) {
       return true;
     }
