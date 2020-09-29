@@ -109,7 +109,6 @@ export default function Navigation({ playlists }) {
         totalTracks
       })
       .then(res => {
-        console.log(res.data)
         setTracks({
           loading: true,
           songs: res.data.songs,

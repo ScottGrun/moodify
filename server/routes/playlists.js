@@ -14,9 +14,9 @@ router.post('/create', async (req, res) => {
     console.log('no songs');
     return;
   };
-
-  const user_id = getUserId(accessToken);
-
+  
+  const user_id = await getUserId(accessToken);
+  
   // create playlist
   const playlist_id = await axios({
     method: 'post',
@@ -24,7 +24,7 @@ router.post('/create', async (req, res) => {
     headers: { Authorization: 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
     data: { name, description }
   }).then(playlist => playlist.data.id);
-
+  
   //add songs to playlist
   let songsAdded = 0;
   while (songsAdded < uris.length) {
