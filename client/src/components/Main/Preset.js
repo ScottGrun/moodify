@@ -27,7 +27,8 @@ const randomImage = () => {
 const PresetItem = styled.div`
   height: 80px;
   width: 80px;
-
+  cursor: pointer;
+  
   .preset-image {
     /* height: 100%;
     width: 100%; */
@@ -46,11 +47,24 @@ const PresetItem = styled.div`
   }
 `;
 
-export default function Preset() {
+export default function Preset(props) {
   
   return(
-    <PresetItem>
-      <img src={randomImage()} className="preset-image" alt="preset"/>
+    <PresetItem
+      name={props.name}
+      description={props.description}
+      danceability={props.danceability}
+      instrumentalness={props.instrumentalness}
+      loudness={props.loudness}
+      speechiness={props.speechiness}
+      valence={props.valence}
+      tempo={props.tempo}
+      times_applied={props.times_applied}
+      onClick={() => console.log(props)}
+      >
+      <img src={randomImage()} 
+      className="preset-image" 
+      alt="preset"/>
     </PresetItem>
   );
 };
