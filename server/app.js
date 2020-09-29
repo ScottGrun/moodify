@@ -9,7 +9,7 @@ const cookieParser = require('cookie-parser');
 const authRouter = require('./routes/auth');
 const dataRouter = require('./routes/data');
 const getTracksRouter = require('./routes/getTracks');
-const createRouter = require('./routes/create');
+const playlistsRouter = require('./routes/playlists');
 
 const app = express();
 
@@ -20,7 +20,7 @@ app.use(cors());
 app.use('/auth', authRouter);
 app.use('/data', dataRouter);
 app.use('/getTracks', getTracksRouter);
-app.use('/create', createRouter);
+app.use('/playlists', playlistsRouter);
 
 app.get('/', (req, res) => {
   res.send('hi');

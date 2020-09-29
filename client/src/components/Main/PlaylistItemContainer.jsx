@@ -55,7 +55,7 @@ const PlaylistItemContainer = (props) => {
   if (playlistMinMax.loaded && userTracks.loading) {
     renderSongs = userTracks.songs
       .filter(song => matchFilter(song, playlistMinMax))
-      .map((song, index) => <PlaylistItem key={index} {...song} />);
+      .map((song, index) => <PlaylistItem key={song.id + index} {...song} />);
   }
 
   return (

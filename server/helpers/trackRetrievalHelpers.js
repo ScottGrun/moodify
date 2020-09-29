@@ -169,7 +169,6 @@ const getUsersTracks = async () => {
     .then(() => {
       return allSongs;
     });
-
   return {
     songs: allSongs,
     minMax: getMinMax(allSongs),
@@ -178,5 +177,9 @@ const getUsersTracks = async () => {
 };
 
 module.exports = {
-  getUsersTracks,
+  getUsersTracks, 
+  parseAudioFeatures, 
+  parseSongs, 
+  getMinMax, 
+  getAverageAudioFeatures
 };

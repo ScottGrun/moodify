@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react';
+import axios from 'axios';
 import styled from 'styled-components';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
@@ -26,6 +27,7 @@ const NavigationContainer = styled.div`
   color: white;
   padding: 20px;
   z-index: 2;
+  overflow-y: auto;
 
   .header {
     display: none;
@@ -48,21 +50,17 @@ const NavigationContainer = styled.div`
     margin-bottom: 25px;
     font-size: 14px;
     letter-spacing: 0.28px;
+    display: flex;
+    cursor: pointer;
 
-    a {
-      display: flex;
-      align-items: center;
-      text-decoration: none;
+    img {
+      margin-right: 25px;
+      width: 20px;
+      height: 20px;
+    }
+
+    &:hover {
       color: #ccc;
-
-      img {
-        margin-right: 25px;
-        width: 20px;
-        height: 20px;
-      }
-
-      p{
-      }
     }
   }
 
@@ -96,37 +94,44 @@ const NavigationContainer = styled.div`
   }
 `;
 
-export default function Navigation() {
-  const playlists = ['Public playlist', 'Melancholy', 'Alternative', 'New Playlist'];
+export default function Navigation({ playlists }) {
   const [ openNav, setOpenNav ] = useContext(StateContext).OpenNav;
+  const [ accessToken, setAccessToken ] = useContext(StateContext).AccessToken;
+  const [ chartValues, setChartValues ] = useContext(StateContext).ChartValues;
+  const [ userTracks, setTracks ] = useContext(StateContext).UserTracks;
+  const [ playlistMinMax, setPlaylistMinMax ] = useContext(StateContext).PlaylistMinMax;
+
+  const loadTracks = (playlist_id, totalTracks) => {
+    axios
+      .post(`http://localhost:9000/getTracks/playlist`, {
+        accessToken,
+        playlist_id,
+        totalTracks
+      })
+      .then(res => {
+        console.log(res.data)
+        setTracks({
+          loading: true,
+          songs: res.data.songs,
+        });
+        setChartValues(res.data.averages);
+        setPlaylistMinMax({data: res.data.minMax, loaded: true});
+      });
+  };
 
   return(
     <NavigationContainer open={openNav}>
       <div className='header'>
         <img src={logo} className='logo'/>
       </div>
-      <div className='section browse-music'>
-        <h3 className='title'>Browse Music</h3>
-        <ul className="categories">
-          <li>
-            <a href='/' targer='blank'><img src={musicIcon} /><p>Discover</p></a>
-          </li>
-          <li>
-            <a href='/' targer='blank'><img src={musicIcon} /><p>Artists</p></a>
-          </li>
-          <li>
-            <a href='/' targer='blank'><img src={musicIcon} /><p>Albums</p></a>
-          </li>
-        </ul>
-      </div>
       <div className='section my-playlists'>
         <h3 className='title'>My Playlists</h3>
         <ul className='playlists'>
           {
-            playlists.map(playlist => {
+            playlists.length > 0 && playlists.map(playlist => {
               return (
-                <li key={playlist}>
-                  <a href='/' targer='blank'><img src={musicIcon} /><p>{playlist}</p></a>
+                <li key={playlist.id} onClick={() => loadTracks(playlist.id, playlist.tracks.total)}>
+                  <img src={musicIcon} /><p>{playlist.name}</p>
                 </li>
               );
             })

@@ -18,6 +18,8 @@ const StyledSongImage = styled.img`
 
 const OverlayContainer = styled.div`
   position: absolute;
+  top: 0;
+  left: 0;
   display: none;
   justify-content: center;
   background-color: rgba(46, 213, 137, 0.32);
@@ -81,6 +83,7 @@ const StyledPlaylistItem = styled.div`
   width: 100%;
   border-radius: 5px;
   margin: 12px 0;
+  position: relative;
 
   &:hover {
     cursor: pointer;
