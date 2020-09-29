@@ -4,31 +4,18 @@ const axios = require('axios');
 const express = require('express');
 const spotifyApi = require('../helpers/spotifyApiHelper');
 const router = express.Router();
+const { generateString, getUserId } = require('../helpers/utilHelper');
 
-const generateString = (length) => {
-  const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789 '.split('');
-  let string = '';
-
-  for (let i = 0; i < length; i++) {
-    const randIndex = Math.floor(Math.random() * chars.length);
-    string += chars[randIndex];
-  }
-  return string;
-}
-
-router.post('/playlist', async (req, res) => {
+router.post('/create', async (req, res) => {
   let { accessToken, name, description, uris, imageUrl } = req.body;
   if (!name) name = generateString(8);
   if (!description) description = '';
-  if (songs.length === 0) {
+  if (uris.length === 0) {
     console.log('no songs');
     return;
   };
 
-  // get current user id
-  const user_id = await axios.get('https://api.spotify.com/v1/me', {
-    headers: { Authorization: 'Bearer ' + accessToken },
-  }).then(res => res.data.id);
+  const user_id = getUserId(accessToken);
 
   // create playlist
   const playlist_id = await axios({
@@ -41,19 +28,31 @@ router.post('/playlist', async (req, res) => {
   //add songs to playlist
   let songsAdded = 0;
   while (songsAdded < uris.length) {
-    // IE. uris=spotify:track:4iV5W9uYEdYUVa79Axb7Rh, spotify:track:1301WleyT98MSxVHPZCA6M
-    const uris = songs.splice(songsAdded, songsAdded + 100).join(', ');
-    console.log(uris);
+    const songURIS = uris.splice(songsAdded, songsAdded + 50).join(',');
 
     await axios({
       method: 'post',
-      url: `https://api.spotify.com/v1/playlists/${playlist_id}/tracks?uris=${uris}`,
+      url: `https://api.spotify.com/v1/playlists/${playlist_id}/tracks?uris=${songURIS}`,
       headers: { Authorization: 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
       data: { name, description }
     });
 
     songsAdded += 100;
   };
+
+  res.send('New playlist created and songs added!');
+});
+
+router.post('/ids', async (req, res) => {
+  const { accessToken } = req.body;
+
+  axios({
+    method: 'get',
+    url: `https://api.spotify.com/v1/me/playlists?limit=50`,
+    headers: { Authorization: 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
+  }).then(playlists => {
+    res.send(playlists.data.items)
+  });
 });
 
 module.exports = router;

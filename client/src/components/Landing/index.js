@@ -142,7 +142,6 @@ const Landing = () => {
   };
 
   useEffect(() => {
-    console.log('1sdoifjsodifj')
     const url = window.location.search;
     const getQuery = url.split('?')[1];
 
@@ -155,7 +154,6 @@ const Landing = () => {
   },[]);
 
   useEffect(() => {
-    console.log('2sdoifjsodifj')
     if (cookies.code && !cookies.accessToken) {
       getAccessToken(cookies.code);
     }

@@ -158,10 +158,10 @@ export default function CreatePlaylistModal() {
   const [imageUrl, setImageUrl] = useState('');
 
   const savePlaylist = (songs) => {
-    const uris = songs.filter(song => matchFilter(song, playlistMinMax)).map(song => song.id)
+    const uris = songs.filter(song => matchFilter(song, playlistMinMax)).map(song => song.uri)
 
     axios
-      .post(`http://localhost:9000/create/playlist`, {
+      .post(`http://localhost:9000/playlists/createb`, {
         accessToken,
         name,
         description,
@@ -204,7 +204,7 @@ export default function CreatePlaylistModal() {
               <p>Automatically update your playlist every Monday with new music that matches your filters.</p>
             </div>
           </div>
-          <button className='save-playlist' onClick={() => savePlaylist(userTracks)}>Save Playlist</button>
+          <button className='save-playlist' onClick={() => savePlaylist(userTracks.songs)}>Save Playlist</button>
         </div>
       </div>
     </CreatePlaylistModalContainer>

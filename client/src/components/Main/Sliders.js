@@ -57,7 +57,7 @@ export default function Sliders() {
   const [instrumentalness, setInstrumentalness] = useState([0, 0]);
   const [loudness, setLoudness] = useState([0, 0]);
   const [valence, setValence] = useState([0, 0]);
-
+  const [marks, setMarks] = useState([]);
 
   useEffect(() => {
     if (playlistMinMax.data.tempo) {
@@ -67,6 +67,17 @@ export default function Sliders() {
       setInstrumentalness(playlistMinMax.data.instrumentalness);
       setLoudness(playlistMinMax.data.loudness);
       setValence(playlistMinMax.data.valence);
+
+      setMarks(prev => [
+        {
+          value: playlistMinMax.data.tempo[0],
+          label: 'min',
+        },
+        {
+          value: playlistMinMax.data.tempo[1],
+          label: 'max',
+        }
+      ])
     }
   }, [playlistMinMax.loaded]);
   
@@ -88,7 +99,7 @@ export default function Sliders() {
             }
             value={tempo}
             step={5}
-            // marks={myMarks}
+            marks={marks}
             onChangeCommitted= {(event, val) => {setPlaylistMinMax(prev => ({...prev, data:{...prev.data, tempo: val}}))}}
             onChange={(event, val) => {setTempo(val)}}
             valueLabelDisplay="auto"
