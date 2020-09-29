@@ -102,8 +102,21 @@ const PlaylistItem = (props) => {
     if (
       props.audio.energy * 100 <= playlistMinMax.data.energy[1] &&
       props.audio.energy * 100 >= playlistMinMax.data.energy[0] &&
+
       props.audio.tempo <= playlistMinMax.data.tempo[1] &&
-      props.audio.tempo  >= playlistMinMax.data.tempo[0] 
+      props.audio.tempo  >= playlistMinMax.data.tempo[0] &&
+
+      props.audio.instrumentalness * 100 <= playlistMinMax.data.instrumentalness[1] &&
+      props.audio.instrumentalness * 100 >= playlistMinMax.data.instrumentalness[0] &&
+
+      props.audio.loudness <= playlistMinMax.data.loudness[1] &&
+      props.audio.loudness  >= playlistMinMax.data.loudness[0] &&
+
+      props.audio.danceability * 100  <= playlistMinMax.data.danceability[1] &&
+      props.audio.danceability  * 100  >= playlistMinMax.data.danceability[0] &&
+
+      props.audio.valence * 100 <= playlistMinMax.data.valence[1] &&
+      props.audio.valence * 100 >= playlistMinMax.data.valence[0] 
     ) {
       return true;
     }
