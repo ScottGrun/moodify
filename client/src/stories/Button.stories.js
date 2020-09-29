@@ -19,7 +19,7 @@ FirstStory.args = {
   key: 2,
   loudness: -2.743,
   mode: 1,
-  speechiness: 0.103,
+  instrumentalness: 0.103,
   acousticness: 0.011,
   instrumentalness: 0.000905,
   liveness: 0.302,

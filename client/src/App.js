@@ -14,6 +14,7 @@ export default function App() {
   const [ userTracks, setUserTracks ] = useState({ loading: false, songs: []});
   const [ openNav, setOpenNav ] = useState(false);
   const [ openCreatePlaylistModal, setOpenCreatePlaylistModal ] = useState(false);
+  const [ playlistMinMax, setPlaylistMinMax ] = useState({data:{}, loaded: false});
 
   if (cookies.accessToken && !accessToken) {
     setAccessToken(cookies.accessToken);
@@ -26,7 +27,8 @@ export default function App() {
       ChartValues: [ chartValues, setChartValues ],
       UserTracks: [ userTracks, setUserTracks ],
       OpenNav: [ openNav, setOpenNav ],
-      OpenCreatePlaylistModal: [ openCreatePlaylistModal, setOpenCreatePlaylistModal ]
+      OpenCreatePlaylistModal: [ openCreatePlaylistModal, setOpenCreatePlaylistModal ],
+      PlaylistMinMax: [playlistMinMax, setPlaylistMinMax]
     } }>
       { accessToken
         ? <Main />

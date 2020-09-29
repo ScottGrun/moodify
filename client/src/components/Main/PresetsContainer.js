@@ -29,7 +29,7 @@ const presetsData = [
     energy: 0.578,
     instrumentalness: 0.0902,
     loudness: -11.840,
-    speechiness: 0.0461,
+    instrumentalness: 0.0461,
     valence: 0.624,
     tempo: 98.002,
     times_applied: 1
@@ -43,7 +43,7 @@ const presetsData = [
     energy: 0.318,
     instrumentalness: 0.046,
     loudness: -23.040,
-    speechiness: 0.024,
+    instrumentalness: 0.024,
     valence: 0.384,
     tempo: 85.000,
     times_applied: 1
@@ -57,7 +57,7 @@ const presetsData = [
     energy: 1.0,
     instrumentalness: 1.0,
     loudness: -50.00,
-    speechiness: 1.0,
+    instrumentalness: 1.0,
     valence: 1.0,
     tempo: 100.0,
     times_applied: 1
@@ -71,7 +71,7 @@ const presetsData = [
     energy: 0.745,
     instrumentalness: 1.0,
     loudness: 10.00,
-    speechiness: 1.0,
+    instrumentalness: 1.0,
     valence: 0.80,
     tempo: 95.0,
     times_applied: 1
