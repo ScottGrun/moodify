@@ -74,13 +74,43 @@ const presetsData = [
     speechiness: 1.0,
     valence: 0.80,
     tempo: 95.0,
-    times_applied: 1
+    times_applied: 25
+  },
+  {
+    key: '5',
+    name: 'my preset',
+    description: 'good tunes',
+    acousticness: 0.023,
+    danceability: 0.45,
+    energy: 0.745,
+    instrumentalness: 1.0,
+    loudness: 10.00,
+    speechiness: 1.0,
+    valence: 0.80,
+    tempo: 95.0,
+    times_applied: 10
+  },
+  {
+    key: '6',
+    name: 'great filter',
+    description: 'sick',
+    acousticness: 0.023,
+    danceability: 0.45,
+    energy: 0.745,
+    instrumentalness: 1.0,
+    loudness: 10.00,
+    speechiness: 1.0,
+    valence: 0.80,
+    tempo: 95.0,
+    times_applied: 33
   } 
 ];
 
 export default function Presets() {
 
-  const presets = presetsData.map((preset) => <Preset {...preset} />);
+  const sortedPresets = presetsData.sort((a, b) => b.times_applied - a.times_applied); 
+
+  const presets = sortedPresets.map((preset) => <Preset {...preset} />);
 
   return(
     <PresetsContainer>
