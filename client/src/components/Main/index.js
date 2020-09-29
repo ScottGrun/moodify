@@ -215,8 +215,9 @@ const Main = () => {
   const [openNav, setOpenNav] = useContext(StateContext).OpenNav;
   const [openCreatePlaylistModal, setOpenCreatePlaylistModal] = useContext(StateContext).OpenCreatePlaylistModal;
   const [playlistMinMax, setPlaylistMinMax] = useContext(StateContext).PlaylistMinMax;
+  const [filteredTracks, setFilteredTracks] = useContext(StateContext).FilteredTracks;
 
-  const getTrack = () => {
+  const getTracks = () => {
     axios
       .post(`http://localhost:9000/getTracks`, {
         accessToken,
@@ -232,7 +233,7 @@ const Main = () => {
   };
 
   useEffect(() => {
-    getTrack();
+    getTracks();
   }, []);
 
   const logout = () => {
@@ -263,7 +264,7 @@ const Main = () => {
             <PlaylistImage />
           </div>
           
-          {userTracks.loading && <PlaylistItemContainer songs={userTracks.songs} />}
+          {userTracks.loading && <PlaylistItemContainer />}
         </div>
 
         <div className="playlist-customization-container">
