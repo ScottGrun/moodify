@@ -88,7 +88,7 @@ export default function Sliders() {
             }
             value={tempo}
             step={5}
-            marks={myMarks}
+            // marks={myMarks}
             onChangeCommitted= {(event, val) => {setTempo(val); setPlaylistMinMax(prev => ({...prev, data:{...prev.data, tempo: val}}))}}
             onChange={(event, val) => {setTempo(val)}}
             valueLabelDisplay="auto"
