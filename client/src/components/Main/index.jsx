@@ -10,7 +10,6 @@ import PlaylistImage from './PlaylistImage';
 import PlaylistItemContainer from './PlaylistItemContainer';
 import RadarChart from './RadarChart';
 import Sliders from './Sliders';
-import PresetsContainer from './PresetsContainer';
 import OpenMenu from './OpenMenu';
 import CreatePlaylistModal from './CreatePlaylistModal';
 
@@ -49,6 +48,7 @@ const MainContainer = styled.div`
   margin: 24px auto 0 auto;
   position: relative;
   display: grid;
+  overflow-x: hidden;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
   grid-template-rows: 40px 1fr;
   gap: 24px 24px;
@@ -61,7 +61,6 @@ const MainContainer = styled.div`
     grid-template-areas:
     'header header header header header header header header header header header header'
     'main main main main main main main playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls';
-    
   }
 
 

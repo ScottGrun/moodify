@@ -29,12 +29,6 @@ const NavigationContainer = styled.div`
     overflow-y: scroll;
     overflow-x: hidden;
 
-    .header {
-      display: none;
-      margin-bottom: 30px;
-      justify-content: space-between;
-    }
-
     .section {
       margin-bottom: 20px;
 
@@ -149,9 +143,6 @@ export default function Navigation({ playlists }) {
   return(
     <NavigationContainer open={openNav}>
       <div className='navigation-content'>
-        <div className='header'>
-          <img src={logo} className='logo'/>
-        </div>
         <div className='section my-playlists'>
           <h3 className='title'>Discover</h3>
           <ul className='playlists'>
