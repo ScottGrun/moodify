@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useCookies } from 'react-cookie';
 import Landing from './components/Landing';
-import Main from './components/Main';
+import Main from './components/Main/index';
 
 export const StateContext = React.createContext();
 

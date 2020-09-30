@@ -12,9 +12,8 @@ import logo from '../../assets/logo.svg';
 import leftArrow from '../../assets/left-arrow.svg';
 
 const NavigationContainer = styled.div`
-  height: 100vh;
-  min-width: 200px;
-  max-width: 200px;
+  height: 100%;
+  width: 100%;
   color: white;
   padding: 20px 10px;
   z-index: 2;
