@@ -255,12 +255,8 @@ const Main = () => {
   const [openNav, setOpenNav] = useContext(StateContext).OpenNav;
   const [openCreatePlaylistModal, setOpenCreatePlaylistModal] = useContext(StateContext).OpenCreatePlaylistModal;
   const [playlistMinMax, setPlaylistMinMax] = useContext(StateContext).PlaylistMinMax;
-<<<<<<< HEAD:client/src/components/Main/index.js
   const [filteredTracks, setFilteredTracks] = useContext(StateContext).FilteredTracks;
   const [openSavePresetModal, setOpenSavePresetModal] = useContext(StateContext).OpenSavePresetModal;
-=======
-  const [playlists, setPlaylists] = useState([]);
->>>>>>> master:client/src/components/Main/index-old.jsx
 
   const getTracks = () => {
     axios
