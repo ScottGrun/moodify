@@ -1,5 +1,7 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import PlayButton from '../../assets/icons/PlayButton.svg';
+import WaveFormSource from '../../assets/icons/audio.svg';
+
 import React, { useContext, useState, useEffect } from 'react';
 import { StateContext } from '../../App';
 
@@ -18,11 +20,14 @@ const StyledSongImage = styled.img`
 
 const OverlayContainer = styled.div`
   position: absolute;
-  display: none;
+  top: 0;
+  left: 0;
+  display: ${(props) => (props.playing ? 'flex' : 'none')};
   justify-content: center;
   background-color: rgba(46, 213, 137, 0.32);
   height: 45px;
   width: 45px;
+  padding: 5px;
   border-radius: 5px 0px 0px 5px;
 `;
 
@@ -35,6 +40,7 @@ const SongName = styled.h4`
   line-height: 16px;
   color: white;
   margin: 0;
+  color: ${(props) => (props.playing ? '#2ed589' : null)};
 `;
 
 const ArtistName = styled.p`
@@ -74,6 +80,7 @@ const SongMetaData = styled.div`
 `;
 
 const StyledPlaylistItem = styled.div`
+  position: relative;
   display: flex;
   align-items: center;
   background-color: #3c4051;
@@ -81,6 +88,7 @@ const StyledPlaylistItem = styled.div`
   width: 100%;
   border-radius: 5px;
   margin: 12px 0;
+  position: relative;
 
   &:hover {
     cursor: pointer;
@@ -95,61 +103,97 @@ const StyledPlaylistItem = styled.div`
   }
 `;
 
-const PlaylistItem = (props) => {
-  const [playlistMinMax, setPlaylistMinMax] = useContext(StateContext).PlaylistMinMax;
+const playProgress = keyframes`
+from {
+  width: 0%;
+}
 
-  const matchFilter = () => {
-    if (
-      props.audio.energy * 100 <= playlistMinMax.data.energy[1] &&
-      props.audio.energy * 100 >= playlistMinMax.data.energy[0] &&
+to {
+ width: 100%;
+}
+`;
 
-      props.audio.tempo <= playlistMinMax.data.tempo[1] &&
-      props.audio.tempo  >= playlistMinMax.data.tempo[0] &&
+const StyledProgressContainer = styled.div`
+  position: absolute;
+  display: flex;
+  width: 100%;
+  height: 3px;
+  padding-left: 45px;
+  bottom: 0px;
+  width: 0%;
+  border-radius: 0px 0px 5px;
+  z-index: 100;
+  width: 100%;
 
-      props.audio.instrumentalness * 100 <= playlistMinMax.data.instrumentalness[1] &&
-      props.audio.instrumentalness * 100 >= playlistMinMax.data.instrumentalness[0] &&
-
-      props.audio.loudness <= playlistMinMax.data.loudness[1] &&
-      props.audio.loudness  >= playlistMinMax.data.loudness[0] &&
-
-      props.audio.danceability * 100  <= playlistMinMax.data.danceability[1] &&
-      props.audio.danceability  * 100  >= playlistMinMax.data.danceability[0] &&
-
-      props.audio.valence * 100 <= playlistMinMax.data.valence[1] &&
-      props.audio.valence * 100 >= playlistMinMax.data.valence[0] 
-    ) {
-      return true;
-    }
-    return false;
-  };
-
-  if (playlistMinMax.data.tempo && matchFilter()) {
-    return (
-      <StyledPlaylistItem>
-        <StyledSongCoverContainer>
-          <StyledSongImage src={props.img} />
-        </StyledSongCoverContainer>
-
-        <OverlayContainer>
-          <img src={PlayButton} />
-        </OverlayContainer>
-        <SongMetaData>
-          <SongName>{props.name}</SongName>
-          <ArtistName>{props.artist}</ArtistName>
-        </SongMetaData>
-        <AudioFeatures>
-          <p>{Math.trunc(props.audio.tempo)}</p>
-          <p>{Math.trunc(props.audio.energy * 100)}</p>
-          <p>{Math.trunc(props.audio.danceability * 100)}</p>
-          <p>{props.audio.valence}</p>
-          <p>{Math.trunc(props.audio.instrumentalness * 100)}</p>
-          <p>{Math.trunc(props.audio.loudness)}db</p>
-        </AudioFeatures>
-      </StyledPlaylistItem>
-    );
+  div {
+    animation: ${(props) => (props.playing ? playProgress : null)} 30s linear;
+    width: 0%;
+    background-color: #2ed589;
   }
 
-  return null;
+  @keyframes play-progress {
+    0% {
+      width: 0px;
+    }
+    100% {
+      width: 200px;
+    }
+  }
+`;
+
+const PlaylistItem = (props) => {
+  const [playing, setPlaying] = useState(false);
+  const [songPreview, setPreview] = useState(null);
+
+  const playPreview = () => {
+    let song = null;
+
+    if (!songPreview) {
+      song = new Audio(props.previewUrl);
+      setPreview(song);
+    } else {
+      song = songPreview;
+    }
+
+    if (playing === false) {
+      setPlaying((prev) => true);
+      song.play();
+    } else if (playing === true) {
+      setPlaying((prev) => false);
+      song.pause();
+    }
+  };
+
+  
+ 
+
+  return (
+    <StyledPlaylistItem onClick={playPreview}>
+      <StyledSongCoverContainer>
+        <StyledSongImage src={props.img} />
+      </StyledSongCoverContainer>
+
+      <OverlayContainer playing={playing}>
+        {playing && <img src={WaveFormSource} />}
+        {!playing && <img src={PlayButton} />}
+      </OverlayContainer>
+      <SongMetaData>
+        <SongName playing={playing}> {props.name.length > 26 ?  props.name.slice(0, 20) + '...' : props.name }</SongName>
+        <ArtistName>{props.artist}</ArtistName>
+      </SongMetaData>
+      <AudioFeatures>
+        <p>{Math.trunc(props.audio.tempo)}</p>
+        <p>{Math.trunc(props.audio.energy * 100)}</p>
+        <p>{Math.trunc(props.audio.danceability * 100)}</p>
+        <p>{props.audio.valence}</p>
+        <p>{Math.trunc(props.audio.instrumentalness * 100)}</p>
+        <p>{Math.trunc(props.audio.loudness)}db</p>
+      </AudioFeatures>
+      <StyledProgressContainer playing={playing}>
+        <div></div>
+      </StyledProgressContainer>
+    </StyledPlaylistItem>
+  );
 };
 
 export default PlaylistItem;

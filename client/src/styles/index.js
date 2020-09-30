@@ -15,4 +15,25 @@ export const GlobalStyle = createGlobalStyle`
     width: 100%;
     height: 100%;
   }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    border-radius: 5px;
+
+  }
+
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 10px 10px transparent;
+    border: solid 5px transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    box-shadow: inset 0 0 10px 10px #2C3862;
+    border: solid 3px transparent;
+    border-radius: 5px;
+
+}
+
+
+
 `;

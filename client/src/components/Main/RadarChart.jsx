@@ -9,6 +9,11 @@ const RadarChartContainer = styled.div`
 
   h2 {
     margin-bottom: 30px;
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 900;
+    font-size: 18px;
+    color: white;
   }
 `;
 
@@ -18,7 +23,7 @@ export default function RadarChart(props) {
 
   const chart = () => {
     setChartData({
-      labels: ['Energy',  'Danceability', 'Valence', 'instrumentalness',  'Loudness'],
+      labels: ['Energy', 'Danceability', 'Valence', 'instrumentalness', 'Loudness'],
       datasets: [
         {
           data: chartValues,

@@ -1,0 +1,135 @@
+import React, { useState, useContext } from 'react';
+import axios from 'axios';
+import styled from 'styled-components';
+import { StateContext } from '../../App';
+
+// components
+import Profile from './Profile';
+
+// images
+import musicIcon from '../../assets/music-icon.svg';
+import logo from '../../assets/logo.svg';
+import leftArrow from '../../assets/left-arrow.svg';
+
+const NavigationContainer = styled.div`
+  height: 100%;
+  width: 100%;
+  color: white;
+  z-index: 2;
+  overflow-y: auto;
+
+  .header {
+    display: none;
+    margin-bottom: 30px;
+    justify-content: space-between;
+  }
+
+  .title {
+    margin-bottom: 25px;
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 900;
+    font-size: 18px;
+    /* identical to box height, or 156% */
+
+    letter-spacing: 0.2px;
+    color: #ffffff;
+  }
+
+  ul {
+    li {
+      padding: 10px 0px;
+      list-style: none;
+      font-size: 14px;
+      letter-spacing: 0.28px;
+      display: flex;
+      cursor: pointer;
+
+      img {
+        margin-right: 25px;
+        width: 20px;
+        height: 20px;
+      }
+
+      &:hover {
+        background-color: #ccc;
+        color: #666666;
+      }
+    }
+  }
+
+  .profile-dropdown-container {
+      display: none;
+    }
+
+  @media (max-width: 1280px) {
+    min-width: 282px;
+    max-width: 282px;
+    background-color: #1c1d20;
+    position: fixed;
+    top: 0;
+    right: -282px;
+    z-index: 100;
+    transition: all 0.5s ease-in-out;
+    ${({ open }) =>
+      open &&
+      `
+      transform: translateX(-282px);
+    `}
+
+    .header {
+      display: flex;
+    }
+    .profile-dropdown-container {
+      display: block;
+    }
+  }
+`;
+
+export default function Navigation({ playlists, open }) {
+  const [openNav, setOpenNav] = useContext(StateContext).OpenNav;
+  const [accessToken, setAccessToken] = useContext(StateContext).AccessToken;
+  const [chartValues, setChartValues] = useContext(StateContext).ChartValues;
+  const [userTracks, setTracks] = useContext(StateContext).UserTracks;
+  const [playlistMinMax, setPlaylistMinMax] = useContext(StateContext).PlaylistMinMax;
+
+  const loadTracks = (playlist_id, totalTracks) => {
+    axios
+      .post(`http://localhost:9000/getTracks/playlist`, {
+        accessToken,
+        playlist_id,
+        totalTracks,
+      })
+      .then((res) => {
+        setTracks({
+          loading: true,
+          songs: res.data.songs,
+        });
+        setChartValues(res.data.averages);
+        setPlaylistMinMax({ data: res.data.minMax, loaded: true });
+      });
+  };
+
+  return (
+    <NavigationContainer open={open}>
+   
+      <h3 className="title">My Playlists</h3>
+
+      <ul className="playlists">
+        {playlists.length > 0 &&
+          playlists.map((playlist) => {
+            return (
+              <li key={playlist.id} onClick={() => loadTracks(playlist.id, playlist.tracks.total)}>
+                <img src={musicIcon} />
+                <p>{playlist.name.length > 17 ? playlist.name.slice(0, 17) + '...' : playlist.name}</p>
+              </li>
+            );
+          })}
+      </ul>
+
+      <div className="profile-dropdown-container">
+        <Profile />
+      </div>
+    </NavigationContainer>
+  );
+}

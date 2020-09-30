@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useCookies } from 'react-cookie';
 import Landing from './components/Landing';
-import Main from './components/Main';
+import Main from './components/Main/index';
 
 export const StateContext = React.createContext();
 
@@ -32,7 +32,6 @@ export default function App() {
       OpenCreatePlaylistModal: [ openCreatePlaylistModal, setOpenCreatePlaylistModal ],
       OpenSavePresetModal: [ openSavePresetModal, setOpenSavePresetModal ],
       PlaylistMinMax: [playlistMinMax, setPlaylistMinMax],
-      FilteredTracks: [filteredTracks, setFilteredTracks]
     } }>
       { accessToken
         ? <Main />

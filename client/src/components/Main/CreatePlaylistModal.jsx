@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { StateContext } from '../../App';
 import axios from 'axios';
+import { matchFilter } from '../../helpers/matchFilter';
 
 const CreatePlaylistModalContainer = styled.div`
   width: 100%;
@@ -9,9 +10,10 @@ const CreatePlaylistModalContainer = styled.div`
   height: 100%;
   max-height: 551px;
   position: absolute;
+  border-radius: 5px;
   top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  left: 20%;
+  transform: translate(0, -50%);
   background-color: #28292D;
   color: white;
   display: flex;
@@ -20,6 +22,7 @@ const CreatePlaylistModalContainer = styled.div`
   padding: 25px;
   box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
   display: none;
+  z-index: 9999;
   ${({ open }) => open && `
     display: block;
   `}
@@ -150,18 +153,21 @@ const CreatePlaylistModalContainer = styled.div`
 export default function CreatePlaylistModal() {
   const [accessToken, setAccessToken] = useContext(StateContext).AccessToken;
   const [openCreatePlaylistModal, setOpenCreatePlaylistModal] = useContext(StateContext).OpenCreatePlaylistModal;
+  const [playlistMinMax, setPlaylistMinMax] = useContext(StateContext).PlaylistMinMax;
+  const [userTracks, setUserTracks] = useContext(StateContext).UserTracks;
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [imageUrl, setImageUrl] = useState('');
-  const [filteredTracks, setFilteredTracks] = useContext(StateContext).FilteredTracks;
 
-  const savePlaylist = (filteredTracks) => {
+  const savePlaylist = (songs) => {
+    const uris = songs.filter(song => matchFilter(song, playlistMinMax)).map(song => song.uri)
+
     axios
-      .post(`http://localhost:9000/create/playlist`, {
+      .post(`http://localhost:9000/playlists/create`, {
         accessToken,
         name,
         description,
-        songs: filteredTracks,
+        uris,
         imageUrl 
       })
       .then((res) => {
@@ -200,7 +206,7 @@ export default function CreatePlaylistModal() {
               <p>Automatically update your playlist every Monday with new music that matches your filters.</p>
             </div>
           </div>
-          <button className='save-playlist' onClick={() => savePlaylist(filteredTracks)}>Save Playlist</button>
+          <button className='save-playlist' onClick={() => savePlaylist(userTracks.songs)}>Save Playlist</button>
         </div>
       </div>
     </CreatePlaylistModalContainer>

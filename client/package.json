@@ -11,8 +11,6 @@
     "chart.js": "^2.9.3",
     "cookie-parser": "^1.4.5",
     "dotenv": "^8.2.0",
-    "drei": "^1.5.7",
-    "lerp": "^1.0.3",
     "node-sass": "^4.14.1",
     "react": "^16.13.1",
     "react-chartjs-2": "^2.10.0",
@@ -20,12 +18,9 @@
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
-    "react-three-fiber": "^5.0.1",
-    "recoil": "0.0.13",
     "spotify-web-api-node": "^4.0.0",
     "styled-components": "^5.2.0",
-    "swiper": "^6.3.2",
-    "three": "^0.120.1"
+    "swiper": "^6.3.2"
   },
   "scripts": {
     "start": "react-scripts start",

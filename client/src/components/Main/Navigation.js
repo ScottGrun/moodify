@@ -1,14 +1,6 @@
 import React, { useState, useContext } from 'react';
+import axios from 'axios';
 import styled from 'styled-components';
-import clsx from 'clsx';
-import { makeStyles } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
-import Button from '@material-ui/core/Button';
-import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
 import { StateContext } from '../../App';
 
 // components
@@ -20,123 +12,163 @@ import logo from '../../assets/logo.svg';
 import leftArrow from '../../assets/left-arrow.svg';
 
 const NavigationContainer = styled.div`
-  height: 100vh;
-  min-width: 200px;
-  max-width: 200px;
-  color: white;
-  padding: 20px;
-  z-index: 2;
+  width: 100%;
+  height: calc(100vh - 100px);
+  overflow-y: auto;
 
-  .header {
-    display: none;
-    margin-bottom: 30px;
-    justify-content: space-between;
-  }
 
-  & > .section:not(:last-child) {
-    margin-bottom: 60px;
-  }
+  border-radius: 4px;
 
-  .title {
-    margin-bottom: 25px;
-    font-size: 18px;
-    letter-spacing: -0.2px;
-  }
+  .navigation-content {
+    height: 100%;
+    min-width: 217px;
+    max-width: 217px;
+    color: white;
+    padding: 20px 10px 20px 10px;
+    z-index: 2;
+    overflow-y: scroll;
+    overflow-x: hidden;
 
-  li {
-    list-style: none;
-    margin-bottom: 25px;
-    font-size: 14px;
-    letter-spacing: 0.28px;
+    .section {
+      margin-bottom: 20px;
 
-    a {
-      display: flex;
-      align-items: center;
-      text-decoration: none;
-      color: #ccc;
-
-      img {
-        margin-right: 25px;
-        width: 20px;
-        height: 20px;
+      .title {
+        margin-bottom: 25px;
+        font-size: 18px;
+        letter-spacing: -0.2px;
       }
 
-      p{
+      ul {
+
+        li {
+          padding: 10px 0px;
+          list-style: none;
+          font-size: 14px;
+          letter-spacing: 0.28px;
+          display: flex;
+          cursor: pointer;
+          user-select: none;
+
+          img {
+            margin-right: 25px;
+            width: 20px;
+            height: 20px;
+          }
+
+          &:hover {
+            background-color: #ccc;
+            color: #666666;
+          }
+        }
       }
     }
-  }
 
-  .profile-dropdown-container {
-    display: none;
-    position: absolute;
-    bottom: 100px;
-    left: 35px;
+    .profile-dropdown-container {
+      display: none;
+    }
   }
 
   @media(max-width: 1300px) {
     min-width: 282px;
     max-width: 282px;
-    background-color: #1C1D20;
+    height: 100vh;
     position: fixed;
     top: 0;
-    right: -280px;
+    right: 0;
     z-index: 100;
+    transform: translateX(282px);
     transition: all 0.5s ease-in-out;
     ${({ open }) => open && `
-      transform: translateX(-282px);
+      transform: translateX(0);
     `}
 
-    .header {
-      display: flex;
-    }
+    .navigation-content {
+      min-width: 299px;
+      max-width: 299px;
+      height: 100%;
+      overflow-y: scroll;
+      overflow-x: hidden;
+      background-color: #1C1D20;
 
-    .profile-dropdown-container {
-      display: block;
+      .header {
+        display: flex;
+      }
+
+      .profile-dropdown-container {
+        display: block;
+      }
     }
   }
 `;
 
-export default function Navigation() {
-  const playlists = ['Public playlist', 'Melancholy', 'Alternative', 'New Playlist'];
+export default function Navigation({ playlists }) {
   const [ openNav, setOpenNav ] = useContext(StateContext).OpenNav;
+  const [ accessToken, setAccessToken ] = useContext(StateContext).AccessToken;
+  const [ chartValues, setChartValues ] = useContext(StateContext).ChartValues;
+  const [ userTracks, setTracks ] = useContext(StateContext).UserTracks;
+  const [ playlistMinMax, setPlaylistMinMax ] = useContext(StateContext).PlaylistMinMax;
+
+  const loadTracks = (playlist_id, totalTracks) => {
+    axios
+      .post(`http://localhost:9000/getTracks/playlist`, {
+        accessToken,
+        playlist_id,
+        totalTracks
+      })
+      .then(res => {
+        setTracks({
+          loading: true,
+          songs: res.data.songs,
+        });
+        setChartValues(res.data.averages);
+        setPlaylistMinMax({data: res.data.minMax, loaded: true});
+      });
+  };
+
+  const loadNewSongs = () => {
+    axios
+      .post(`http://localhost:9000/getTracks/newSongs`, {
+        accessToken
+      })
+      .then(res => {
+        setTracks({
+          loading: true,
+          songs: res.data.songs,
+        });
+        setChartValues(res.data.averages);
+        setPlaylistMinMax({data: res.data.minMax, loaded: true});
+      });
+  };
 
   return(
     <NavigationContainer open={openNav}>
-      <div className='header'>
-        <img src={logo} className='logo'/>
+      <div className='navigation-content'>
+        <div className='section my-playlists'>
+          <h3 className='title'>Discover</h3>
+          <ul className='playlists'>
+              <li onClick={loadNewSongs}>
+                <img src={musicIcon} /><p>New Songs</p>
+              </li>
+          </ul>
+        </div>
+        <div className='section my-playlists'>
+          <h3 className='title'>My Playlists</h3>
+          <ul className='playlists'>
+            {
+              playlists.length > 0 && playlists.map(playlist => {
+                return (
+                  <li key={playlist.id} onClick={() => loadTracks(playlist.id, playlist.tracks.total)}>
+                    <img src={musicIcon} /><p>{playlist.name.length > 17 ? playlist.name.slice(0, 17) + '...' : playlist.name}</p>
+                  </li>
+                );
+              })
+            }
+          </ul>
+        </div>
+        <div className='profile-dropdown-container'>
+          <Profile />
+        </div>
       </div>
-      <div className='section browse-music'>
-        <h3 className='title'>Browse Music</h3>
-        <ul className="categories">
-          <li>
-            <a href='/' targer='blank'><img src={musicIcon} /><p>Discover</p></a>
-          </li>
-          <li>
-            <a href='/' targer='blank'><img src={musicIcon} /><p>Artists</p></a>
-          </li>
-          <li>
-            <a href='/' targer='blank'><img src={musicIcon} /><p>Albums</p></a>
-          </li>
-        </ul>
-      </div>
-      <div className='section my-playlists'>
-        <h3 className='title'>My Playlists</h3>
-        <ul className='playlists'>
-          {
-            playlists.map(playlist => {
-              return (
-                <li key={playlist}>
-                  <a href='/' targer='blank'><img src={musicIcon} /><p>{playlist}</p></a>
-                </li>
-              );
-            })
-          }
-        </ul>
-      </div>
-      <div className='profile-dropdown-container'>
-        <Profile />
-      </div>
-
     </NavigationContainer>
   );
 };

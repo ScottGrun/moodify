@@ -1,5 +1,4 @@
 import React, { useEffect, useContext, useState } from 'react';
-import { useCookies } from 'react-cookie';
 import axios from 'axios';
 import { StateContext } from '../../App';
 import styled from 'styled-components';
@@ -168,7 +167,7 @@ const MainContainer = styled.div`
     }
   }
 
-  @media (max-width: 1300px) {
+  @media (max-width: 1280px) {
     .overlay {
       ${({ openNav }) => openNav && `
         display: block;
@@ -250,19 +249,22 @@ const MainContainer = styled.div`
 `;
 
 const Main = () => {
-  const [cookies, setCookie, removeCookie] = useCookies(['cookie-name']);
   const [accessToken, setAccessToken] = useContext(StateContext).AccessToken;
   const [userTracks, setTracks] = useContext(StateContext).UserTracks;
   const [chartValues, setChartValues] = useContext(StateContext).ChartValues;
   const [openNav, setOpenNav] = useContext(StateContext).OpenNav;
   const [openCreatePlaylistModal, setOpenCreatePlaylistModal] = useContext(StateContext).OpenCreatePlaylistModal;
   const [playlistMinMax, setPlaylistMinMax] = useContext(StateContext).PlaylistMinMax;
+<<<<<<< HEAD:client/src/components/Main/index.js
   const [filteredTracks, setFilteredTracks] = useContext(StateContext).FilteredTracks;
   const [openSavePresetModal, setOpenSavePresetModal] = useContext(StateContext).OpenSavePresetModal;
+=======
+  const [playlists, setPlaylists] = useState([]);
+>>>>>>> master:client/src/components/Main/index-old.jsx
 
   const getTracks = () => {
     axios
-      .post(`http://localhost:9000/getTracks`, {
+      .post(`http://localhost:9000/getTracks/`, {
         accessToken,
       })
       .then((res) => {
@@ -275,15 +277,17 @@ const Main = () => {
       });
   };
 
+  const getPlaylists = () => {
+    axios.post('http://localhost:9000/playlists/ids', { accessToken })
+      .then(res => {
+        setPlaylists(res.data)
+      });
+  };
+
   useEffect(() => {
     getTracks();
+    getPlaylists();
   }, []);
-
-  const logout = () => {
-    removeCookie('accessToken');
-    setAccessToken(null);
-    window.location = 'http://localhost:3000';
-  };
 
   return (
     <MainContainer openNav={openNav} openCYP={openCreatePlaylistModal} openPreset={openSavePresetModal}>
@@ -304,7 +308,7 @@ const Main = () => {
       </div>
       <Header />
       <div className="main-content">
-        <Navigation />
+        <Navigation playlists={playlists} />
 
         <div className="playlists-container">
           <div className="playlist-image-container">

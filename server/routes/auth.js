@@ -25,7 +25,7 @@ router.get('/login', (req, res) => {
   res.cookie(stateKey, state);
 
   const scope =
-    'playlist-read-private streaming user-read-email user-read-private user-library-read streaming playlist-modify-public playlist-read-collaborative user-modify-playback-state user-library-modify';
+    'playlist-read-private playlist-modify-private streaming user-read-email user-read-private user-library-read streaming playlist-modify-public playlist-read-collaborative user-modify-playback-state user-library-modify';
   res.send(
     'https://accounts.spotify.com/authorize?' +
       querystring.stringify({
@@ -39,7 +39,7 @@ router.get('/login', (req, res) => {
   );
 });
 
-router.post('/token', (req, res) => {
+router.post('/token', async (req, res) => {
   const code = req.body.code;
 
   var authOptions = {
@@ -54,24 +54,16 @@ router.post('/token', (req, res) => {
     json: true,
   };
 
-  request.post(authOptions, function (error, response, body) {
+  request.post(authOptions, async (error, response, body) => {
     if (!error && response.statusCode === 200) {
       var access_token = body.access_token,
         refresh_token = body.refresh_token;
 
-      var options = {
-        url: 'https://api.spotify.com/v1/me',
+      const user = await axios.get('https://api.spotify.com/v1/me', {
         headers: { Authorization: 'Bearer ' + access_token },
-        json: true,
-      };
-
-      // use the access token to access the Spotify Web API
-      // request.get(options, function(error, response, body) {
-      //   console.log(body);
-      // });
-
-      // we can also pass the token to the browser to make requests from there
-      res.send(access_token);
+      }).then(res => res.data.id);
+      
+      res.send({ access_token, refresh_token, user });
     } else {
       res.send(
         '/#' +

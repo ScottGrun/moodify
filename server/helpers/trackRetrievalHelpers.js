@@ -13,12 +13,14 @@ const parseAudioFeatures = async (songList) => {
 };
 
 //Parse songs into easier to use format
-const parseSongs = (songList) => {
+const formatTracks = (songList) => {
   const songs = songList.map((song) => ({
     name: song.track.name,
     id: song.track.id,
     artist: song.track.artists[0].name,
     img: song.track.album.images[2].url,
+    previewUrl: song.track.preview_url,
+    uri: song.track.uri
   }));
   return songs;
 };
@@ -129,7 +131,7 @@ const getUsersTracks = async () => {
       //Set total count of user songs
 
       //Push first 50 songs into array
-      let songs = parseSongs(data.body.items);
+      let songs = formatTracks(data.body.items);
       let songIds = songs.map((song) => song.id);
 
       parseAudioFeatures(songIds).then((features) => {
@@ -148,7 +150,7 @@ const getUsersTracks = async () => {
           })
           .then(
             async (data) => {
-              let songs = parseSongs(data.body.items);
+              let songs = formatTracks(data.body.items);
               let songIds = songs.map((song) => song.id);
 
               await parseAudioFeatures(songIds).then((features) => {
@@ -167,7 +169,6 @@ const getUsersTracks = async () => {
     .then(() => {
       return allSongs;
     });
-
   return {
     songs: allSongs,
     minMax: getMinMax(allSongs),
@@ -176,5 +177,9 @@ const getUsersTracks = async () => {
 };
 
 module.exports = {
-  getUsersTracks,
+  getUsersTracks, 
+  parseAudioFeatures, 
+  formatTracks, 
+  getMinMax, 
+  getAverageAudioFeatures
 };
