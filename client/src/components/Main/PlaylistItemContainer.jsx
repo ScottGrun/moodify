@@ -29,6 +29,7 @@ const ColumnHeaderContainer = styled.div`
   font-weight: normal;
 
   p {
+    font-size: 14px;
     width: 75px;
     text-align: center;
   }
@@ -67,7 +68,7 @@ const PlaylistItemContainer = (props) => {
           <p>Energy</p>
           <p>Danceability</p>
           <p>Valence</p>
-          <p>instrumentalness</p>
+          <p>Instrumental</p>
           <p>Loudness</p>
         </ColumnHeaderContainer>
       </StyledHeader>
