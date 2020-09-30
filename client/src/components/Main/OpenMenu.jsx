@@ -12,7 +12,7 @@ const OpenMenuContainer = styled.div`
   transition: all .5s ease-in-out;
 
   .menu-btn__burger {
-    width: 24px;
+    width: 20px;
     height: 2px;
     background: white;
     border-radius: 2px;
@@ -23,7 +23,7 @@ const OpenMenuContainer = styled.div`
     &::after {
       content: '';
       position: absolute;
-      width: 24px;
+      width: 20px;
       height: 2px;
       background: white;
       border-radius: 2px;
@@ -32,14 +32,14 @@ const OpenMenuContainer = styled.div`
     }
 
     &::before {
-      transform: translateY(-8px);
+      transform: translateY(-6px);
       ${({ open }) => open && `
         transform: rotate(45deg) translate(35px, -35px);
       `}
     }
 
     &::after {
-      transform: translateY(8px);
+      transform: translateY(6px);
       ${({ open }) => open && `
         transform: rotate(-45deg) translate(35px, 35px);
       `}
