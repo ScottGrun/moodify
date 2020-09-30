@@ -11,6 +11,12 @@ const ProfileContainer = styled.div`
   right: 0%;
   width: 200px;
   height: 100px;
+
+  @media(max-width: 1280px) {
+   
+      display: none;
+    
+  }
   
 
   .profile-dropdown {

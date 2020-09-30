@@ -14,6 +14,20 @@ import PresetsContainer from './PresetsContainer';
 import OpenMenu from './OpenMenu';
 import CreatePlaylistModal from './CreatePlaylistModal';
 
+const HamburgerMenu = styled(OpenMenu)`
+  height: 30px;
+  width: 30px;
+  display: none;
+  position: fixed;
+  top: 25px;
+  right: 25px;
+  z-index: 99999;
+
+  @media(max-width: 1280px) {
+    display: block;
+  }
+`;
+
 const Overlay = styled.div`
   position: absolute;
   top: 0;
@@ -41,10 +55,30 @@ const MainContainer = styled.div`
   grid-template-areas:
     'header header header header header header header header header header header header'
     'sidebar sidebar main main main main main main playlist-controls playlist-controls playlist-controls playlist-controls';
+    
+
+  @media(max-width: 1280px){
+    grid-template-areas:
+    'header header header header header header header header header header header header'
+    'main main main main main main main playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls';
+    
+  }
+
+
 `;
 
 const Sidebar = styled.div`
   grid-area: sidebar;
+
+  @media(max-width: 1280px){
+    grid-area: none;
+    height: 100vh;
+    width: 282px;
+    position: absolute;
+    display: block;
+    top: 0;
+    right: 0;
+  }
 `;
 
 const MainContent = styled.div`
@@ -53,6 +87,8 @@ const MainContent = styled.div`
 
 const PlaylistControls = styled.div`
   grid-area: playlist-controls;
+
+  
 `;
 
 const HeaderContainer = styled.div`
@@ -67,7 +103,6 @@ const CreatePlaylistButton = styled.button`
   font-size: 14px;
   border: solid 2px white;
   padding: 10px;
-  margin: 10px;
 
   &:hover {
     background-color: #2ed689;
@@ -114,11 +149,17 @@ const Main = () => {
 
   return (
     <>
+      <HamburgerMenu
+        onClick={() => {
+          console.log('sdoipjfsoidjf');
+          setOpenNav(!openNav)
+        }}
+      />
       <Overlay
         openCYP={openCreatePlaylistModal}
         onClick={() => {
-          console.log('soidfjosidjf');
-          setOpenCreatePlaylistModal(!openCreatePlaylistModal)
+          setOpenNav(false);
+          setOpenCreatePlaylistModal(false);
         }}
       ></Overlay>
 
@@ -128,7 +169,7 @@ const Main = () => {
         </HeaderContainer>
 
         <Sidebar>
-          <Navigation playlists={playlists} />
+          <Navigation playlists={playlists} open={openNav}/>
         </Sidebar>
 
         <MainContent>
@@ -143,23 +184,22 @@ const Main = () => {
           {userTracks.loading && <PlaylistItemContainer />}
         </MainContent>
         <PlaylistControls>
-          <div className="playlist-customization-container">
-            <div className="radar-chart-container">
-              <RadarChart />
-            </div>
-            <div className="sliders-container">
-              <Sliders />
-              <CreatePlaylistButton
-                className="create-playlist-btn"
-                onClick={() => setOpenCreatePlaylistModal(true)}
-              >
-                Create Playlist
-              </CreatePlaylistButton>
-            </div>
-            {/* <div className="presets-container">
+          <div className="radar-chart-container">
+            <RadarChart />
+          </div>
+
+          <div className="sliders-container">
+            <Sliders />
+            <CreatePlaylistButton
+              className="create-playlist-btn"
+              onClick={() => setOpenCreatePlaylistModal(true)}
+            >
+              Create Playlist
+            </CreatePlaylistButton>
+          </div>
+          {/* <div className="presets-container">
             <PresetsContainer />
           </div> */}
-          </div>
         </PlaylistControls>
       </MainContainer>
     </>

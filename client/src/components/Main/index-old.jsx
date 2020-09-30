@@ -129,7 +129,7 @@ const MainContainer = styled.div`
     }
   }
 
-  @media (max-width: 1300px) {
+  @media (max-width: 1280px) {
     .overlay {
       ${({ openNav }) => openNav && `
         display: block;

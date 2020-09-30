@@ -12,7 +12,7 @@ const HeaderContainer = styled.div`
   justify-content: space-between;
   align-content: center;
 
-  @media(max-width: 1300px) {
+  @media(max-width: 1280px) {
     .profile {
       display: none;
     }

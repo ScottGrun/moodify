@@ -12,7 +12,7 @@ import logo from '../../assets/logo.svg';
 import leftArrow from '../../assets/left-arrow.svg';
 
 const NavigationContainer = styled.div`
-  height: calc(100vh - 100px);
+  height: 100%;
   width: 100%;
   color: white;
   z-index: 2;
@@ -62,13 +62,13 @@ const NavigationContainer = styled.div`
       display: none;
     }
 
-  @media (max-width: 1300px) {
+  @media (max-width: 1280px) {
     min-width: 282px;
     max-width: 282px;
     background-color: #1c1d20;
     position: fixed;
     top: 0;
-    right: -280px;
+    right: -282px;
     z-index: 100;
     transition: all 0.5s ease-in-out;
     ${({ open }) =>
@@ -86,7 +86,7 @@ const NavigationContainer = styled.div`
   }
 `;
 
-export default function Navigation({ playlists }) {
+export default function Navigation({ playlists, open }) {
   const [openNav, setOpenNav] = useContext(StateContext).OpenNav;
   const [accessToken, setAccessToken] = useContext(StateContext).AccessToken;
   const [chartValues, setChartValues] = useContext(StateContext).ChartValues;
@@ -111,10 +111,8 @@ export default function Navigation({ playlists }) {
   };
 
   return (
-    <NavigationContainer open={openNav}>
-      <div className="header">
-        <img src={logo} className="logo" />
-      </div>
+    <NavigationContainer open={open}>
+   
       <h3 className="title">My Playlists</h3>
 
       <ul className="playlists">
