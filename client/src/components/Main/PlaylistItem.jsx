@@ -148,22 +148,19 @@ const PlaylistItem = (props) => {
 
   const playPreview = () => {
     const song = new Audio(props.previewUrl);
-    console.log(songStack);
 
     if (songStack.src) {
       if (songStack.src === song.src) {
-        console.log('same song so pause');
         songStack.pause();
         setSongStack('');
         setSongPlaying('');
       } else {  // pause old song, play new song
-        console.log('new song selected');
         songStack.pause();
         song.play();
+        setSongStack(song);
         setSongPlaying(song.src);
       }
     } else {  // play new song
-      // songStack.push(song);
       setSongStack(song);
       song.play();
       setSongPlaying(song.src);
