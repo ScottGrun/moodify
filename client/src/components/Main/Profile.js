@@ -1,57 +1,83 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
+import { useCookies } from 'react-cookie';
+import { StateContext } from '../../App';
 import styled from 'styled-components';
-import downArrow from '../../assets/down-arrow.svg';
-import profilePic from '../../assets/profile-pic.svg';
 
 const ProfileContainer = styled.div`
-  .profile {
-    display: flex;
-    width: 160px;
-    height: 40px;
+  position: relative;
+  overflow: hidden;
+  height: 100px;
+  width: 200px;
+  border-radius: 4px;
+
+  .profile-dropdown {
     position: relative;
+    display: flex;
+    align-items: center;
+    background-color: #12172C;
+    width: 100%;
+    height: 40px;
+    padding: 5px;
+    z-index: 100;
+    
+    &:hover {
+      cursor: pointer;
+    }
 
-    .image-container {
-      height: 100%;
-      width: 40px;
-      background-color: #12172C;
-      border-radius: 50%;
-      position: absolute;
-      left: -20px;
-      z-index: 100;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      img {
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
-      }
+    .profile-pic {
+      width: 30px;
+      height: 30px;
+      background-image: url('https://i.imgur.com/fH8okuG.jpg');
+      background-size: cover;
+      background-position: center;
+      margin-right: 10px;
     }
 
     .profile-name {
       color: white;
-      width: 100%;
-      height: 100%;
-      background-color: #12172C;
-      position: absolute;
-      display: flex;
-      align-items: center;
-      padding-left: 25px;
+      user-select: none;
     }
 
-    .profile-dropdown {
-      height: 100%;
-      width: 40px;
-      background-color: #12172C;
-      border-radius: 50%;
+    ion-icon {
       position: absolute;
-      right: -20px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      right: 10px;
+      color: white;
+      font-size: 20px;
+    }
+  }
 
-      img {
+  .dropdown-container {
+    height: 60px;
+    background-color: #12172C;
+    width: 100%;
+    padding: 10px;
+    transition: transform 0.2s ease-in-out;
+    transform: translateY(-60px);
+    ${({ open }) => open && `
+      transform: translateY(0);
+    `}
+
+
+    ul {
+      color: #ccc;
+
+      li {
+        list-style: none;
+        padding: 10px 20px;
+        display: flex;
+        align-items: center;
+        user-select: none;
+
+        ion-icon {
+          font-size: 20px;
+          color: white;
+          margin-right: 10px;
+        }
+
+        &:hover {
+          background-color: #191F35;
+          cursor: pointer;
+        }
       }
     }
   }
@@ -66,10 +92,22 @@ const ProfileContainer = styled.div`
 `;
 
 export default function Profile() {
+  const [cookies, setCookie, removeCookie] = useCookies(['cookie-name']);
+  const [accessToken, setAccessToken] = useContext(StateContext).AccessToken;
+  const [open, setOpen] = useState(false);
+  const toggleDropdown = () => {
+    setOpen(prev => !open);
+  };
+
+  const logout = () => {
+    removeCookie('accessToken');
+    setAccessToken(null);
+    window.location = 'http://localhost:3000';
+  };
 
   return(
-    <ProfileContainer>
-      <div className='profile'>
+    <ProfileContainer open={open}>
+      {/* <div className='profile' onClick={toggleDropdown}>
         <div className='image-container'>
           <img src={profilePic} />
         </div>
@@ -77,6 +115,19 @@ export default function Profile() {
         <div className='profile-dropdown'>
           <img src={downArrow} />
         </div>
+      </div> */}
+      <div className='profile-dropdown' onClick={toggleDropdown}>
+        <img className='profile-pic' />
+        <p className='profile-name'>Eirc Romar</p>
+        <ion-icon className='dropdown-icon' name="chevron-down-outline"></ion-icon>
+      </div>
+      <div className='dropdown-container'>
+        <ul>
+          <li onClick={logout}>
+            <ion-icon name="exit-outline"></ion-icon>
+            Logout
+          </li>
+        </ul>
       </div>
     </ProfileContainer>
   );

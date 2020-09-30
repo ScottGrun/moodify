@@ -1,5 +1,4 @@
 import React, { useEffect, useContext, useState } from 'react';
-import { useCookies } from 'react-cookie';
 import axios from 'axios';
 import { StateContext } from '../../App';
 import styled from 'styled-components';
@@ -208,7 +207,6 @@ const MainContainer = styled.div`
 `;
 
 const Main = () => {
-  const [cookies, setCookie, removeCookie] = useCookies(['cookie-name']);
   const [accessToken, setAccessToken] = useContext(StateContext).AccessToken;
   const [userTracks, setTracks] = useContext(StateContext).UserTracks;
   const [chartValues, setChartValues] = useContext(StateContext).ChartValues;
@@ -244,17 +242,8 @@ const Main = () => {
     getPlaylists();
   }, []);
 
-  const logout = () => {
-    removeCookie('accessToken');
-    setAccessToken(null);
-    window.location = 'http://localhost:3000';
-  };
-
   return (
     <MainContainer openNav={openNav} openCYP={openCreatePlaylistModal}>
-      <button className="logout" onClick={logout}>
-        Logout
-      </button>
       <div className='create-playlist-modal'>
         <CreatePlaylistModal />
       </div>
