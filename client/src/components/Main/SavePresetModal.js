@@ -9,9 +9,10 @@ const SavePresetModalContainer = styled.div`
   height: 100%;
   max-height: 551px;
   position: absolute;
+  border-radius: 5px;
   top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  left: 20%;
+  transform: translate(0, -50%);
   background-color: #28292D;
   color: white;
   display: flex;
@@ -20,6 +21,7 @@ const SavePresetModalContainer = styled.div`
   padding: 25px;
   box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
   display: none;
+  z-index: 9999;
   ${({ open }) => open && `
     display: block;
   `}
@@ -62,7 +64,7 @@ const SavePresetModalContainer = styled.div`
         flex-direction: column;
         margin-bottom: 28px;
 
-        input, textarea {
+        input {
           margin-top: 10px;
           display: flex;
           align-items: center;
@@ -88,11 +90,6 @@ const SavePresetModalContainer = styled.div`
 
         input {
           height: 32px;
-        }
-
-        textarea {
-          height: 102px;
-          resize: none;
         }
       }
 
@@ -127,19 +124,25 @@ export default function SavePresetModal() {
   const [name, setName] = useState('');
   const [imageUrl, setImageUrl] = useState('');
   // need to get slider min max values from state
-
-  // const savePreset = (/*slider min max values*/) => {
-  //   axios
-  //     .post(`http://localhost:9000/create/preset`, {
-  //       name,
-  //       audio_features,
-  //       imageUrl,
-  //       user_id 
-  //     })
-  //     .then((res) => {
-  //       console.log(res);
-  //     });
-  // };
+  const [playlistMinMax, setPlaylistMinMax] = useContext(StateContext).PlaylistMinMax;
+  const savePreset = () => {
+    console.log(playlistMinMax.data.tempo);
+    console.log(playlistMinMax.data.instrumentalness);
+    console.log(playlistMinMax.data.energy);
+    console.log(playlistMinMax.data.valence);
+    console.log(playlistMinMax.data.danceability);
+    console.log(playlistMinMax.data.loudness);
+    // axios
+    //   .post(`http://localhost:9000/create/preset`, {
+    //     name,
+    //     audio_features: playlistMinMax.data,
+    //     imageUrl,
+    //     // user_id 
+    //   })
+    //   .then((res) => {
+    //     console.log(res);
+    //   });
+  };
 
   return(
     <SavePresetModalContainer open={openSavePresetModal}>
@@ -165,7 +168,7 @@ export default function SavePresetModal() {
             Image URL
             <input placeholder='Change default image.' value={imageUrl} onChange={e => setImageUrl(e.target.value)}/>
           </label>
-          <button className='save-preset' onClick={() => console.log("will eventually make this save preset to db...")}>Save Preset</button>
+          <button className='save-preset' onClick={savePreset}>Save Preset</button>
         </div>
       </div>
     </SavePresetModalContainer>

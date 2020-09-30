@@ -10,8 +10,10 @@ import PlaylistImage from './PlaylistImage';
 import PlaylistItemContainer from './PlaylistItemContainer';
 import RadarChart from './RadarChart';
 import Sliders from './Sliders';
+import PresetsContainer from './PresetsContainer';
 import OpenMenu from './OpenMenu';
 import CreatePlaylistModal from './CreatePlaylistModal';
+import SavePresetModal from './SavePresetModal';
 
 const HamburgerMenu = styled.div`
   height: 24px;
@@ -38,6 +40,11 @@ const Overlay = styled.div`
   z-index: 999;
   ${({ openCYP }) =>
     openCYP &&
+    `
+    display: block;
+  `}
+  ${({ openPreset }) =>
+    openPreset &&
     `
     display: block;
   `}
@@ -109,6 +116,21 @@ const CreatePlaylistButton = styled.button`
   }
 `;
 
+const SavePresetButton = styled.button`
+  width: 25%;
+  background-color: transparent;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  border: solid 2px white;
+  padding: 10px;
+
+  &:hover {
+    background-color: #2ed689;
+    color: #191f35;
+  }
+`;
+
 const Main = () => {
   const [accessToken, setAccessToken] = useContext(StateContext).AccessToken;
   const [userTracks, setTracks] = useContext(StateContext).UserTracks;
@@ -117,6 +139,7 @@ const Main = () => {
   const [openCreatePlaylistModal, setOpenCreatePlaylistModal] = useContext(StateContext).OpenCreatePlaylistModal;
   const [playlistMinMax, setPlaylistMinMax] = useContext(StateContext).PlaylistMinMax;
   const [playlists, setPlaylists] = useState([]);
+  const [openSavePresetModal, setOpenSavePresetModal] = useContext(StateContext).OpenSavePresetModal;
 
   const getTracks = () => {
     axios
@@ -156,9 +179,11 @@ const Main = () => {
       </HamburgerMenu>
       <Overlay
         openCYP={openCreatePlaylistModal}
+        openPreset={openSavePresetModal}
         onClick={() => {
           setOpenNav(false);
           setOpenCreatePlaylistModal(false);
+          setOpenSavePresetModal(false);
         }}
       ></Overlay>
 
@@ -173,6 +198,7 @@ const Main = () => {
 
         <MainContent>
           <CreatePlaylistModal />
+          <SavePresetModal />
 
           <div className="playlists-container">
             <div className="playlist-image-container">
@@ -196,7 +222,16 @@ const Main = () => {
               Create Playlist
             </CreatePlaylistButton>
           </div>
+          <div className="presets-container">
+            <SavePresetButton
+              className="save-preset-btn" 
+              onClick={() => setOpenSavePresetModal(true)}>
+                Save Preset
+            </SavePresetButton>
+            <PresetsContainer /> 
+          </div>
         </PlaylistControls>
+        
       </MainContainer>
     </>
   );
