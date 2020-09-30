@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 const PlayListImageContainer = styled.div`
   width: 100%;
-  max-width: 684px;
   height: 224px;
   position: relative;
   display: flex;
@@ -13,12 +12,12 @@ const PlayListImageContainer = styled.div`
   background-size: cover;
   overflow: hidden;
   border-radius: 10px;
+  margin-bottom: 30px;
 
   .dark-overlay {
     position: absolute;
     width: 100%;
     height: 100%;
-    background-color: rgba(0,0,0,0.4);
   }
 
   .playlist-text {

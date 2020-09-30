@@ -68,7 +68,7 @@ const PlaylistItemContainer = (props) => {
           <p>Energy</p>
           <p>Danceability</p>
           <p>Valence</p>
-          <p>Instrumental</p>
+          <p>Instru.</p>
           <p>Loudness</p>
         </ColumnHeaderContainer>
       </StyledHeader>

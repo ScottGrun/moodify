@@ -25,21 +25,28 @@ const MainContainer = styled.div`
   grid-template-areas:
     'header header header header header header header header header header header header'
     'sidebar sidebar main main main main main main playlist-controls playlist-controls playlist-controls playlist-controls';
-
- 
-
 `;
 
 const Sidebar = styled.div`
+  margin-top: 20px;
   grid-area: sidebar;
 `;
 
 const MainContent = styled.div`
+  margin-top: 20px;
+
   grid-area: main;
 `;
 
 const PlaylistControls = styled.div`
+  margin-top: 20px;
+
   grid-area: playlist-controls;
+`;
+
+const HeaderContainer = styled.div`
+    margin-bottom: 120px;
+  grid-area: header;
 `;
 
 const Main = () => {
@@ -81,6 +88,11 @@ const Main = () => {
 
   return (
     <MainContainer openNav={openNav} openCYP={openCreatePlaylistModal}>
+      <HeaderContainer>
+      <Header />
+
+      </HeaderContainer>
+
       <Sidebar>
         <Navigation playlists={playlists} />
       </Sidebar>
