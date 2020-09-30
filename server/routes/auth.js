@@ -39,7 +39,7 @@ router.get('/login', (req, res) => {
   );
 });
 
-router.post('/token', (req, res) => {
+router.post('/token', async (req, res) => {
   const code = req.body.code;
 
   var authOptions = {
@@ -59,14 +59,11 @@ router.post('/token', (req, res) => {
       var access_token = body.access_token,
         refresh_token = body.refresh_token;
 
-      var options = {
-        url: 'https://api.spotify.com/v1/me',
+      const user = await axios.get('https://api.spotify.com/v1/me', {
         headers: { Authorization: 'Bearer ' + access_token },
-        json: true,
-      };
+      }).then(res => res.data.id);
       
-      // we can also pass the token to the browser to make requests from there
-      res.send(access_token);
+      res.send({ access_token, refresh_token, user });
     } else {
       res.send(
         '/#' +
