@@ -14,6 +14,7 @@ import Sliders from './Sliders';
 import PresetsContainer from './PresetsContainer';
 import OpenMenu from './OpenMenu';
 import CreatePlaylistModal from './CreatePlaylistModal';
+import SavePresetModal from './SavePresetModal';
 
 const MainContainer = styled.div`
   position: relative;
@@ -49,6 +50,20 @@ const MainContainer = styled.div`
     `}
   }
 
+  .preset-overlay {
+    position: fixed;
+    height: 100vh;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(0,0,0,0.4);
+    z-index: 11;
+    display: none;
+    ${({ openPreset }) => openPreset && `
+      display: block;
+    `}
+  }
+
   .overlay {
     height: 100vh;
     width: 100vw;
@@ -61,6 +76,10 @@ const MainContainer = styled.div`
   }
 
   .create-playlist-modal {
+    z-index: 12;
+  
+  }
+  .save-preset-modal {
     z-index: 12;
   }
 
@@ -126,6 +145,25 @@ const MainContainer = styled.div`
       .presets-container {
         width: 100%;
         margin: 45px 0 30px 0;
+
+        .save-preset-btn {
+          width: 25%;
+          border: 2px solid white;
+          font-size: 14px;
+          letter-spacing: 0.2px;
+          height: 40px;
+          background-color: transparent;
+          color: white;
+          border-radius: 4px;
+          font-weight: 600;
+          margin-top: 20px;
+          transition: 0.1s all ease-in-out;
+
+          &:hover {
+            cursor: pointer;
+            background-color: #2ed689;
+          }
+        }
       }
     }
   }
@@ -201,6 +239,10 @@ const MainContainer = styled.div`
           grid-row-end: 5;
           margin: 0;
           height: 100%;
+
+          .save-preset-btn {
+            align-self: flex-start;
+          }
         }
       }
     }
@@ -216,6 +258,7 @@ const Main = () => {
   const [openCreatePlaylistModal, setOpenCreatePlaylistModal] = useContext(StateContext).OpenCreatePlaylistModal;
   const [playlistMinMax, setPlaylistMinMax] = useContext(StateContext).PlaylistMinMax;
   const [filteredTracks, setFilteredTracks] = useContext(StateContext).FilteredTracks;
+  const [openSavePresetModal, setOpenSavePresetModal] = useContext(StateContext).OpenSavePresetModal;
 
   const getTracks = () => {
     axios
@@ -243,7 +286,7 @@ const Main = () => {
   };
 
   return (
-    <MainContainer openNav={openNav} openCYP={openCreatePlaylistModal}>
+    <MainContainer openNav={openNav} openCYP={openCreatePlaylistModal} openPreset={openSavePresetModal}>
       <button className="logout" onClick={logout}>
         Logout
       </button>
@@ -251,6 +294,10 @@ const Main = () => {
         <CreatePlaylistModal />
       </div>
       <div className='cyp-overlay' onClick={() => setOpenCreatePlaylistModal(!openCreatePlaylistModal)}></div>
+      <div className='save-preset-modal'>
+        <SavePresetModal />
+      </div>
+      <div className='preset-overlay' onClick={() => setOpenSavePresetModal(!openSavePresetModal)}></div>
       <div className='overlay' onClick={() => setOpenNav(!openNav)}></div>
       <div className='open-menu' onClick={() => setOpenNav(!openNav)}>
         <OpenMenu open={openNav}/>
@@ -276,7 +323,8 @@ const Main = () => {
             <button className="create-playlist-btn" onClick={() => setOpenCreatePlaylistModal(true)}>Create Playlist</button>
           </div>
           <div className="presets-container">
-            <PresetsContainer />
+            <button className="save-preset-btn" onClick={() => setOpenSavePresetModal(true)}>Save Preset</button>
+              <PresetsContainer /> 
           </div>
         </div>
       </div>

@@ -1,0 +1,173 @@
+import React, { useState, useContext } from 'react';
+import styled from 'styled-components';
+import { StateContext } from '../../App';
+import axios from 'axios';
+
+const SavePresetModalContainer = styled.div`
+  width: 100%;
+  max-width: 614px;
+  height: 100%;
+  max-height: 551px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #28292D;
+  color: white;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 25px;
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+  display: none;
+  ${({ open }) => open && `
+    display: block;
+  `}
+
+  h1 {
+    font-size: 24px;
+    letter-spacing: 0.2px;
+    margin-bottom: 40px;
+    text-align: center;
+  }
+
+  .content-container {
+    display: flex;
+
+    .image-container {
+      margin-right: 25px;
+
+      img {
+        width: 212px;
+        height: 212px;
+        margin-bottom: 10px;
+      }
+
+      .preset-stats {
+        font-size: 14px;
+        color: #999999;
+        
+        p {
+          margin-bottom: 10px;
+        }
+      }
+    }
+    
+    .form {
+      display: flex;
+      flex-direction: column;
+
+      label {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 28px;
+
+        input, textarea {
+          margin-top: 10px;
+          display: flex;
+          align-items: center;
+          font-size: 12px;
+          letter-spacing: -0.2px;
+          line-height: 20px;
+          padding: 7px 12px;
+          border-radius: 4px;
+          border: none;
+
+          &::placeholder {
+            font-size: 12px;
+            letter-spacing: -0.2px;
+            color: #aaa;
+            font-family: Inter;
+          }
+
+          &:focus {
+            border: none;
+            outline: none;
+          }
+        }
+
+        input {
+          height: 32px;
+        }
+
+        textarea {
+          height: 102px;
+          resize: none;
+        }
+      }
+
+      .save-preset {
+        height: 36px;
+        width: 100%;
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 0.2px;
+        border: 2px solid white;
+        border-radius: 2px;
+        background-color: transparent;
+        color: white;
+        cursor: pointer;
+        transition: all 0.1s ease-in-out;
+
+        &:focus {
+          outline: none;
+        }
+
+        &:hover {
+          background-color: #2ED689;
+        }
+      }
+    }
+
+  }
+`;
+
+export default function SavePresetModal() {
+  const [openSavePresetModal, setOpenSavePresetModal] = useContext(StateContext).OpenSavePresetModal;
+  const [name, setName] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
+  // need to get slider min max values from state
+
+  // const savePreset = (/*slider min max values*/) => {
+  //   axios
+  //     .post(`http://localhost:9000/create/preset`, {
+  //       name,
+  //       audio_features,
+  //       imageUrl,
+  //       user_id 
+  //     })
+  //     .then((res) => {
+  //       console.log(res);
+  //     });
+  // };
+
+  return(
+    <SavePresetModalContainer open={openSavePresetModal}>
+      <h1>Save Your Preset</h1>
+      <div className='content-container'>
+        <div className='image-container'>
+          <img />
+          <div className='preset-stats'>
+            <p>Audio Feature: min - max</p>
+            <p>Audio Feature: min - max</p>
+            <p>Audio Feature: min - max</p>
+            <p>Audio Feature: min - max</p>
+            <p>Audio Feature: min - max</p>
+            <p>Audio Feature: min - max</p>
+          </div>
+        </div>
+        <div className='form'>
+          <label>
+            Preset Name
+            <input placeholder={'Chill vibes.'} value={name} onChange={e => setName(e.target.value)}/>
+          </label>
+          <label>
+            Image URL
+            <input placeholder='Change default image.' value={imageUrl} onChange={e => setImageUrl(e.target.value)}/>
+          </label>
+          <button className='save-preset' onClick={() => console.log("will eventually make this save preset to db...")}>Save Preset</button>
+        </div>
+      </div>
+    </SavePresetModalContainer>
+  );
+};
