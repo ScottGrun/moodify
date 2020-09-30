@@ -118,22 +118,21 @@ const presetsData = [
 ];
 
 const breakpoints = {
-  1800: {slidesPerView: 3, spaceBetween: 20},
-  1700: {slidesPerView: 3, spaceBetween: 0},
-  1600: {slidesPerView: 3, spaceBetween: -60},
-  // 1500: {slidesPerView: 2.5, slidesPerGroup: 2.5, spaceBetween: 0},
-  // 1400: {slidesPerView: 2.5, slidesPerGroup: 2.5, spaceBetween: 0},
-  1300: {slidesPerView: 3, slidesPerGroup: 3, spaceBetween: -80},
-  // 1200: {slidesPerView: 2, slidesPerGroup: 2, spaceBetween: -80},
-  // 1100: {slidesPerView: 2, slidesPerGroup: 2, spaceBetween: -80},
-  // 1000: {slidesPerView: 2, slidesPerGroup: 2, spaceBetween: -80},
-  // 900: {slidesPerView: 2, slidesPerGroup: 2, spaceBetween: -80},
-  800: {slidesPerView: 2, slidesPerGroup: 2, spaceBetween: -80},
-  // 700: {slidesPerView: 2, slidesPerGroup: 2, spaceBetween: -100},
+  1800: {slidesPerView: 4, slidesPerGroup: 4, spaceBetween: -200},
+  1700: {slidesPerView: 4, slidesPerGroup: 3, spaceBetween: -100},
+  1600: {slidesPerView: 4, slidesPerGroup: 4, spaceBetween: -60},
+  1500: {slidesPerView: 4, slidesPerGroup: 4, spaceBetween: -60},
+  1400: {slidesPerView: 5, slidesPerGroup: 5, spaceBetween: 60},
+  1300: {slidesPerView: 6, slidesPerGroup: 6, spaceBetween: -40},
+  1200: {slidesPerView: 2.5, slidesPerGroup: 2.5, spaceBetween: -75},
+  1100: {slidesPerView: 2.25, slidesPerGroup: 2.25, spaceBetween: -100},
+  1000: {slidesPerView: 2.25, slidesPerGroup: 2.25, spaceBetween: -100},
+  900: {slidesPerView: 2.25, slidesPerGroup: 2.25, spaceBetween: -100},
+  800: {slidesPerView: 2.25, slidesPerGroup: 2.25, spaceBetween: -100},
+  700: {slidesPerView: 2.25, slidesPerGroup: 2.25, spaceBetween: -120},
   600: {slidesPerView: 2, slidesPerGroup: 2, spaceBetween: -100},
-  500: {slidesPerView: 1.25, slidesPerGroup: 1.25, spaceBetween: -100},
-  400: {slidesPerView: 1, slidesPerGroup: 1, spaceBetween: -100},
-  0: {slidesPerView: 1}
+  500: {slidesPerView: 1.25, slidesPerGroup: 1.25, spaceBetween: -120},
+  400: {slidesPerView: 1, slidesPerGroup: 1, spaceBetween: -100}
 }
 
 export default function Presets() {
@@ -158,8 +157,8 @@ export default function Presets() {
             clickable: true,
           }}
           // spaceBetween={50}
-          slidesPerView={3}
-          slidesPerGroup={3}
+          // slidesPerView={3}
+          // slidesPerGroup={3}
           breakpoints={breakpoints}
           onSlideChange={() => console.log('slide change')}
           onSwiper={(swiper) => console.log(swiper)}
