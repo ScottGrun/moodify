@@ -129,11 +129,13 @@ const Landing = () => {
       code
     })
     .then(res => {
-      const access_token = res.data;
+      const { access_token, refresh_token, user } = res.data;
       
       if (!access_token.includes('error')) {
         removeCookie('code');
-        setCookie('accessToken', access_token)
+        setCookie('accessToken', access_token);
+        setCookie('refreshToken', refresh_token);
+        setCookie('userData', JSON.stringify(user));
         setAccessToken(access_token);
         window.location = 'http://localhost:3000';
       }

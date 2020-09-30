@@ -18,7 +18,54 @@ const getUserId = async (accessToken) => {
   return user_id;
 };
 
+const getAudioFeaturesOfTracks = async (formattedTracks, accessToken) => {
+  const trackAudioFeatures = [];
+  let audioFeaturesReceived = 0;
+
+  while (audioFeaturesReceived < formattedTracks.length) {
+    const trackIds = formattedTracks
+      .map(track => track.id)
+      .slice(audioFeaturesReceived, audioFeaturesReceived + 100)
+      .join(',');
+
+    const audioFeatures = await axios({
+      method: 'get',
+      url: `https://api.spotify.com/v1/audio-features?ids=${trackIds}`,
+      headers: { Authorization: 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
+    });
+    audioFeaturesReceived += 100;
+    trackAudioFeatures.push(...audioFeatures.data.audio_features);
+  }
+  return trackAudioFeatures;
+};
+
+const getTracksFromPlaylist = async (playlist_id, totalTracks, accessToken) => {
+  const playlistTracks = [];
+  let tracksReceived = 0;
+
+  while (tracksReceived < totalTracks) {
+    const playlistItems = await axios({
+      method: 'get',
+      url: `https://api.spotify.com/v1/playlists/${playlist_id}/tracks?offset=${tracksReceived}`,
+      headers: { Authorization: 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
+    });
+    tracksReceived += 100;
+    playlistTracks.push(...playlistItems.data.items)
+  }
+  return playlistTracks;
+}
+
+const addAudioFeaturesToTracks = (parsedTracks, trackAudioFeatures) => {
+  const formattedSongs = parsedTracks.map((song, index) => {
+    return { ...song, audio: {...trackAudioFeatures[index]} };
+  })
+  return formattedSongs;
+}
+
 module.exports = {
   generateString,
-  getUserId
+  getUserId,
+  getTracksFromPlaylist,
+  addAudioFeaturesToTracks,
+  getAudioFeaturesOfTracks
 }
