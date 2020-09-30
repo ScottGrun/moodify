@@ -36,10 +36,8 @@ router.post('/create', async (req, res) => {
       headers: { Authorization: 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
       data: { name, description }
     });
-
     songsAdded += 100;
   };
-
   res.send('New playlist created and songs added!');
 });
 

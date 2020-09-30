@@ -131,6 +131,21 @@ export default function Navigation({ playlists }) {
       });
   };
 
+  const loadNewSongs = () => {
+    axios
+      .post(`http://localhost:9000/getTracks/newSongs`, {
+        accessToken
+      })
+      .then(res => {
+        setTracks({
+          loading: true,
+          songs: res.data.songs,
+        });
+        setChartValues(res.data.averages);
+        setPlaylistMinMax({data: res.data.minMax, loaded: true});
+      });
+  };
+
   return(
     <NavigationContainer open={openNav}>
       <div className='navigation-content'>
@@ -140,7 +155,7 @@ export default function Navigation({ playlists }) {
         <div className='section my-playlists'>
           <h3 className='title'>Discover</h3>
           <ul className='playlists'>
-              <li onClick={() => console.log('fetch me new songs peasent!')}>
+              <li onClick={loadNewSongs}>
                 <img src={musicIcon} /><p>New Songs</p>
               </li>
           </ul>
