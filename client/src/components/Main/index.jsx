@@ -55,15 +55,12 @@ const MainContainer = styled.div`
   grid-template-areas:
     'header header header header header header header header header header header header'
     'sidebar sidebar main main main main main main playlist-controls playlist-controls playlist-controls playlist-controls';
-    
 
   @media(max-width: 1280px){
     grid-template-areas:
     'header header header header header header header header header header header header'
     'main main main main main main main playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls';
   }
-
-
 `;
 
 const Sidebar = styled.div`
