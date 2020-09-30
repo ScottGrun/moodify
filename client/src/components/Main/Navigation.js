@@ -12,11 +12,11 @@ import logo from '../../assets/logo.svg';
 import leftArrow from '../../assets/left-arrow.svg';
 
 const NavigationContainer = styled.div`
-  min-width: 200px;
-  max-width: 200px;
+  width: 100%;
   height: calc(100vh - 100px);
-  overflow: hidden;
-  background-color: #12172C;
+  overflow-y: auto;
+
+
   border-radius: 4px;
 
   .navigation-content {
@@ -41,7 +41,7 @@ const NavigationContainer = styled.div`
       ul {
 
         li {
-          padding: 10px;
+          padding: 10px 0px;
           list-style: none;
           font-size: 14px;
           letter-spacing: 0.28px;
@@ -158,7 +158,7 @@ export default function Navigation({ playlists }) {
               playlists.length > 0 && playlists.map(playlist => {
                 return (
                   <li key={playlist.id} onClick={() => loadTracks(playlist.id, playlist.tracks.total)}>
-                    <img src={musicIcon} /><p>{playlist.name}</p>
+                    <img src={musicIcon} /><p>{playlist.name.length > 17 ? playlist.name.slice(0, 17) + '...' : playlist.name}</p>
                   </li>
                 );
               })
