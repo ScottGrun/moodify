@@ -14,6 +14,7 @@ FirstStory.args = {
   img: 'https://i.scdn.co/image/966ade7a8c43b72faa53822b74a899c675aaafee',
   artist: 'Carly Rae Jepsen',
   name: 'Cut To The Feeling',
+  playing: false,
   //previewUrl: "https://p.scdn.co/mp3-preview/ff9c292ae17e7e65d67828df5ad7467b31dbcd00?cid=60eafbfca0174c00afe35882d73ad389",
   audio: {
     danceability: 0.696,

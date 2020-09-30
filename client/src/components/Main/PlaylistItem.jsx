@@ -1,5 +1,7 @@
 import styled, { keyframes } from 'styled-components';
 import PlayButton from '../../assets/icons/PlayButton.svg';
+import WaveFormSource from '../../assets/icons/audio.svg';
+
 import React, { useContext, useState, useEffect } from 'react';
 import { StateContext } from '../../App';
 
@@ -20,11 +22,12 @@ const OverlayContainer = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  display: none;
+  display: ${(props) => (props.playing ? 'flex' : 'none')};
   justify-content: center;
   background-color: rgba(46, 213, 137, 0.32);
   height: 45px;
   width: 45px;
+  padding: 5px;
   border-radius: 5px 0px 0px 5px;
 `;
 
@@ -37,6 +40,7 @@ const SongName = styled.h4`
   line-height: 16px;
   color: white;
   margin: 0;
+  color: ${(props) => (props.playing ? '#2ed589' : null)};
 `;
 
 const ArtistName = styled.p`
@@ -109,7 +113,6 @@ to {
 }
 `;
 
-
 const StyledProgressContainer = styled.div`
   position: absolute;
   display: flex;
@@ -117,14 +120,15 @@ const StyledProgressContainer = styled.div`
   height: 3px;
   padding-left: 45px;
   bottom: 0px;
-  width: 100%;
+  width: 0%;
   border-radius: 0px 0px 5px;
   z-index: 100;
+  width: 100%;
 
   div {
+    animation: ${(props) => (props.playing ? playProgress : null)} 30s linear;
     width: 0%;
     background-color: #2ed589;
-    animation: ${playProgress} 30s linear;
   }
 
   @keyframes play-progress {
@@ -166,11 +170,12 @@ const PlaylistItem = (props) => {
         <StyledSongImage src={props.img} />
       </StyledSongCoverContainer>
 
-      <OverlayContainer>
-        <img src={PlayButton} />
+      <OverlayContainer playing={playing}>
+        {playing && <img src={WaveFormSource} />}
+        {!playing && <img src={PlayButton} />}
       </OverlayContainer>
       <SongMetaData>
-        <SongName>{props.name}</SongName>
+        <SongName playing={playing}>{props.name}</SongName>
         <ArtistName>{props.artist}</ArtistName>
       </SongMetaData>
       <AudioFeatures>
@@ -181,7 +186,7 @@ const PlaylistItem = (props) => {
         <p>{Math.trunc(props.audio.instrumentalness * 100)}</p>
         <p>{Math.trunc(props.audio.loudness)}db</p>
       </AudioFeatures>
-      <StyledProgressContainer>
+      <StyledProgressContainer playing={playing}>
         <div></div>
       </StyledProgressContainer>
     </StyledPlaylistItem>
