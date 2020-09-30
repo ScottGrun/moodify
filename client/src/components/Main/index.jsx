@@ -16,7 +16,7 @@ import CreatePlaylistModal from './CreatePlaylistModal';
 
 const MainContainer = styled.div`
   max-width: 1440px;
-  margin: 0 auto;
+  margin: 24px auto 0 auto;
 
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
@@ -28,25 +28,37 @@ const MainContainer = styled.div`
 `;
 
 const Sidebar = styled.div`
-  margin-top: 20px;
   grid-area: sidebar;
 `;
 
 const MainContent = styled.div`
-  margin-top: 20px;
 
   grid-area: main;
 `;
 
 const PlaylistControls = styled.div`
-  margin-top: 20px;
 
   grid-area: playlist-controls;
 `;
 
 const HeaderContainer = styled.div`
-    margin-bottom: 120px;
   grid-area: header;
+`;
+
+const CreatePlaylistButton = styled.button`
+  width: 100%;
+  background-color: transparent;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  border: solid 2px white;
+  padding: 10px;
+  margin: 10px;
+
+  &:hover{
+    background-color: #2ed689;
+    color: #191F35;
+  }
 `;
 
 const Main = () => {
@@ -89,8 +101,7 @@ const Main = () => {
   return (
     <MainContainer openNav={openNav} openCYP={openCreatePlaylistModal}>
       <HeaderContainer>
-      <Header />
-
+        <Header />
       </HeaderContainer>
 
       <Sidebar>
@@ -112,12 +123,12 @@ const Main = () => {
           </div>
           <div className="sliders-container">
             <Sliders />
-            <button
+            <CreatePlaylistButton
               className="create-playlist-btn"
               onClick={() => setOpenCreatePlaylistModal(true)}
             >
               Create Playlist
-            </button>
+            </CreatePlaylistButton>
           </div>
           {/* <div className="presets-container">
             <PresetsContainer />

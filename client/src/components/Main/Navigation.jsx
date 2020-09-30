@@ -41,7 +41,7 @@ const NavigationContainer = styled.div`
 
     ul {
       li {
-        padding: 10px;
+        padding: 10px 0px;
         list-style: none;
         font-size: 14px;
         letter-spacing: 0.28px;

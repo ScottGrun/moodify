@@ -246,7 +246,7 @@ export default function Sliders() {
           <p>Loudness</p>
           <Slider
             min={-60}
-            max={0}
+            max={1}
             value={loudness}
             onChangeCommitted={(event, val) => {
               setPlaylistMinMax((prev) => ({ ...prev, data: { ...prev.data, loudness: val } }));

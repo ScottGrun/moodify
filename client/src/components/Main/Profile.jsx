@@ -4,10 +4,9 @@ import { StateContext } from '../../App';
 import styled from 'styled-components';
 
 const ProfileContainer = styled.div`
-  position: relative;
   overflow: hidden;
-  height: 100px;
   width: 200px;
+  height: 40px;
   border-radius: 4px;
 
   .profile-dropdown {
@@ -107,20 +106,13 @@ export default function Profile() {
 
   return(
     <ProfileContainer open={open}>
-      {/* <div className='profile' onClick={toggleDropdown}>
-        <div className='image-container'>
-          <img src={profilePic} />
-        </div>
-        <div className='profile-name'>Eric Romar</div>
-        <div className='profile-dropdown'>
-          <img src={downArrow} />
-        </div>
-      </div> */}
+  
       <div className='profile-dropdown' onClick={toggleDropdown}>
         <img className='profile-pic' />
         <p className='profile-name'>Eirc Romar</p>
         <ion-icon className='dropdown-icon' name="chevron-down-outline"></ion-icon>
       </div>
+
       <div className='dropdown-container'>
         <ul>
           <li onClick={logout}>
