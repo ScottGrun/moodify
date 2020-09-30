@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { StateContext } from '../../App';
-import {mapRange} from '../../helpers/mapRange';
 
 import styled from 'styled-components';
 import Slider from '@material-ui/core/Slider';

@@ -12,72 +12,97 @@ import logo from '../../assets/logo.svg';
 import leftArrow from '../../assets/left-arrow.svg';
 
 const NavigationContainer = styled.div`
-  height: 100vh;
   min-width: 200px;
   max-width: 200px;
-  color: white;
-  padding: 20px 10px;
-  z-index: 2;
-  overflow-y: auto;
+  height: calc(100vh - 100px);
+  overflow: hidden;
+  background-color: #12172C;
+  border-radius: 4px;
 
-  .header {
-    display: none;
-    margin-bottom: 30px;
-    justify-content: space-between;
-  }
+  .navigation-content {
+    height: 100%;
+    min-width: 217px;
+    max-width: 217px;
+    color: white;
+    padding: 20px 10px 20px 10px;
+    z-index: 2;
+    overflow-y: scroll;
+    overflow-x: hidden;
 
-  .my-playlists {
-    margin-bottom: 20px;
-
-    .title {
-      margin-bottom: 25px;
-      font-size: 18px;
-      letter-spacing: -0.2px;
+    .header {
+      display: none;
+      margin-bottom: 30px;
+      justify-content: space-between;
     }
 
-    ul {
+    .section {
+      margin-bottom: 20px;
 
-      li {
-        padding: 10px;
-        list-style: none;
-        font-size: 14px;
-        letter-spacing: 0.28px;
-        display: flex;
-        cursor: pointer;
+      .title {
+        margin-bottom: 25px;
+        font-size: 18px;
+        letter-spacing: -0.2px;
+      }
 
-        img {
-          margin-right: 25px;
-          width: 20px;
-          height: 20px;
-        }
+      ul {
 
-        &:hover {
-          background-color: #ccc;
-          color: #666666;
+        li {
+          padding: 10px;
+          list-style: none;
+          font-size: 14px;
+          letter-spacing: 0.28px;
+          display: flex;
+          cursor: pointer;
+          user-select: none;
+
+          img {
+            margin-right: 25px;
+            width: 20px;
+            height: 20px;
+          }
+
+          &:hover {
+            background-color: #ccc;
+            color: #666666;
+          }
         }
       }
+    }
+
+    .profile-dropdown-container {
+      display: none;
     }
   }
 
   @media(max-width: 1300px) {
     min-width: 282px;
     max-width: 282px;
-    background-color: #1C1D20;
+    height: 100vh;
     position: fixed;
     top: 0;
-    right: -280px;
+    right: 0;
     z-index: 100;
+    transform: translateX(282px);
     transition: all 0.5s ease-in-out;
     ${({ open }) => open && `
-      transform: translateX(-282px);
+      transform: translateX(0);
     `}
 
-    .header {
-      display: flex;
-    }
+    .navigation-content {
+      min-width: 299px;
+      max-width: 299px;
+      height: 100%;
+      overflow-y: scroll;
+      overflow-x: hidden;
+      background-color: #1C1D20;
 
-    .profile-dropdown-container {
-      display: block;
+      .header {
+        display: flex;
+      }
+
+      .profile-dropdown-container {
+        display: block;
+      }
     }
   }
 `;
@@ -108,27 +133,36 @@ export default function Navigation({ playlists }) {
 
   return(
     <NavigationContainer open={openNav}>
-      <div className='header'>
-        <img src={logo} className='logo'/>
+      <div className='navigation-content'>
+        <div className='header'>
+          <img src={logo} className='logo'/>
+        </div>
+        <div className='section my-playlists'>
+          <h3 className='title'>Discover</h3>
+          <ul className='playlists'>
+              <li onClick={() => console.log('fetch me new songs peasent!')}>
+                <img src={musicIcon} /><p>New Songs</p>
+              </li>
+          </ul>
+        </div>
+        <div className='section my-playlists'>
+          <h3 className='title'>My Playlists</h3>
+          <ul className='playlists'>
+            {
+              playlists.length > 0 && playlists.map(playlist => {
+                return (
+                  <li key={playlist.id} onClick={() => loadTracks(playlist.id, playlist.tracks.total)}>
+                    <img src={musicIcon} /><p>{playlist.name}</p>
+                  </li>
+                );
+              })
+            }
+          </ul>
+        </div>
+        <div className='profile-dropdown-container'>
+          <Profile />
+        </div>
       </div>
-      <div className='section my-playlists'>
-        <h3 className='title'>My Playlists</h3>
-        <ul className='playlists'>
-          {
-            playlists.length > 0 && playlists.map(playlist => {
-              return (
-                <li key={playlist.id} onClick={() => loadTracks(playlist.id, playlist.tracks.total)}>
-                  <img src={musicIcon} /><p>{playlist.name}</p>
-                </li>
-              );
-            })
-          }
-        </ul>
-      </div>
-      <div className='profile-dropdown-container'>
-        <Profile />
-      </div>
-
     </NavigationContainer>
   );
 };
