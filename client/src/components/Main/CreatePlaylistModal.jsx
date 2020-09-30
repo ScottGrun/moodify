@@ -10,9 +10,10 @@ const CreatePlaylistModalContainer = styled.div`
   height: 100%;
   max-height: 551px;
   position: absolute;
+  border-radius: 5px;
   top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  left: 20%;
+  transform: translate(0, -50%);
   background-color: #28292D;
   color: white;
   display: flex;
@@ -21,6 +22,7 @@ const CreatePlaylistModalContainer = styled.div`
   padding: 25px;
   box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
   display: none;
+  z-index: 9999;
   ${({ open }) => open && `
     display: block;
   `}

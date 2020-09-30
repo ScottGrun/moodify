@@ -164,6 +164,9 @@ const PlaylistItem = (props) => {
     }
   };
 
+  
+ 
+
   return (
     <StyledPlaylistItem onClick={playPreview}>
       <StyledSongCoverContainer>
@@ -175,7 +178,7 @@ const PlaylistItem = (props) => {
         {!playing && <img src={PlayButton} />}
       </OverlayContainer>
       <SongMetaData>
-        <SongName playing={playing}>{props.name}</SongName>
+        <SongName playing={playing}> {props.name.length > 26 ?  props.name.slice(0, 20) + '...' : props.name }</SongName>
         <ArtistName>{props.artist}</ArtistName>
       </SongMetaData>
       <AudioFeatures>

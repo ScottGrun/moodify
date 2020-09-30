@@ -14,10 +14,26 @@ import PresetsContainer from './PresetsContainer';
 import OpenMenu from './OpenMenu';
 import CreatePlaylistModal from './CreatePlaylistModal';
 
+const Overlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: none;
+  z-index: 999;
+  ${({ openCYP }) =>
+    openCYP &&
+    `
+    display: block;
+  `}
+`;
+
 const MainContainer = styled.div`
   max-width: 1440px;
   margin: 24px auto 0 auto;
-
+  position: relative;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
   grid-template-rows: 40px 1fr;
@@ -32,12 +48,10 @@ const Sidebar = styled.div`
 `;
 
 const MainContent = styled.div`
-
   grid-area: main;
 `;
 
 const PlaylistControls = styled.div`
-
   grid-area: playlist-controls;
 `;
 
@@ -55,9 +69,9 @@ const CreatePlaylistButton = styled.button`
   padding: 10px;
   margin: 10px;
 
-  &:hover{
+  &:hover {
     background-color: #2ed689;
-    color: #191F35;
+    color: #191f35;
   }
 `;
 
@@ -99,43 +113,56 @@ const Main = () => {
   }, []);
 
   return (
-    <MainContainer openNav={openNav} openCYP={openCreatePlaylistModal}>
-      <HeaderContainer>
-        <Header />
-      </HeaderContainer>
+    <>
+      <Overlay
+        openCYP={openCreatePlaylistModal}
+        onClick={() => {
+          console.log('soidfjosidjf');
+          setOpenCreatePlaylistModal(!openCreatePlaylistModal)
+        }}
+      ></Overlay>
 
-      <Sidebar>
-        <Navigation playlists={playlists} />
-      </Sidebar>
-      <MainContent>
-        <div className="playlists-container">
-          <div className="playlist-image-container">
-            <PlaylistImage />
-          </div>
-        </div>
+      <MainContainer openNav={openNav}>
+        <HeaderContainer>
+          <Header />
+        </HeaderContainer>
 
-        {userTracks.loading && <PlaylistItemContainer />}
-      </MainContent>
-      <PlaylistControls>
-        <div className="playlist-customization-container">
-          <div className="radar-chart-container">
-            <RadarChart />
+        <Sidebar>
+          <Navigation playlists={playlists} />
+        </Sidebar>
+
+        <MainContent>
+          <CreatePlaylistModal />
+
+          <div className="playlists-container">
+            <div className="playlist-image-container">
+              <PlaylistImage />
+            </div>
           </div>
-          <div className="sliders-container">
-            <Sliders />
-            <CreatePlaylistButton
-              className="create-playlist-btn"
-              onClick={() => setOpenCreatePlaylistModal(true)}
-            >
-              Create Playlist
-            </CreatePlaylistButton>
-          </div>
-          {/* <div className="presets-container">
+
+          {userTracks.loading && <PlaylistItemContainer />}
+        </MainContent>
+        <PlaylistControls>
+          <div className="playlist-customization-container">
+            <div className="radar-chart-container">
+              <RadarChart />
+            </div>
+            <div className="sliders-container">
+              <Sliders />
+              <CreatePlaylistButton
+                className="create-playlist-btn"
+                onClick={() => setOpenCreatePlaylistModal(true)}
+              >
+                Create Playlist
+              </CreatePlaylistButton>
+            </div>
+            {/* <div className="presets-container">
             <PresetsContainer />
           </div> */}
-        </div>
-      </PlaylistControls>
-    </MainContainer>
+          </div>
+        </PlaylistControls>
+      </MainContainer>
+    </>
   );
 };
 

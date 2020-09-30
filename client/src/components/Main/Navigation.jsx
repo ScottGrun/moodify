@@ -12,7 +12,7 @@ import logo from '../../assets/logo.svg';
 import leftArrow from '../../assets/left-arrow.svg';
 
 const NavigationContainer = styled.div`
-  height: 100%;
+  height: calc(100vh - 100px);
   width: 100%;
   color: white;
   z-index: 2;
@@ -24,43 +24,43 @@ const NavigationContainer = styled.div`
     justify-content: space-between;
   }
 
-  .my-playlists {
-    margin-bottom: 20px;
+  .title {
+    margin-bottom: 25px;
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 900;
+    font-size: 18px;
+    /* identical to box height, or 156% */
 
-    .title {
-      margin-bottom: 25px;
-      font-family: Inter;
-      font-style: normal;
-      font-weight: 900;
-      font-size: 18px;
-      /* identical to box height, or 156% */
+    letter-spacing: 0.2px;
+    color: #ffffff;
+  }
 
-      letter-spacing: 0.2px;
-      color: #ffffff;
-    }
+  ul {
+    li {
+      padding: 10px 0px;
+      list-style: none;
+      font-size: 14px;
+      letter-spacing: 0.28px;
+      display: flex;
+      cursor: pointer;
 
-    ul {
-      li {
-        padding: 10px 0px;
-        list-style: none;
-        font-size: 14px;
-        letter-spacing: 0.28px;
-        display: flex;
-        cursor: pointer;
+      img {
+        margin-right: 25px;
+        width: 20px;
+        height: 20px;
+      }
 
-        img {
-          margin-right: 25px;
-          width: 20px;
-          height: 20px;
-        }
-
-        &:hover {
-          background-color: #ccc;
-          color: #666666;
-        }
+      &:hover {
+        background-color: #ccc;
+        color: #666666;
       }
     }
   }
+
+  .profile-dropdown-container {
+      display: none;
+    }
 
   @media (max-width: 1300px) {
     min-width: 282px;
@@ -80,7 +80,6 @@ const NavigationContainer = styled.div`
     .header {
       display: flex;
     }
-
     .profile-dropdown-container {
       display: block;
     }
@@ -116,23 +115,20 @@ export default function Navigation({ playlists }) {
       <div className="header">
         <img src={logo} className="logo" />
       </div>
-      <div className="section my-playlists">
-        <h3 className="title">My Playlists</h3>
-        <ul className="playlists">
-          {playlists.length > 0 &&
-            playlists.map((playlist) => {
-              return (
-                <li
-                  key={playlist.id}
-                  onClick={() => loadTracks(playlist.id, playlist.tracks.total)}
-                >
-                  <img src={musicIcon} />
-                  <p>{playlist.name}</p>
-                </li>
-              );
-            })}
-        </ul>
-      </div>
+      <h3 className="title">My Playlists</h3>
+
+      <ul className="playlists">
+        {playlists.length > 0 &&
+          playlists.map((playlist) => {
+            return (
+              <li key={playlist.id} onClick={() => loadTracks(playlist.id, playlist.tracks.total)}>
+                <img src={musicIcon} />
+                <p>{playlist.name.length > 17 ? playlist.name.slice(0, 17) + '...' : playlist.name}</p>
+              </li>
+            );
+          })}
+      </ul>
+
       <div className="profile-dropdown-container">
         <Profile />
       </div>

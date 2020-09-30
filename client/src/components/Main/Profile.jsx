@@ -5,9 +5,13 @@ import styled from 'styled-components';
 
 const ProfileContainer = styled.div`
   overflow: hidden;
+  border-radius: 5px;
+  position: absolute;
+  top: 0;
+  right: 0%;
   width: 200px;
-  height: 40px;
-  border-radius: 4px;
+  height: 100px;
+  
 
   .profile-dropdown {
     position: relative;
@@ -30,6 +34,7 @@ const ProfileContainer = styled.div`
       background-size: cover;
       background-position: center;
       margin-right: 10px;
+      border-radius: 3px;
     }
 
     .profile-name {
@@ -46,6 +51,7 @@ const ProfileContainer = styled.div`
   }
 
   .dropdown-container {
+    opacity: 0;
     height: 60px;
     background-color: #12172C;
     width: 100%;
@@ -54,6 +60,8 @@ const ProfileContainer = styled.div`
     transform: translateY(-60px);
     ${({ open }) => open && `
       transform: translateY(0);
+      opacity: 1;
+      
     `}
 
 
