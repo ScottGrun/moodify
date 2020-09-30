@@ -54,7 +54,7 @@ router.post('/token', async (req, res) => {
     json: true,
   };
 
-  request.post(authOptions, function (error, response, body) {
+  request.post(authOptions, async (error, response, body) => {
     if (!error && response.statusCode === 200) {
       var access_token = body.access_token,
         refresh_token = body.refresh_token;

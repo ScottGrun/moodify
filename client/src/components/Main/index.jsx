@@ -14,9 +14,9 @@ import PresetsContainer from './PresetsContainer';
 import OpenMenu from './OpenMenu';
 import CreatePlaylistModal from './CreatePlaylistModal';
 
-const HamburgerMenu = styled(OpenMenu)`
-  height: 30px;
-  width: 30px;
+const HamburgerMenu = styled.div`
+  height: 24px;
+  width: 24px;
   display: none;
   position: fixed;
   top: 25px;
@@ -115,9 +115,7 @@ const Main = () => {
   const [userTracks, setTracks] = useContext(StateContext).UserTracks;
   const [chartValues, setChartValues] = useContext(StateContext).ChartValues;
   const [openNav, setOpenNav] = useContext(StateContext).OpenNav;
-  const [openCreatePlaylistModal, setOpenCreatePlaylistModal] = useContext(
-    StateContext,
-  ).OpenCreatePlaylistModal;
+  const [openCreatePlaylistModal, setOpenCreatePlaylistModal] = useContext(StateContext).OpenCreatePlaylistModal;
   const [playlistMinMax, setPlaylistMinMax] = useContext(StateContext).PlaylistMinMax;
   const [playlists, setPlaylists] = useState([]);
 
@@ -147,14 +145,16 @@ const Main = () => {
     getPlaylists();
   }, []);
 
+  const handleClick = () => {
+    console.log('sdfsdfsdfsd');
+    setOpenNav(!openNav);
+  }
+
   return (
     <>
-      <HamburgerMenu
-        onClick={() => {
-          console.log('sdoipjfsoidjf');
-          setOpenNav(!openNav)
-        }}
-      />
+      <HamburgerMenu onClick={handleClick}> 
+        <OpenMenu />
+      </HamburgerMenu>
       <Overlay
         openCYP={openCreatePlaylistModal}
         onClick={() => {
@@ -197,9 +197,6 @@ const Main = () => {
               Create Playlist
             </CreatePlaylistButton>
           </div>
-          {/* <div className="presets-container">
-            <PresetsContainer />
-          </div> */}
         </PlaylistControls>
       </MainContainer>
     </>
