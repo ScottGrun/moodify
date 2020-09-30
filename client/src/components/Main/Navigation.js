@@ -1,15 +1,6 @@
 import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
-import clsx from 'clsx';
-import { makeStyles } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
-import Button from '@material-ui/core/Button';
-import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
 import { StateContext } from '../../App';
 
 // components
@@ -25,7 +16,7 @@ const NavigationContainer = styled.div`
   min-width: 200px;
   max-width: 200px;
   color: white;
-  padding: 20px;
+  padding: 20px 10px;
   z-index: 2;
   overflow-y: auto;
 
@@ -35,40 +26,37 @@ const NavigationContainer = styled.div`
     justify-content: space-between;
   }
 
-  & > .section:not(:last-child) {
-    margin-bottom: 60px;
-  }
+  .my-playlists {
+    margin-bottom: 20px;
 
-  .title {
-    margin-bottom: 25px;
-    font-size: 18px;
-    letter-spacing: -0.2px;
-  }
-
-  li {
-    list-style: none;
-    margin-bottom: 25px;
-    font-size: 14px;
-    letter-spacing: 0.28px;
-    display: flex;
-    cursor: pointer;
-
-    img {
-      margin-right: 25px;
-      width: 20px;
-      height: 20px;
+    .title {
+      margin-bottom: 25px;
+      font-size: 18px;
+      letter-spacing: -0.2px;
     }
 
-    &:hover {
-      color: #ccc;
-    }
-  }
+    ul {
 
-  .profile-dropdown-container {
-    display: none;
-    position: absolute;
-    bottom: 100px;
-    left: 35px;
+      li {
+        padding: 10px;
+        list-style: none;
+        font-size: 14px;
+        letter-spacing: 0.28px;
+        display: flex;
+        cursor: pointer;
+
+        img {
+          margin-right: 25px;
+          width: 20px;
+          height: 20px;
+        }
+
+        &:hover {
+          background-color: #ccc;
+          color: #666666;
+        }
+      }
+    }
   }
 
   @media(max-width: 1300px) {
@@ -109,7 +97,6 @@ export default function Navigation({ playlists }) {
         totalTracks
       })
       .then(res => {
-        console.log(res.data)
         setTracks({
           loading: true,
           songs: res.data.songs,

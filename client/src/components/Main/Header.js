@@ -6,20 +6,31 @@ import { StateContext } from '../../App';
 import logo from '../../assets/logo.svg';
 
 const HeaderContainer = styled.div`
-  width: 100%;
-  max-width: 1440px;
-  height: 80px;
-  padding: 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  width: 100vw;
+  background-color: #191F35;
+  z-index: 10;
   position: fixed;
   top: 0;
-  z-index: 10;
-  background-color: #191F35;
+  left: 0;
+  display: flex;
+  justify-content: center;
 
-  .profile {
-    margin-right: 20px;
+  .header-content {
+    width: 100%;
+    max-width: 1440px;
+    height: 80px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #191F35;
+    position: relative;
+
+    .profile {
+      position: absolute;
+      right: 20px;
+      top: 20px;
+    }
   }
 
   @media(max-width: 1300px) {
@@ -34,9 +45,11 @@ export default function(Header) {
 
   return(
     <HeaderContainer>
-      <img src={logo} />
-      <div className='profile'>
-        <Profile />
+      <div className='header-content'>
+        <img src={logo} />
+        <div className='profile'>
+          <Profile />
+        </div>
       </div>
     </HeaderContainer>
   );

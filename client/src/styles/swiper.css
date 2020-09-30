@@ -1,0 +1,23 @@
+.swiper-wrapper {
+  margin-left: 55px;
+  margin-right: 55px;
+}
+
+.swiper-button-next, .swiper-button-prev {
+  margin-top: 0;
+}
+
+.swiper-pagination {
+  width: 100%;
+  bottom: -25px;
+}
+
+.swiper-pagination-bullet {
+  opacity: 0.35;
+  background: #ffffff;
+  margin: 1px;
+}
+
+.swiper-pagination-bullet.swiper-pagination-bullet-active {
+  opacity: 1;
+}

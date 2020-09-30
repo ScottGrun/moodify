@@ -161,7 +161,7 @@ export default function CreatePlaylistModal() {
     const uris = songs.filter(song => matchFilter(song, playlistMinMax)).map(song => song.uri)
 
     axios
-      .post(`http://localhost:9000/playlists/createb`, {
+      .post(`http://localhost:9000/playlists/create`, {
         accessToken,
         name,
         description,

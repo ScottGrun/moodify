@@ -1,5 +1,5 @@
 -- Presets table seeds here
-INSERT INTO presets (name, description, acousticness, danceability, energy, instrumentalness, loudness, instrumentalness, valence, tempo, times_applied)
+INSERT INTO presets (name, description, acousticness, danceability, energy, instrumentalness, loudness, speechiness, valence, tempo, times_applied)
 VALUES ('Cool preset', 'This is my cool preset.', 0.514, 0.735, 0.578, 0.0902, -11.840, 0.0461, 0.624, 98.002, 1), 
 ('My awesome preset', 'Awesome soundz.', 0.675, 0.421, 0.318, 0.046, -23.040, 0.024, 0.384, 85.000, 1),
 ('Preset for my music', 'How does this sound?', 1.0, 1.0, 1.0, 0.0, -50.0, 1.0, 1.0, 100.0, 1),
@@ -11,6 +11,6 @@ VALUES ('Cool preset', 'This is my cool preset.', 0.514, 0.735, 0.578, 0.0902, -
 -- energy range of 0.0 to 1.0
 -- instrumentalness range of 0.0 to 1.0
 -- loudness range of -60.0 - 0.0
--- instrumentalness range of 0.0 to 1.0
+-- speechiness range of 0.0 to 1.0
 -- valence range of 0.0 to 1.0
 -- tempo from 0.0 + 
