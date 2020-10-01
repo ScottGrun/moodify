@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 // Components
 import Header from './Header';
-import Navigation from './Navigation';
+import Navigation from './Navigation.jsx';
 import PlaylistImage from './PlaylistImage';
 import PlaylistItemContainer from './PlaylistItemContainer';
 import RadarChart from './RadarChart';
