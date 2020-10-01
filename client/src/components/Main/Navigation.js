@@ -68,7 +68,7 @@ const NavigationContainer = styled.div`
     }
   }
 
-  @media(max-width: 1300px) {
+  @media(max-width: 1280px) {
     min-width: 282px;
     max-width: 282px;
     height: 100vh;

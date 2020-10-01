@@ -22,7 +22,7 @@ const HamburgerMenu = styled.div`
   right: 25px;
   z-index: 99999;
 
-  @media(max-width: 1280px) {
+  @media (max-width: 1280px) {
     display: block;
   }
 `;
@@ -55,21 +55,27 @@ const MainContainer = styled.div`
   grid-template-areas:
     'header header header header header header header header header header header header'
     'sidebar sidebar main main main main main main playlist-controls playlist-controls playlist-controls playlist-controls';
-    
 
-  @media(max-width: 1280px){
+  @media (max-width: 1280px) {
+    margin: 24px;
     grid-template-areas:
-    'header header header header header header header header header header header header'
-    'main main main main main main main playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls';
+      'header header header header header header header header header header header header'
+      'main main main main main main main playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls';
   }
 
-
+  @media (max-width: 768px) {
+    margin: 16px;
+    grid-template-areas:
+      'header header header header header header header header header header header header'
+      'playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls'
+      'main main main main main main main main main main main main ';
+  }
 `;
 
 const Sidebar = styled.div`
   grid-area: sidebar;
 
-  @media(max-width: 1280px){
+  @media (max-width: 1280px) {
     grid-area: none;
     height: 100vh;
     width: 282px;
@@ -87,12 +93,17 @@ const MainContent = styled.div`
 const PlaylistControls = styled.div`
   grid-area: playlist-controls;
 
-  
+  @media (max-width: 768px) {
+    display: flex;
+    flex-flow: row;
+  }
 `;
 
 const HeaderContainer = styled.div`
   grid-area: header;
 `;
+
+
 
 const CreatePlaylistButton = styled.button`
   width: 100%;
@@ -109,12 +120,22 @@ const CreatePlaylistButton = styled.button`
   }
 `;
 
+const ControlsContainer = styled.div`
+  width: 100%;
+
+  @media (mix-max: 768px) {
+    width: 50%;
+  }
+`;
+
 const Main = () => {
   const [accessToken, setAccessToken] = useContext(StateContext).AccessToken;
   const [userTracks, setTracks] = useContext(StateContext).UserTracks;
   const [chartValues, setChartValues] = useContext(StateContext).ChartValues;
   const [openNav, setOpenNav] = useContext(StateContext).OpenNav;
-  const [openCreatePlaylistModal, setOpenCreatePlaylistModal] = useContext(StateContext).OpenCreatePlaylistModal;
+  const [openCreatePlaylistModal, setOpenCreatePlaylistModal] = useContext(
+    StateContext,
+  ).OpenCreatePlaylistModal;
   const [playlistMinMax, setPlaylistMinMax] = useContext(StateContext).PlaylistMinMax;
   const [playlists, setPlaylists] = useState([]);
 
@@ -147,11 +168,11 @@ const Main = () => {
   const handleClick = () => {
     console.log('sdfsdfsdfsd');
     setOpenNav(!openNav);
-  }
+  };
 
   return (
     <>
-      <HamburgerMenu onClick={handleClick}> 
+      <HamburgerMenu onClick={handleClick}>
         <OpenMenu />
       </HamburgerMenu>
       <Overlay
@@ -168,7 +189,7 @@ const Main = () => {
         </HeaderContainer>
 
         <Sidebar>
-          <Navigation playlists={playlists} open={openNav}/>
+          <Navigation playlists={playlists} open={openNav} />
         </Sidebar>
 
         <MainContent>
@@ -183,11 +204,9 @@ const Main = () => {
           {userTracks.loading && <PlaylistItemContainer />}
         </MainContent>
         <PlaylistControls>
-          <div className="radar-chart-container">
             <RadarChart />
-          </div>
 
-          <div className="sliders-container">
+          <ControlsContainer>
             <Sliders />
             <CreatePlaylistButton
               className="create-playlist-btn"
@@ -195,7 +214,7 @@ const Main = () => {
             >
               Create Playlist
             </CreatePlaylistButton>
-          </div>
+          </ControlsContainer>
         </PlaylistControls>
       </MainContainer>
     </>
