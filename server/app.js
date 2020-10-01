@@ -7,6 +7,7 @@ const authRouter = require('./routes/auth');
 const dataRouter = require('./routes/data');
 const getTracksRouter = require('./routes/getTracks');
 const playlistsRouter = require('./routes/playlists');
+const presetsRouter = require('./routes/presets');
 
 const app = express();
 
@@ -24,6 +25,7 @@ app.use('/auth', authRouter(db));
 app.use('/data', dataRouter);
 app.use('/getTracks', getTracksRouter);
 app.use('/playlists', playlistsRouter);
+app.use('/presets', presetsRouter(db));
 
 app.get('/', (req, res) => {
   res.send('hi');
