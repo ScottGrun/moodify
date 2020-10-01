@@ -33,9 +33,6 @@ const ProfileContainer = styled.div`
     .profile-pic {
       width: 30px;
       height: 30px;
-      background-image: url(${({ profilePic }) => profilePic });
-      background-size: cover;
-      background-position: center;
       margin-right: 10px;
       border-radius: 3px;
     }
@@ -122,7 +119,7 @@ export default function Profile() {
     <ProfileContainer open={open} profilePic={userData.images[0].url}>
   
       <div className='profile-dropdown' onClick={toggleDropdown}>
-        <img className='profile-pic' />
+        <img src={userData.images[0].url} className='profile-pic' />
         <p className='profile-name'>{userData.display_name || 'NA'}</p>
         <ion-icon className='dropdown-icon' name="chevron-down-outline"></ion-icon>
       </div>
