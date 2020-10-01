@@ -26,6 +26,10 @@ const NavigationContainer = styled.div`
     overflow-y: scroll;
     overflow-x: hidden;
 
+    .discover-container {
+      margin-top: 7px;
+    }
+
     .section {
       margin-bottom: 20px;
 
@@ -33,6 +37,7 @@ const NavigationContainer = styled.div`
         margin-bottom: 25px;
         font-size: 18px;
         letter-spacing: -0.2px;
+        user-select: none;
       }
 
       ul {
@@ -72,13 +77,6 @@ const NavigationContainer = styled.div`
     top: 0;
     right: 0;
     z-index: 100;
-    transform: translateX(282px);
-    transition: all 0.5s ease-in-out;
-    ${({ open }) =>
-      open &&
-      `
-      transform: translateX(0);
-    `}
 
     .navigation-content {
       min-width: 299px;
@@ -87,20 +85,23 @@ const NavigationContainer = styled.div`
       overflow-y: scroll;
       overflow-x: hidden;
       background-color: #1c1d20;
+      position: relative;
 
       .header {
         display: flex;
       }
 
-      .profile-dropdown-container {
+      .profile-container {
         display: block;
+        height: 40px;
+        width: 100%;
+        margin-bottom: 50px;
       }
     }
   }
 `;
 
 export default function Navigation({ playlists }) {
-  const [openNav, setOpenNav] = useContext(StateContext).OpenNav;
   const [accessToken, setAccessToken] = useContext(StateContext).AccessToken;
   const [chartValues, setChartValues] = useContext(StateContext).ChartValues;
   const [userTracks, setTracks] = useContext(StateContext).UserTracks;
@@ -161,9 +162,9 @@ export default function Navigation({ playlists }) {
   };
 
   return (
-    <NavigationContainer open={openNav}>
+    <NavigationContainer >
       <div className="navigation-content">
-        <div className="section my-playlists">
+        <div className="section discover-container">
           <h3 className="title">Discover</h3>
           <ul className="playlists">
             <li onClick={loadFeaturedSongs}>
@@ -197,7 +198,7 @@ export default function Navigation({ playlists }) {
               })}
           </ul>
         </div>
-        <div className="profile-dropdown-container">
+        <div className="profile-container">
           <Profile />
         </div>
       </div>
