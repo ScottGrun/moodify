@@ -123,8 +123,8 @@ export default function SavePresetModal() {
   const [openSavePresetModal, setOpenSavePresetModal] = useContext(StateContext).OpenSavePresetModal;
   const [name, setName] = useState('');
   const [imageUrl, setImageUrl] = useState('');
-  // need to get slider min max values from state
   const [playlistMinMax, setPlaylistMinMax] = useContext(StateContext).PlaylistMinMax;
+  
   const savePreset = () => {
     console.log(playlistMinMax.data);
     // console.log(playlistMinMax.data.tempo);
@@ -133,16 +133,16 @@ export default function SavePresetModal() {
     // console.log(playlistMinMax.data.valence);
     // console.log(playlistMinMax.data.danceability);
     // console.log(playlistMinMax.data.loudness);
-    // axios
-    //   .post(`http://localhost:9000/create/preset`, {
-    //     name,
-    //     audio_features: playlistMinMax.data,
-    //     imageUrl,
-    //     // user_id 
-    //   })
-    //   .then((res) => {
-    //     console.log(res);
-    //   });
+    axios
+      .post(`http://localhost:9000/create/preset`, {
+        name,
+        audio_features: playlistMinMax.data,
+        imageUrl,
+        // user_id 
+      })
+      .then((res) => {
+        console.log(res);
+      });
   };
 
   const presetStats = () => {

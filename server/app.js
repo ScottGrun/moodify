@@ -1,6 +1,3 @@
-// const db = require('./db');
-// const dbHelpers = require('./helpers/dbHelpers')(db);
-
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
@@ -13,11 +10,17 @@ const playlistsRouter = require('./routes/playlists');
 
 const app = express();
 
+// PG database client/connection setup
+const { Pool } = require('pg');
+const dbParams = require('./lib/db.js');
+const db = new Pool(dbParams);
+db.connect();
+
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors());
 
-app.use('/auth', authRouter);
+app.use('/auth', authRouter(db));
 app.use('/data', dataRouter);
 app.use('/getTracks', getTracksRouter);
 app.use('/playlists', playlistsRouter);
