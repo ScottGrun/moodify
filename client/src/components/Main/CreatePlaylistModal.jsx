@@ -3,12 +3,14 @@ import styled from 'styled-components';
 import { StateContext } from '../../App';
 import axios from 'axios';
 import { matchFilter } from '../../helpers/filter';
+import { filterTracks } from '../../helpers/filter';
+import { getTotalDuration } from '../../helpers/calculations';
 
 const CreatePlaylistModalContainer = styled.div`
   width: 100%;
   max-width: 614px;
   height: 100%;
-  max-height: 551px;
+  max-height: 500px;
   position: absolute;
   border-radius: 5px;
   top: 50%;
@@ -59,6 +61,7 @@ const CreatePlaylistModalContainer = styled.div`
     .form {
       display: flex;
       flex-direction: column;
+      width: 100%;
 
       label {
         display: flex;
@@ -99,31 +102,6 @@ const CreatePlaylistModalContainer = styled.div`
         }
       }
 
-      .update-weekly {
-        display: flex;
-
-        .checkbox {
-          width: 16px;
-          height: 16px;
-        }
-
-        .explanation {
-          margin-left: 7px;
-
-          h3 {
-            font-size: 10px;
-            font-weight: 500;
-            margin-bottom: 7px;
-          }
-
-          p {
-            font-size: 8px;
-            color: #999999;
-            margin-bottom: 15px;
-          }
-        }
-      }
-
       .save-playlist {
         height: 36px;
         width: 100%;
@@ -158,6 +136,10 @@ export default function CreatePlaylistModal() {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [imageUrl, setImageUrl] = useState('');
+  const [validImage, setValidImage] = useState(false);
+
+  const filteredTracks = filterTracks(userTracks, playlistMinMax);
+  const duration = getTotalDuration(filteredTracks);
 
   const savePlaylist = (songs) => {
     const uris = songs.filter(song => matchFilter(song, playlistMinMax)).map(song => song.uri)
@@ -180,32 +162,25 @@ export default function CreatePlaylistModal() {
       <h1>Create Your Playlist</h1>
       <div className='content-container'>
         <div className='image-container'>
-          <img />
+          <img src={imageUrl} />
           <div className='playlist-stats'>
-            <p>Total Listening Time  — 2:31 </p>
-            <p>Songs In Playlist — 436</p>
+            <p>Songs In Playlist — {filteredTracks && filteredTracks.length || 'NA'}</p>
+            <p>Total Listening Time  — {duration || 'NA'}</p>
           </div>
         </div>
         <div className='form'>
           <label>
-            Playlist Name
-            <input placeholder={'A super awesome playlist.'} value={name} onChange={e => setName(e.target.value)}/>
+            Playlist Name (optional)
+            <input placeholder={'Best Playlist'} value={name} onChange={e => setName(e.target.value)}/>
           </label>
           <label>
-            Image URL
+            Image URL (optional)
             <input placeholder='A super awesome playlist.' value={imageUrl} onChange={e => setImageUrl(e.target.value)}/>
           </label>
           <label>
-            Description
+            Description (optional)
             <textarea placeholder='A super awesome playlist.' value={description} onChange={e => setDescription(e.target.value)}/>
           </label>
-          <div className='update-weekly'>
-            <input type='checkbox' />
-            <div className='explanation'>
-              <h3>Update Weekly</h3>
-              <p>Automatically update your playlist every Monday with new music that matches your filters.</p>
-            </div>
-          </div>
           <button className='save-playlist' onClick={() => savePlaylist(userTracks.songs)}>Save Playlist</button>
         </div>
       </div>
