@@ -51,9 +51,7 @@ const SectionHeader = styled.h2`
 const PlaylistItemContainer = (props) => {
   const [playlistMinMax, setPlaylistMinMax] = useContext(StateContext).PlaylistMinMax;
   const [userTracks, setUserTracks] = useContext(StateContext).UserTracks;
-  const [songPlaying, setSongPlaying] = useState('');
-  const [songStack, setSongStack] = useState('');
-  // const songStack = [];
+  const [songPlaying, setSongPlaying] = useState({});
 
   let renderSongs = [];
   if (playlistMinMax.loaded && userTracks.loading) {
@@ -62,9 +60,7 @@ const PlaylistItemContainer = (props) => {
       .map((song, index) => <PlaylistItem 
         {...song}
         key={song.id + index}
-        stack={[songStack, setSongStack]}
-        songPlaying={[songPlaying, setSongPlaying]}
-      />);
+        songPlaying={[songPlaying, setSongPlaying]}/>);
   }
 
   return (
