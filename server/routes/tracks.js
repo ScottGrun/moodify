@@ -32,7 +32,7 @@ router.post('/playlist', async (req, res) => {
   });
 });
 
-router.post('/newSongs', async (req, res) => {
+router.post('/featured', async (req, res) => {
   const { accessToken } = req.body;
   const featuredPlaylistsTracks = [];
 

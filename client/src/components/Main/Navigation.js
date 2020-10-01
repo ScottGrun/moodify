@@ -110,7 +110,7 @@ export default function Navigation({ playlists }) {
 
   const loadTracks = (playlist_id, totalTracks) => {
     axios
-      .post(`http://localhost:9000/getTracks/playlist`, {
+      .post(`http://localhost:9000/tracks/playlist`, {
         accessToken,
         playlist_id,
         totalTracks
@@ -127,7 +127,7 @@ export default function Navigation({ playlists }) {
 
   const loadNewSongs = () => {
     axios
-      .post(`http://localhost:9000/getTracks/newSongs`, {
+      .post(`http://localhost:9000/tracks/featured`, {
         accessToken
       })
       .then(res => {

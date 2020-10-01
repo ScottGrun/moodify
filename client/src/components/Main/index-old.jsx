@@ -217,7 +217,7 @@ const Main = () => {
 
   const getTracks = () => {
     axios
-      .post(`http://localhost:9000/getTracks/`, {
+      .post(`http://localhost:9000/tracks/`, {
         accessToken,
       })
       .then((res) => {

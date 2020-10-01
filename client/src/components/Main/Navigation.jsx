@@ -95,7 +95,7 @@ export default function Navigation({ playlists, open }) {
 
   const loadTracks = (playlist_id, totalTracks) => {
     axios
-      .post(`http://localhost:9000/getTracks/playlist`, {
+      .post(`http://localhost:9000/tracks/playlist`, {
         accessToken,
         playlist_id,
         totalTracks,

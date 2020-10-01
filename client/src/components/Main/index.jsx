@@ -117,7 +117,7 @@ const Main = () => {
 
   const getTracks = () => {
     axios
-      .post(`http://localhost:9000/getTracks/saved`, {
+      .post(`http://localhost:9000/tracks/saved`, {
         accessToken,
       })
       .then((res) => {
