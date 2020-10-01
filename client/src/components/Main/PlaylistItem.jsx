@@ -1,6 +1,7 @@
 import styled, { keyframes } from 'styled-components';
 import PlayButton from '../../assets/icons/PlayButton.svg';
 import WaveFormSource from '../../assets/icons/audio.svg';
+import setCurrentSongPlaying from '../../helpers/songPreviewManager';
 
 import React, { useContext, useState, useEffect } from 'react';
 import { StateContext } from '../../App';
@@ -142,29 +143,31 @@ const StyledProgressContainer = styled.div`
 `;
 
 const PlaylistItem = (props) => {
-  const [songPlaying, setSongPlaying] = props.songPlaying;
+  const [currentSong, setCurrentSong] = useState(null);
+  const [isPlaying, setPlaying] = useState(false);
+
+  useEffect(() => {
+    if (isPlaying) {
+      const newSong = new Audio(props.previewUrl);
+      setCurrentSong(newSong);
+
+      setCurrentSongPlaying(props.previewUrl, () => {
+        newSong.pause();
+        setCurrentSong(null);
+        setPlaying(false);
+      });
+
+      newSong.play();
+    } else if (currentSong !== null) {
+      currentSong.pause();
+    }
+  }, [isPlaying]);
 
   const playPreview = () => {
-    const newSong = new Audio(props.previewUrl);
-    newSong.loop = true;
-
-    if (songPlaying.src) {
-      if (songPlaying.src === newSong.src) {   // pause old song
-        songPlaying.pause();
-        setSongPlaying({});
-      } else {  // pause old song, play new song
-        songPlaying.pause();
-        newSong.play();
-        setSongPlaying(newSong);
-      }
-    } else {  // play new song
-      newSong.play();
-      setSongPlaying(newSong);
-    }
+    setPlaying(!isPlaying);
   };
-  
-  
-  const playing = songPlaying.src === props.previewUrl;
+
+  const playing = isPlaying;
 
   return (
     <StyledPlaylistItem onClick={playPreview}>
@@ -177,7 +180,10 @@ const PlaylistItem = (props) => {
         {!playing && <img src={PlayButton} />}
       </OverlayContainer>
       <SongMetaData>
-        <SongName playing={playing}> {props.name.length > 26 ?  props.name.slice(0, 20) + '...' : props.name }</SongName>
+        <SongName playing={playing}>
+          {' '}
+          {props.name.length > 26 ? props.name.slice(0, 20) + '...' : props.name}
+        </SongName>
         <ArtistName>{props.artist}</ArtistName>
       </SongMetaData>
       <AudioFeatures>
