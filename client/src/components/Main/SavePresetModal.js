@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { StateContext } from '../../App';
 import axios from 'axios';
+import { useCookies } from 'react-cookie';
 
 const SavePresetModalContainer = styled.div`
   width: 100%;
@@ -120,13 +121,15 @@ const SavePresetModalContainer = styled.div`
 `;
 
 export default function SavePresetModal() {
+  const [ cookies, setCookie, removeCookie ] = useCookies(['cookie-name']);
   const [openSavePresetModal, setOpenSavePresetModal] = useContext(StateContext).OpenSavePresetModal;
   const [name, setName] = useState('');
   const [imageUrl, setImageUrl] = useState('');
   const [playlistMinMax, setPlaylistMinMax] = useContext(StateContext).PlaylistMinMax;
   
   const savePreset = () => {
-    console.log(playlistMinMax.data);
+    const user_id = cookies.userData;
+    console.log(user_id, name, imageUrl, playlistMinMax.data);
     // console.log(playlistMinMax.data.tempo);
     // console.log(playlistMinMax.data.instrumentalness);
     // console.log(playlistMinMax.data.energy);
@@ -134,14 +137,17 @@ export default function SavePresetModal() {
     // console.log(playlistMinMax.data.danceability);
     // console.log(playlistMinMax.data.loudness);
     axios
-      .post(`http://localhost:9000/create/preset`, {
+      .post(`http://localhost:9000/presets`, {
         name,
         audio_features: playlistMinMax.data,
         imageUrl,
-        // user_id 
+        user_id
       })
       .then((res) => {
         console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
       });
   };
 

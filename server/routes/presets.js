@@ -7,7 +7,12 @@ const { addPreset } = require("../helpers/presetHelper");
 module.exports = (db) => {
   
   router.post('/', (req, res) => {
-    const user = req.session.userData;
-    console.log(user);
+    const preset = req.body;
+    // console.log(preset);
+    addPreset(db, preset)
+      .then(preset => preset.data);
+      
   });
-}
+
+  return router;
+};
