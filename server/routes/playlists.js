@@ -1,11 +1,10 @@
 require('dotenv').config();
-
 const axios = require('axios');
 const express = require('express');
-const spotifyApi = require('../helpers/spotifyApiHelper');
 const router = express.Router();
 const { generateString, getUserId } = require('../helpers/utilHelper');
 
+// create playlist
 router.post('/create', async (req, res) => {
   let { accessToken, name, description, uris, imageUrl } = req.body;
   if (!name) name = generateString(8);
@@ -41,6 +40,7 @@ router.post('/create', async (req, res) => {
   res.send('New playlist created and songs added!');
 });
 
+// get ids of user's playlists
 router.post('/ids', async (req, res) => {
   const { accessToken } = req.body;
 

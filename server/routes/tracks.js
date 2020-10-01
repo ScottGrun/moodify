@@ -16,7 +16,7 @@ const {
   getAudioFeaturesOfTracks
 } = require('../helpers/utilHelper');
 
-
+// get tracks from specific playlist
 router.post('/playlist', async (req, res) => {
   const { accessToken, playlist_id, totalTracks } = req.body;
   
@@ -32,6 +32,7 @@ router.post('/playlist', async (req, res) => {
   });
 });
 
+// get tracks from featured playlists
 router.post('/featured', async (req, res) => {
   const { accessToken } = req.body;
   const featuredPlaylistsTracks = [];
@@ -58,6 +59,7 @@ router.post('/featured', async (req, res) => {
   });
 });
 
+// get user's saved tracks
 router.post('/saved', async (req, res) => {
   const { accessToken } = req.body;
   const myTracks = [];
