@@ -20,6 +20,7 @@ var generateRandomString = function (length) {
   return text;
 };
 
+// when user presses 'login with spotify' redirect them to authorization screen
 router.get('/login', (req, res) => {
   const state = generateRandomString(16);
   res.cookie(stateKey, state);
@@ -39,6 +40,7 @@ router.get('/login', (req, res) => {
   );
 });
 
+// send back access, refresh tokens, and user data (ie. name)
 router.post('/token', async (req, res) => {
   const code = req.body.code;
 
