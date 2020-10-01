@@ -14,14 +14,16 @@ const parseAudioFeatures = async (songList) => {
 
 //Parse songs into easier to use format
 const formatTracks = (songList) => {
-  const songs = songList.map((song) => ({
-    name: song.track.name,
-    id: song.track.id,
-    artist: song.track.artists[0].name,
-    img: song.track.album.images[2].url,
-    previewUrl: song.track.preview_url,
-    uri: song.track.uri
-  }));
+  const songs = songList.map(song => {
+    return {
+      name: song.track.name,
+      id: song.track.id,
+      artist: song.track.artists[0].name,
+      img: song.track.album.images[2] ? song.track.album.images[2].url : null,
+      previewUrl: song.track.preview_url,
+      uri: song.track.uri
+    }
+  });
   return songs;
 };
 
@@ -82,7 +84,6 @@ const getMinMax = (songs) => {
       playlistAudioFeaturesMinMax[key][0] = Math.trunc(Math.round(playlistAudioFeaturesMinMax[key][0] * 100));
     }
   }
-
   return playlistAudioFeaturesMinMax;
 };
 
@@ -114,70 +115,10 @@ const getAverageAudioFeatures = (songs) => {
       );
     }
   }
-
   return Object.values(playlistAudioFeaturesAverages);
 };
 
-const getUsersTracks = async () => {
-  let allSongs = [];
-  await spotifyApi
-    .getMySavedTracks({
-      limit: 50,
-      offset: 1,
-    })
-    .then(async (data) => {
-      let songCount = data.body.total;
-      console.log(`Songs in Playlist : ${songCount}`);
-      //Set total count of user songs
-
-      //Push first 50 songs into array
-      let songs = formatTracks(data.body.items);
-      let songIds = songs.map((song) => song.id);
-
-      parseAudioFeatures(songIds).then((features) => {
-        songs.forEach((song, idx) => {
-          song['audio'] = features[idx];
-        });
-        allSongs.push(...songs);
-      });
-
-      //Makes the required network requests till all songs fetched (50 per request)
-      for (let i = 1; i * 50 <= songCount; i++) {
-        await spotifyApi
-          .getMySavedTracks({
-            limit: 50,
-            offset: i * 50,
-          })
-          .then(
-            async (data) => {
-              let songs = formatTracks(data.body.items);
-              let songIds = songs.map((song) => song.id);
-
-              await parseAudioFeatures(songIds).then((features) => {
-                songs.forEach((song, idx) => {
-                  song['audio'] = features[idx];
-                });
-                allSongs.push(...songs);
-              });
-            },
-            (err) => {
-              console.log('Something went wrong!', err);
-            },
-          );
-      }
-    })
-    .then(() => {
-      return allSongs;
-    });
-  return {
-    songs: allSongs,
-    minMax: getMinMax(allSongs),
-    averages: getAverageAudioFeatures(allSongs),
-  };
-};
-
 module.exports = {
-  getUsersTracks, 
   parseAudioFeatures, 
   formatTracks, 
   getMinMax, 

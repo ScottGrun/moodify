@@ -4,9 +4,7 @@ const express = require('express');
 const axios = require('axios');
 const spotifyApi = require('../helpers/spotifyApiHelper');
 const router = express.Router();
-const { 
-  getUsersTracks, 
-  parseAudioFeatures, 
+const {
   formatTracks, 
   getMinMax, 
   getAverageAudioFeatures
@@ -60,13 +58,29 @@ router.post('/newSongs', async (req, res) => {
   });
 });
 
-router.post('/', (req, res) => {
-  //Set token with required scopes
-  spotifyApi.setAccessToken(req.body.accessToken);
+router.post('/saved', async (req, res) => {
+  const { accessToken } = req.body;
+  const myTracks = [];
+  
+  let apiEndpoint = `https://api.spotify.com/v1/me/tracks?limit=50`
+  while (apiEndpoint) {
+    const tracks = await axios({
+      method: 'get',
+      url: apiEndpoint,
+      headers: { Authorization: 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
+    });
+    apiEndpoint = tracks.data.next;
+    myTracks.push(...tracks.data.items);
+  }
 
-  //Get inital data from user and send to front-end
-  getUsersTracks().then((data) => {
-    res.send(data);
+  const formattedTracks = formatTracks(myTracks);
+  const trackAudioFeatures = await getAudioFeaturesOfTracks(formattedTracks, accessToken);
+  const allTracks = addAudioFeaturesToTracks(formattedTracks, trackAudioFeatures);
+
+  res.send({
+    songs: allTracks,
+    minMax: getMinMax(allTracks),
+    averages: getAverageAudioFeatures(allTracks),
   });
 });
 
