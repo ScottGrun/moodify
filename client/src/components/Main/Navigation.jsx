@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import { StateContext } from '../../App';
-
+import { filterTracks } from '../../helpers/filter';
 // components
 import Profile from './Profile';
 
@@ -36,7 +36,6 @@ const NavigationContainer = styled.div`
       }
 
       ul {
-
         li {
           padding: 10px 0px;
           list-style: none;
@@ -65,7 +64,7 @@ const NavigationContainer = styled.div`
     }
   }
 
-  @media(max-width: 1300px) {
+  @media (max-width: 1300px) {
     min-width: 282px;
     max-width: 282px;
     height: 100vh;
@@ -75,7 +74,9 @@ const NavigationContainer = styled.div`
     z-index: 100;
     transform: translateX(282px);
     transition: all 0.5s ease-in-out;
-    ${({ open }) => open && `
+    ${({ open }) =>
+      open &&
+      `
       transform: translateX(0);
     `}
 
@@ -85,7 +86,7 @@ const NavigationContainer = styled.div`
       height: 100%;
       overflow-y: scroll;
       overflow-x: hidden;
-      background-color: #1C1D20;
+      background-color: #1c1d20;
 
       .header {
         display: flex;
@@ -99,73 +100,107 @@ const NavigationContainer = styled.div`
 `;
 
 export default function Navigation({ playlists }) {
-  const [ openNav, setOpenNav ] = useContext(StateContext).OpenNav;
-  const [ accessToken, setAccessToken ] = useContext(StateContext).AccessToken;
-  const [ chartValues, setChartValues ] = useContext(StateContext).ChartValues;
-  const [ userTracks, setTracks ] = useContext(StateContext).UserTracks;
-  const [ playlistMinMax, setPlaylistMinMax ] = useContext(StateContext).PlaylistMinMax;
+  const [openNav, setOpenNav] = useContext(StateContext).OpenNav;
+  const [accessToken, setAccessToken] = useContext(StateContext).AccessToken;
+  const [chartValues, setChartValues] = useContext(StateContext).ChartValues;
+  const [userTracks, setTracks] = useContext(StateContext).UserTracks;
+  const [playlistMinMax, setPlaylistMinMax] = useContext(StateContext).PlaylistMinMax;
 
   const loadTracks = (playlist_id, totalTracks) => {
     axios
       .post(`http://localhost:9000/tracks/playlist`, {
         accessToken,
         playlist_id,
-        totalTracks
+        totalTracks,
       })
-      .then(res => {
+      .then((res) => {
         setTracks({
           loading: true,
           songs: res.data.songs,
         });
         setChartValues(res.data.averages);
-        setPlaylistMinMax({data: res.data.minMax, loaded: true});
+        setPlaylistMinMax({ data: res.data.minMax, loaded: true });
       });
   };
 
   const loadFeaturedSongs = () => {
     axios
       .post(`http://localhost:9000/tracks/featured`, {
-        accessToken
+        accessToken,
       })
-      .then(res => {
+      .then((res) => {
         setTracks({
           loading: true,
           songs: res.data.songs,
         });
         setChartValues(res.data.averages);
-        setPlaylistMinMax({data: res.data.minMax, loaded: true});
+        setPlaylistMinMax({ data: res.data.minMax, loaded: true });
       });
   };
 
-  return(
+  const loadRecommendedSongs = () => {
+    let recomendationSeeds = filterTracks(userTracks, playlistMinMax).map((track) => ({
+      track_id: track.id,
+      artist_id: track.artist_id,
+    }));
+
+    axios
+      .post(`http://localhost:9000/tracks/recommendations`, {
+        accessToken,
+        recomendationSeeds,
+        playlistMinMax
+      })
+      .then((res) => {
+        setTracks({
+          loading: true,
+          songs: res.data.songs,
+        });
+        setChartValues(res.data.averages);
+        setPlaylistMinMax({ data: res.data.minMax, loaded: true });
+      });
+  };
+
+  return (
     <NavigationContainer open={openNav}>
-      <div className='navigation-content'>
-        <div className='section my-playlists'>
-          <h3 className='title'>Discover</h3>
-          <ul className='playlists'>
-              <li onClick={loadFeaturedSongs}>
-                <img src={musicIcon} /><p>Featured Songs</p>
-              </li>
+      <div className="navigation-content">
+        <div className="section my-playlists">
+          <h3 className="title">Discover</h3>
+          <ul className="playlists">
+            <li onClick={loadFeaturedSongs}>
+              <img src={musicIcon} />
+              <p>Featured Songs</p>
+            </li>
+            <li onClick={loadRecommendedSongs}>
+              <img src={musicIcon} />
+              <p>Recommended Songs</p>
+            </li>
           </ul>
         </div>
-        <div className='section my-playlists'>
-          <h3 className='title'>My Playlists</h3>
-          <ul className='playlists'>
-            {
-              playlists.length > 0 && playlists.map(playlist => {
+        <div className="section my-playlists">
+          <h3 className="title">My Playlists</h3>
+          <ul className="playlists">
+            {playlists.length > 0 &&
+              playlists.map((playlist) => {
                 return (
-                  <li key={playlist.id} onClick={() => loadTracks(playlist.id, playlist.tracks.total)}>
-                    <img src={musicIcon} /><p>{playlist.name.length > 17 ? playlist.name.slice(0, 17) + '...' : playlist.name}</p>
+                  <li
+                    key={playlist.id}
+                    onClick={() => loadTracks(playlist.id, playlist.tracks.total)}
+                  >
+                    <img src={musicIcon} />
+                    <p>
+                      {playlist.name.length > 17
+                        ? playlist.name.slice(0, 17) + '...'
+                        : playlist.name}
+                    </p>
                   </li>
                 );
-              })
-            }
+              })}
           </ul>
         </div>
-        <div className='profile-dropdown-container'>
+        <div className="profile-dropdown-container">
           <Profile />
         </div>
       </div>
     </NavigationContainer>
   );
-};
+}

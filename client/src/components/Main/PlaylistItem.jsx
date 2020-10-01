@@ -65,6 +65,10 @@ const AudioFeatures = styled.div`
   font-size: 11px;
   font-weight: normal;
 
+  @media(max-width: 375px){
+    display: none;
+  }
+
   p {
     width: 75px;
     text-align: center;
@@ -170,7 +174,7 @@ const PlaylistItem = (props) => {
   const playing = isPlaying;
 
   return (
-    <StyledPlaylistItem onClick={playPreview}>
+    <StyledPlaylistItem className="playlist-item" onClick={playPreview}>
       <StyledSongCoverContainer>
         <StyledSongImage src={props.img} />
       </StyledSongCoverContainer>

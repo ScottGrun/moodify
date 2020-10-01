@@ -70,6 +70,15 @@ const MainContainer = styled.div`
       'playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls'
       'main main main main main main main main main main main main ';
   }
+
+  @media(max-width: 375px){
+    grid-template-areas:
+    'header header header header header header header header header header header header'
+    'playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls '
+    'main main main main main main main main main main main main ';
+
+
+  }
 `;
 
 const Sidebar = styled.div`
@@ -96,6 +105,11 @@ const PlaylistControls = styled.div`
   @media (max-width: 768px) {
     display: flex;
     flex-flow: row;
+  }
+
+  @media (max-width: 375px) {
+    display: flex;
+    flex-flow: column;
   }
 `;
 
@@ -204,7 +218,7 @@ const Main = () => {
             </div>
           </div>
 
-          {userTracks.loading && <PlaylistItemContainer />}
+        <PlaylistItemContainer />
         </MainContent>
         <PlaylistControls>
             <RadarChart />
