@@ -5,7 +5,6 @@ import { Radar } from 'react-chartjs-2';
 
 const RadarChartContainer = styled.div`
   width: 100%;
-  height: 100%;
 
   h2 {
     margin-bottom: 30px;
@@ -42,6 +41,15 @@ export default function RadarChart(props) {
     responsive: true,
     legend: {
       display: false,
+    },
+   
+    layout: {
+      padding: {
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+      },
     },
     scale: {
       ticks: {
