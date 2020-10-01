@@ -1,9 +1,8 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { StateContext } from '../../App';
-
 import styled from 'styled-components';
 import PlaylistItem from './PlaylistItem';
-import { matchFilter } from '../../helpers/matchFilter';
+import { filterTracks } from '../../helpers/filter';
 
 const StyledHeader = styled.div`
   display: flex;
@@ -55,8 +54,9 @@ const PlaylistItemContainer = (props) => {
 
   let renderSongs = [];
   if (playlistMinMax.loaded && userTracks.loading) {
-    renderSongs = userTracks.songs
-      .filter(song => matchFilter(song, playlistMinMax))
+    const filteredTracks = filterTracks(userTracks, playlistMinMax);
+    
+    renderSongs = filteredTracks
       .map((song, index) => <PlaylistItem 
         {...song}
         key={song.id + index}

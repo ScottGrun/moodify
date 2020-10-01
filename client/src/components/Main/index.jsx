@@ -131,7 +131,8 @@ const Main = () => {
   };
 
   const getPlaylists = () => {
-    axios.post('http://localhost:9000/playlists/ids', { accessToken }).then((res) => {
+    axios.post('http://localhost:9000/playlists/ids', { accessToken })
+    .then((res) => {
       setPlaylists(res.data);
     });
   };

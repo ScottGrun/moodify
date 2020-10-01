@@ -1,5 +1,7 @@
+import { filterTracks } from './filter';
+
 //Get average audio features for playlist
-export default function getAverages(songs) {
+export function getAverages(songs) {
   let playlistAudioFeaturesAverages = {
     energy: 0,
     danceability: 0,
@@ -27,4 +29,26 @@ export default function getAverages(songs) {
     }
   }
   return Object.values(playlistAudioFeaturesAverages);
+};
+
+export function getTotalDuration(filteredTracks) {
+  function time_convert(minutes) {
+    let hours = Math.floor(minutes / 60);  
+    minutes = Math.round(minutes % 60);
+
+    if (minutes < 10) {
+      minutes = `0${minutes}`
+    }
+    return hours + ":" + minutes;         
+  }
+
+  if (!filteredTracks) return;
+
+  const totalMs = filteredTracks.reduce((total, track) => {
+    return total + track.audio.duration_ms;
+  },0);
+
+  const totalSeconds = totalMs / 1000;
+  const totalMinutes = totalSeconds / 60;
+  return time_convert(totalMinutes);
 };

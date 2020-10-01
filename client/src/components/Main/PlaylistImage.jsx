@@ -1,5 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { StateContext } from '../../App';
 import styled from 'styled-components';
+import { filterTracks } from '../../helpers/filter';
+import { getTotalDuration } from '../../helpers/calculations';
 
 const PlayListImageContainer = styled.div`
   width: 100%;
@@ -58,6 +61,12 @@ const PlayListImageContainer = styled.div`
 `;
 
 export default function PlaylistImage() {
+  const [userTracks, setTracks] = useContext(StateContext).UserTracks;
+  const [playlistMinMax, setPlaylistMinMax] = useContext(StateContext).PlaylistMinMax;
+
+  const filteredTracks = filterTracks(userTracks, playlistMinMax);
+  const duration = getTotalDuration(filteredTracks);
+
   const randomImageFromSpotify = 'https://i.imgur.com/iuyq8dP.png'
 
   return(
@@ -70,8 +79,8 @@ export default function PlaylistImage() {
         <p className='playlist-description'>A playlist based on the music in your saved tracks orangized by a high bpm with low energy filter.</p>
       </div>
       <div className='playlist-info'>
-        <p>Songs In Playlist — 436</p>
-        <p>Total Listening Time — 2:31</p>
+        <p>Songs In Playlist — {filteredTracks && filteredTracks.length || 'NA'}</p>
+        <p>Total Listening Time — {duration || 'NA'}</p>
       </div>
     </PlayListImageContainer>
   );
