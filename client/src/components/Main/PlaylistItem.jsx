@@ -145,23 +145,25 @@ const PlaylistItem = (props) => {
   const [songPlaying, setSongPlaying] = props.songPlaying;
 
   const playPreview = () => {
-    const song = new Audio(props.previewUrl);
+    const newSong = new Audio(props.previewUrl);
+    newSong.loop = true;
 
     if (songPlaying.src) {
-      if (songPlaying.src === song.src) {   // pause old song
+      if (songPlaying.src === newSong.src) {   // pause old song
         songPlaying.pause();
-        setSongPlaying('');
+        setSongPlaying({});
       } else {  // pause old song, play new song
         songPlaying.pause();
-        song.play();
-        setSongPlaying(song);
+        newSong.play();
+        setSongPlaying(newSong);
       }
     } else {  // play new song
-      song.play();
-      setSongPlaying(song);
+      newSong.play();
+      setSongPlaying(newSong);
     }
   };
-
+  
+  
   const playing = songPlaying.src === props.previewUrl;
 
   return (
