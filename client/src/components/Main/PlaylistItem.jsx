@@ -65,7 +65,7 @@ const AudioFeatures = styled.div`
   font-size: 11px;
   font-weight: normal;
 
-  @media(max-width: 375px){
+  @media (max-width: 375px) {
     display: none;
   }
 
@@ -84,6 +84,20 @@ const SongMetaData = styled.div`
   max-width: 275px;
 `;
 
+const animateIn = keyframes`
+
+  0% {
+    opacity: 0;
+    transform: scale(0.6) translateY(-8px);
+  }
+  
+  100% {
+    opacity: 1;
+  }
+
+
+`;
+
 const StyledPlaylistItem = styled.div`
   position: relative;
   display: flex;
@@ -95,6 +109,13 @@ const StyledPlaylistItem = styled.div`
   margin: 12px 0;
   position: relative;
 
+  /* Animations here */
+  animation: ${animateIn} 300ms;
+  animation-delay: calc(${props => props.idx < 50 ? props.idx : 0} * 65ms);
+  animation-fill-mode: both;
+  animation-timing-function: ease-in-out;
+
+  /*  */
   &:hover {
     cursor: pointer;
   }
@@ -174,7 +195,7 @@ const PlaylistItem = (props) => {
   const playing = isPlaying;
 
   return (
-    <StyledPlaylistItem className="playlist-item" onClick={playPreview}>
+    <StyledPlaylistItem idx={props.idx} className="playlist-item" onClick={playPreview}>
       <StyledSongCoverContainer>
         <StyledSongImage src={props.img} />
       </StyledSongCoverContainer>

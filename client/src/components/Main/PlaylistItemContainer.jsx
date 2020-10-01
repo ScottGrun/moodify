@@ -60,7 +60,7 @@ const PlaylistItemContainer = (props) => {
     const filteredTracks = filterTracks(userTracks, playlistMinMax);
     
     renderSongs = filteredTracks
-      .map((song, index) => <PlaylistItem 
+      .map((song, index) => <PlaylistItem idx={index} 
         {...song}
         key={song.id + index}
        />);
