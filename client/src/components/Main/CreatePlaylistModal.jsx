@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { StateContext } from '../../App';
 import axios from 'axios';
-import { matchFilter } from '../../helpers/matchFilter';
+import { matchFilter } from '../../helpers/filter';
 
 const CreatePlaylistModalContainer = styled.div`
   width: 100%;

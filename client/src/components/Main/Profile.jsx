@@ -13,11 +13,8 @@ const ProfileContainer = styled.div`
   height: 100px;
 
   @media(max-width: 1280px) {
-   
-      display: none;
-    
+    display: none;
   }
-  
 
   .profile-dropdown {
     position: relative;
@@ -36,7 +33,7 @@ const ProfileContainer = styled.div`
     .profile-pic {
       width: 30px;
       height: 30px;
-      background-image: url('https://i.imgur.com/fH8okuG.jpg');
+      background-image: url(${({ profilePic }) => profilePic });
       background-size: cover;
       background-position: center;
       margin-right: 10px;
@@ -69,7 +66,6 @@ const ProfileContainer = styled.div`
       opacity: 1;
       
     `}
-
 
     ul {
       color: #ccc;
@@ -114,16 +110,20 @@ export default function Profile() {
 
   const logout = () => {
     removeCookie('accessToken');
+    removeCookie('refreshToken');
+    removeCookie('userData');
     setAccessToken(null);
     window.location = 'http://localhost:3000';
   };
 
+  const userData = cookies.userData;
+  
   return(
-    <ProfileContainer open={open}>
+    <ProfileContainer open={open} profilePic={userData.images[0].url}>
   
       <div className='profile-dropdown' onClick={toggleDropdown}>
         <img className='profile-pic' />
-        <p className='profile-name'>Eirc Romar</p>
+        <p className='profile-name'>{userData.display_name || 'NA'}</p>
         <ion-icon className='dropdown-icon' name="chevron-down-outline"></ion-icon>
       </div>
 

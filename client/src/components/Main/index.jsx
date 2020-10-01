@@ -99,10 +99,12 @@ const CreatePlaylistButton = styled.button`
   font-size: 14px;
   border: solid 2px white;
   padding: 10px;
+  cursor: pointer;
+  outline: none;
 
   &:hover {
     background-color: #2ed689;
-    color: #191f35;
+    color: white;
   }
 `;
 
@@ -188,7 +190,6 @@ const Main = () => {
           <div className="sliders-container">
             <Sliders />
             <CreatePlaylistButton
-              className="create-playlist-btn"
               onClick={() => setOpenCreatePlaylistModal(true)}
             >
               Create Playlist
