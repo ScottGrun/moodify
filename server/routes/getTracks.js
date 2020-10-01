@@ -53,8 +53,6 @@ router.post('/newSongs', async (req, res) => {
   const trackAudioFeatures = await getAudioFeaturesOfTracks(formattedTracks, accessToken);
   const allTracks = addAudioFeaturesToTracks(formattedTracks, trackAudioFeatures);
 
-  console.log(allTracks.slice(0, 5));
-
   res.send({
     songs: allTracks,
     minMax: getMinMax(allTracks),

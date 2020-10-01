@@ -142,30 +142,29 @@ const StyledProgressContainer = styled.div`
 `;
 
 const PlaylistItem = (props) => {
-  const [playing, setPlaying] = useState(false);
-  const [songPreview, setPreview] = useState(null);
+  const [songPlaying, setSongPlaying] = props.songPlaying;
 
   const playPreview = () => {
-    let song = null;
+    const newSong = new Audio(props.previewUrl);
+    newSong.loop = true;
 
-    if (!songPreview) {
-      song = new Audio(props.previewUrl);
-      setPreview(song);
-    } else {
-      song = songPreview;
-    }
-
-    if (playing === false) {
-      setPlaying((prev) => true);
-      song.play();
-    } else if (playing === true) {
-      setPlaying((prev) => false);
-      song.pause();
+    if (songPlaying.src) {
+      if (songPlaying.src === newSong.src) {   // pause old song
+        songPlaying.pause();
+        setSongPlaying({});
+      } else {  // pause old song, play new song
+        songPlaying.pause();
+        newSong.play();
+        setSongPlaying(newSong);
+      }
+    } else {  // play new song
+      newSong.play();
+      setSongPlaying(newSong);
     }
   };
-
   
- 
+  
+  const playing = songPlaying.src === props.previewUrl;
 
   return (
     <StyledPlaylistItem onClick={playPreview}>
