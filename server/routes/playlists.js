@@ -2,7 +2,8 @@ require('dotenv').config();
 const axios = require('axios');
 const express = require('express');
 const router = express.Router();
-const { generateString, getUserId } = require('../helpers/utilHelper');
+const { getUserId } = require('../helpers/spotify');
+const { generateString } = require('../helpers/util');
 
 // create playlist
 router.post('/create', async (req, res) => {

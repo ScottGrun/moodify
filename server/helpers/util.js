@@ -1,18 +1,15 @@
-const spotifyApi = require('./spotifyApiHelper');
+const generateString = (length) => {
+  const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789 '.split('');
+  let string = '';
 
-const parseAudioFeatures = async (songList) => {
-  let data = await spotifyApi.getAudioFeaturesForTracks(songList).then(
-    (res) => {
-      return res.body.audio_features;
-    },
-    (err) => {
-      console.log(err);
-    },
-  );
-  return data;
+  for (let i = 0; i < length; i++) {
+    const randIndex = Math.floor(Math.random() * chars.length);
+    string += chars[randIndex];
+  }
+  return string;
 };
 
-//Parse songs into easier to use format
+//format 
 const formatTracks = (songList) => {
   const songs = songList.map(song => {
     return {
@@ -118,9 +115,17 @@ const getAverageAudioFeatures = (songs) => {
   return Object.values(playlistAudioFeaturesAverages);
 };
 
+const addAudioFeaturesToTracks = (parsedTracks, trackAudioFeatures) => {
+  const formattedSongs = parsedTracks.map((song, index) => {
+    return { ...song, audio: {...trackAudioFeatures[index]} };
+  })
+  return formattedSongs;
+}
+
 module.exports = {
-  parseAudioFeatures, 
-  formatTracks, 
-  getMinMax, 
-  getAverageAudioFeatures
-};
+  generateString,
+  formatTracks,
+  getMinMax,
+  getAverageAudioFeatures,
+  addAudioFeaturesToTracks
+}

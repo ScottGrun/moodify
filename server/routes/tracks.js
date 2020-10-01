@@ -2,19 +2,18 @@ require('dotenv').config();
 
 const express = require('express');
 const axios = require('axios');
-const spotifyApi = require('../helpers/spotifyApiHelper');
 const router = express.Router();
 const {
-  formatTracks, 
-  getMinMax, 
-  getAverageAudioFeatures
-} = require('../helpers/trackRetrievalHelpers');
+  getAudioFeaturesOfTracks,
+  getTracksFromPlaylist
+} = require('../helpers/spotify');
 
 const {
-  getTracksFromPlaylist,
-  addAudioFeaturesToTracks,
-  getAudioFeaturesOfTracks
-} = require('../helpers/utilHelper');
+  formatTracks,
+  getMinMax,
+  getAverageAudioFeatures,
+  addAudioFeaturesToTracks
+} = require('../helpers/util');
 
 // get tracks from specific playlist
 router.post('/playlist', async (req, res) => {
