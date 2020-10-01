@@ -32,7 +32,7 @@ const PresetsContainer = styled.div`
 
 const presetsData = [
   {
-    key: '1',
+    id: '1',
     name: 'Cool preset',
     description: 'This is my cool preset.',
     acousticness: 0.514,
@@ -46,7 +46,7 @@ const presetsData = [
     times_applied: 1
   }, 
   {
-    key: '2',
+    id: '2',
     name: 'My awesome preset',
     description: 'Awesome soundz.',
     acousticness: 0.675,
@@ -60,7 +60,7 @@ const presetsData = [
     times_applied: 1
   }, 
   {
-    key: '3',
+    id: '3',
     name: 'Preset for my music',
     description: 'How does this sound?',
     acousticness: 1.0,
@@ -74,7 +74,7 @@ const presetsData = [
     times_applied: 1
   }, 
   {
-    key: '4',
+    id: '4',
     name: 'PrEsEt!!!',
     description: 'Wut does it do?',
     acousticness: 0.023,
@@ -88,7 +88,7 @@ const presetsData = [
     times_applied: 25
   },
   {
-    key: '5',
+    id: '5',
     name: 'my preset',
     description: 'good tunes',
     acousticness: 0.023,
@@ -102,7 +102,7 @@ const presetsData = [
     times_applied: 10
   },
   {
-    key: '6',
+    id: '6',
     name: 'great filter',
     description: 'sick',
     acousticness: 0.023,
@@ -139,7 +139,7 @@ export default function Presets() {
 
   const sortedPresets = presetsData.sort((a, b) => b.times_applied - a.times_applied); 
 
-  const presets = sortedPresets.map((preset) => <SwiperSlide><Preset {...preset} /></SwiperSlide>);
+  const presets = sortedPresets.map((preset) => <SwiperSlide key={preset.id}><Preset {...preset} /></SwiperSlide>);
 
   return(
     <PresetsContainer>

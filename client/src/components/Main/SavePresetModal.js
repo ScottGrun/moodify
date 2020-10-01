@@ -153,7 +153,7 @@ export default function SavePresetModal() {
 
   const presetStats = () => {
     if (Object.keys(playlistMinMax.data).length > 0) {
-      return (Object.keys(playlistMinMax.data).map(key => <p>{key}: {playlistMinMax.data[key][0]} - {playlistMinMax.data[key][1]}</p>)
+      return (Object.keys(playlistMinMax.data).map(key => <p key={key}>{key}: {playlistMinMax.data[key][0]} - {playlistMinMax.data[key][1]}</p>)
       );
     }
   };
