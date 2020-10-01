@@ -6,17 +6,20 @@ import Slider from '@material-ui/core/Slider';
 
 const SlidersContainer = styled.div`
   width: 100%;
-  height: 100%;
+  height: auto;
   padding: 10px;
-  
- 
-  
 
   .values-container {
     width: 100%;
     color: #ccc;
     font-size: 10px;
     text-align: right;
+  }
+
+  .MuiSlider-mark {
+    width: 1;
+    transform: translateY(-6px);
+    height: 15px;
   }
 
   .MuiSlider-markLabel {
@@ -81,61 +84,49 @@ export default function Sliders() {
         tempo: [
           {
             value: playlistMinMax.data.tempo[0],
-            label: 'Min',
           },
           {
             value: playlistMinMax.data.tempo[1],
-            label: 'Max',
           },
         ],
         danceability: [
           {
             value: playlistMinMax.data.danceability[0],
-            label: 'Min',
           },
           {
             value: playlistMinMax.data.danceability[1],
-            label: 'Max',
           },
         ],
         energy: [
           {
             value: playlistMinMax.data.energy[0],
-            label: 'Min',
           },
           {
             value: playlistMinMax.data.energy[1],
-            label: 'Max',
           },
         ],
         instrumentalness: [
           {
             value: playlistMinMax.data.instrumentalness[0],
-            label: 'Min',
           },
           {
             value: playlistMinMax.data.instrumentalness[1],
-            label: 'Max',
           },
         ],
         valence: [
           {
             value: playlistMinMax.data.valence[0],
-            label: 'Min',
           },
           {
             value: playlistMinMax.data.valence[1],
-            label: 'Max',
           },
         ],
         loudness: [
           {
             value: playlistMinMax.data.loudness[0],
-            label: 'Playlist Min',
           },
           {
             value: playlistMinMax.data.loudness[1],
-            label: 'Playlist Max',
           },
         ],
       });

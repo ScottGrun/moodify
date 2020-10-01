@@ -27,6 +27,10 @@ const ColumnHeaderContainer = styled.div`
   font-size: 11px;
   font-weight: normal;
 
+  @media(max-width: 375px){
+    display: none;
+  }
+
   p {
     font-size: 14px;
     width: 75px;

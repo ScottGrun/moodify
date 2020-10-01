@@ -9,17 +9,19 @@ const generateString = (length) => {
   return string;
 };
 
-//format 
+
+//format
 const formatTracks = (songList) => {
-  const songs = songList.map(song => {
+  const songs = songList.map((song) => {
     return {
       name: song.track.name,
       id: song.track.id,
       artist: song.track.artists[0].name,
+      artist_id: song.track.artists[0].id,
       img: song.track.album.images[2] ? song.track.album.images[2].url : null,
       previewUrl: song.track.preview_url,
-      uri: song.track.uri
-    }
+      uri: song.track.uri,
+    };
   });
   return songs;
 };
@@ -75,10 +77,16 @@ const getMinMaxes = (songs) => {
 
   for (const key in playlistAudioFeaturesMinMax) {
     if (key === 'loudness') {
-      playlistAudioFeaturesMinMax[key][1] = Math.trunc((60 + playlistAudioFeaturesMinMax[key][1]) / 60);
+      playlistAudioFeaturesMinMax[key][1] = Math.trunc(
+        (60 + playlistAudioFeaturesMinMax[key][1]) / 60,
+      );
     } else if (key !== 'tempo') {
-      playlistAudioFeaturesMinMax[key][1] = Math.trunc(Math.round(playlistAudioFeaturesMinMax[key][1] * 100));
-      playlistAudioFeaturesMinMax[key][0] = Math.trunc(Math.round(playlistAudioFeaturesMinMax[key][0] * 100));
+      playlistAudioFeaturesMinMax[key][1] = Math.trunc(
+        Math.round(playlistAudioFeaturesMinMax[key][1] * 100),
+      );
+      playlistAudioFeaturesMinMax[key][0] = Math.trunc(
+        Math.round(playlistAudioFeaturesMinMax[key][0] * 100),
+      );
     }
   }
   return playlistAudioFeaturesMinMax;
@@ -104,7 +112,6 @@ const getAverages = (songs) => {
 
   for (const key in playlistAudioFeaturesAverages) {
     if (key === 'loudness') {
-
       playlistAudioFeaturesAverages[key] = playlistAudioFeaturesAverages[key] / songs.length;
     } else {
       playlistAudioFeaturesAverages[key] = Math.round(
@@ -117,15 +124,15 @@ const getAverages = (songs) => {
 
 const addAudioFeaturesToTracks = (parsedTracks, trackAudioFeatures) => {
   const formattedSongs = parsedTracks.map((song, index) => {
-    return { ...song, audio: {...trackAudioFeatures[index]} };
-  })
+    return { ...song, audio: { ...trackAudioFeatures[index] } };
+  });
   return formattedSongs;
-}
+};
 
 module.exports = {
   generateString,
   formatTracks,
   getMinMaxes,
   getAverages,
-  addAudioFeaturesToTracks
-}
+  addAudioFeaturesToTracks,
+};
