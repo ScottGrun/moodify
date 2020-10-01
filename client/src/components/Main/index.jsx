@@ -115,7 +115,7 @@ const Main = () => {
   const [playlistMinMax, setPlaylistMinMax] = useContext(StateContext).PlaylistMinMax;
   const [playlists, setPlaylists] = useState([]);
 
-  const getTracks = () => {
+  const getSavedTracks = () => {
     axios
       .post(`http://localhost:9000/tracks/saved`, {
         accessToken,
@@ -137,7 +137,7 @@ const Main = () => {
   };
 
   useEffect(() => {
-    getTracks();
+    getSavedTracks();
     getPlaylists();
   }, []);
 

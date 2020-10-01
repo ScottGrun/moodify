@@ -25,7 +25,7 @@ const formatTracks = (songList) => {
 };
 
 //Get MinMaxAudio Features
-const getMinMax = (songs) => {
+const getMinMaxes = (songs) => {
   let playlistAudioFeaturesMinMax = {
     energy: [songs[0].audio.energy, 0],
     danceability: [songs[0].audio.danceability, 0],
@@ -85,7 +85,7 @@ const getMinMax = (songs) => {
 };
 
 //Get average audio features for playlist
-const getAverageAudioFeatures = (songs) => {
+const getAverages = (songs) => {
   let playlistAudioFeaturesAverages = {
     energy: 0,
     danceability: 0,
@@ -125,7 +125,7 @@ const addAudioFeaturesToTracks = (parsedTracks, trackAudioFeatures) => {
 module.exports = {
   generateString,
   formatTracks,
-  getMinMax,
-  getAverageAudioFeatures,
+  getMinMaxes,
+  getAverages,
   addAudioFeaturesToTracks
 }

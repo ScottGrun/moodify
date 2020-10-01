@@ -10,8 +10,8 @@ const {
 
 const {
   formatTracks,
-  getMinMax,
-  getAverageAudioFeatures,
+  getMinMaxes,
+  getAverages,
   addAudioFeaturesToTracks
 } = require('../helpers/util');
 
@@ -26,8 +26,8 @@ router.post('/playlist', async (req, res) => {
 
   res.send({
     songs: allTracks,
-    minMax: getMinMax(allTracks),
-    averages: getAverageAudioFeatures(allTracks),
+    minMax: getMinMaxes(allTracks),
+    averages: getAverages(allTracks),
   });
 });
 
@@ -53,8 +53,8 @@ router.post('/featured', async (req, res) => {
 
   res.send({
     songs: allTracks,
-    minMax: getMinMax(allTracks),
-    averages: getAverageAudioFeatures(allTracks),
+    minMax: getMinMaxes(allTracks),
+    averages: getAverages(allTracks),
   });
 });
 
@@ -80,8 +80,8 @@ router.post('/saved', async (req, res) => {
 
   res.send({
     songs: allTracks,
-    minMax: getMinMax(allTracks),
-    averages: getAverageAudioFeatures(allTracks),
+    minMax: getMinMaxes(allTracks),
+    averages: getAverages(allTracks),
   });
 });
 

@@ -11,10 +11,10 @@ export default function App() {
   const [ accessToken, setAccessToken ] = useState(null);
   const [ chartData, setChartData ] = useState({});
   const [ chartValues, setChartValues ] = useState([0,0,0, 0,0,0]);
-  const [ userTracks, setUserTracks ] = useState({ loading: false, songs: []});
   const [ openNav, setOpenNav ] = useState(false);
   const [ openCreatePlaylistModal, setOpenCreatePlaylistModal ] = useState(false);
   const [ playlistMinMax, setPlaylistMinMax ] = useState({data:{}, loaded: false});
+  const [ userTracks, setUserTracks ] = useState({ loading: false, songs: []});
 
   if (cookies.accessToken && !accessToken) {
     setAccessToken(cookies.accessToken);
