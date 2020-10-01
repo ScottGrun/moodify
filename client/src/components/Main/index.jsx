@@ -88,10 +88,16 @@ const Sidebar = styled.div`
     grid-area: none;
     height: 100vh;
     width: 282px;
-    position: absolute;
+    position: fixed;
     display: block;
     top: 0;
     right: 0;
+    transform: translateX(282px);
+    transition: all 0.5s ease-in-out;
+    z-index: 1000;
+    ${({ open }) => open &&`
+      transform: translateX(0);
+    `}
   }
 `;
 
@@ -116,8 +122,6 @@ const PlaylistControls = styled.div`
 const HeaderContainer = styled.div`
   grid-area: header;
 `;
-
-
 
 const CreatePlaylistButton = styled.button`
   width: 100%;
@@ -182,18 +186,13 @@ const Main = () => {
     getPlaylists();
   }, []);
 
-  const handleClick = () => {
-    console.log('sdfsdfsdfsd');
-    setOpenNav(!openNav);
-  };
-
   return (
     <>
-      <HamburgerMenu onClick={handleClick}>
+      <HamburgerMenu onClick={() => setOpenNav(!openNav)}>
         <OpenMenu />
       </HamburgerMenu>
       <Overlay
-        openCYP={openCreatePlaylistModal}
+        openCYP={openCreatePlaylistModal || openNav}
         onClick={() => {
           setOpenNav(false);
           setOpenCreatePlaylistModal(false);
@@ -205,8 +204,8 @@ const Main = () => {
           <Header />
         </HeaderContainer>
 
-        <Sidebar>
-          <Navigation playlists={playlists} open={openNav} />
+        <Sidebar open={openNav}>
+          <Navigation playlists={playlists} />
         </Sidebar>
 
         <MainContent>

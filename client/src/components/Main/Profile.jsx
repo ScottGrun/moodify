@@ -8,13 +8,9 @@ const ProfileContainer = styled.div`
   border-radius: 5px;
   position: absolute;
   top: 0;
-  right: 0%;
+  right: 0;
   width: 200px;
   height: 100px;
-
-  @media(max-width: 1280px) {
-    display: none;
-  }
 
   .profile-dropdown {
     position: relative;
@@ -51,17 +47,13 @@ const ProfileContainer = styled.div`
   }
 
   .dropdown-container {
-    opacity: 0;
-    height: 60px;
+    height: 40px;
     background-color: #12172C;
     width: 100%;
-    padding: 10px;
     transition: transform 0.2s ease-in-out;
     transform: translateY(-60px);
     ${({ open }) => open && `
       transform: translateY(0);
-      opacity: 1;
-      
     `}
 
     ul {
@@ -69,7 +61,7 @@ const ProfileContainer = styled.div`
 
       li {
         list-style: none;
-        padding: 10px 20px;
+        padding: 10px 14px;
         display: flex;
         align-items: center;
         user-select: none;
@@ -81,8 +73,26 @@ const ProfileContainer = styled.div`
         }
 
         &:hover {
-          background-color: #191F35;
+          background-color: #242e51;
           cursor: pointer;
+        }
+      }
+    }
+  }
+  /* #1a1b1d */
+  @media(max-width: 1280px) {
+    position: static;
+    
+    .profile-dropdown {
+      background-color: #161719;
+    }
+
+    .dropdown-container {
+      background-color: #25262a;
+
+      ul li {
+        &:hover {
+          background-color: #161719;
         }
       }
     }
