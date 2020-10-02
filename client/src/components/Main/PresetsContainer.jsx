@@ -52,28 +52,45 @@ const breakpoints = {
 export default function Presets() {
 
   const [state, setState] = useState({
-    presets: []
+    presets: [],
+    popular: [],
+    yourpresets: []
   });
 
-  useEffect(() => {
-    axios
-      .get(`http://localhost:9000/presets/popular`)
-        .then((res) => {
-          const presetsResponse = res.data;
-          console.log(presetsResponse);
-          const presets = presetsResponse.map((preset) => <SwiperSlide key={preset.id}><Preset {...preset} /></SwiperSlide>);
-          setState(prev => ({ ...prev, presets }));
-          console.log(presets);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-  }, []);
-    
+  const getPopularPresets = () => {
+    return axios
+      .get(`http://localhost:9000/presets/popular`, { withCredentials: true });
+  };
+  
+  const getUserPresets = () => {
+    return axios
+      .get(`http://localhost:9000/presets/yourpresets`, { withCredentials: true });
+  };
 
+  const buildSwiperSlidesFromPresets = (presets) => {
+    const swiperSlides = presets.map((preset) => <SwiperSlide key={preset.id}><Preset {...preset} /></SwiperSlide>);
+    return swiperSlides;
+  };
+
+  useEffect(() => {
+    Promise.all([
+      getPopularPresets(),
+      getUserPresets(),
+    ]).then((all) => {
+      const popularSwiperSlides = buildSwiperSlidesFromPresets(all[0].data);
+      const userSwiperSlides = buildSwiperSlidesFromPresets(all[1].data);
+      setState(prev => ({ ...prev, presets: popularSwiperSlides, popular: popularSwiperSlides, yourpresets: userSwiperSlides }));
+    })
+  }, []);
+
+  const setActivePresets = (presets) => {
+    console.log(presets);
+    setState(prev => ({ ...prev, presets }));
+  };
+    
   return(
     <PresetsContainer>
-      <h2>Popular Presets</h2>
+      <h2><button onClick={() => setActivePresets(state.popular)}>Popular Presets</button> | <button onClick={() => setActivePresets(state.yourpresets)}>Your Presets</button></h2>
       <div className='presets'>
         <div className='swiper-button-prev swiper-button-white' />
         <Swiper
