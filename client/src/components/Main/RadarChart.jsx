@@ -18,8 +18,8 @@ const RadarChartContainer = styled.div`
 `;
 
 export default function RadarChart(props) {
-  const [chartValues, setChartValues] = useContext(StateContext).ChartValues;
-  const [chartData, setChartData] = useContext(StateContext).ChartData;
+  const [chartValues, setChartValues] = props.chartValues;
+  const [chartData, setChartData] = props.chartData;
 
   const chart = () => {
     setChartData({

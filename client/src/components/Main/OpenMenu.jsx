@@ -54,8 +54,8 @@ const OpenMenuContainer = styled.div`
 `;
 
 
-export default function OpenMenu() {
-  const [ openNav, setOpenNav ] = useContext(StateContext).OpenNav;
+export default function OpenMenu(props) {
+  const [ openNav, setOpenNav ] = props.openNav;
 
   return (
     <OpenMenuContainer open={openNav}>

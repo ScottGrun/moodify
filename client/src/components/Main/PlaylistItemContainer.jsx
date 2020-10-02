@@ -61,8 +61,8 @@ const StyledPlaylistContainer = styled.div`
 `;
 
 const PlaylistItemContainer = (props) => {
-  const [playlistMinMax, setPlaylistMinMax] = useContext(StateContext).PlaylistMinMax;
-  const [userTracks, setUserTracks] = useContext(StateContext).UserTracks;
+  const [playlistMinMax, setPlaylistMinMax] = props.playlistMinMax;
+  const [userTracks, setUserTracks] = props.userTracks;
 
   let renderSongs = [];
   if (playlistMinMax.loaded && userTracks.loading) {
@@ -74,6 +74,9 @@ const PlaylistItemContainer = (props) => {
         key={song.uid}
         idx={index} 
         key={song.id + index}
+        playlistMinMax={props.playlistMinMax}
+        userTracks={props.userTracks}
+        chartValues={props.chartValues}
        />);
   }
 

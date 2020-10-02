@@ -114,13 +114,13 @@ const NavigationContainer = styled.div`
   }
 `;
 
-export default function Navigation({ playlists, marksState }) {
+export default function Navigation(props) {
   const [accessToken, setAccessToken] = useContext(StateContext).AccessToken;
-  const [openNav, setOpenNav] = useContext(StateContext).OpenNav;
-  const [chartValues, setChartValues] = useContext(StateContext).ChartValues;
-  const [userTracks, setTracks] = useContext(StateContext).UserTracks;
-  const [playlistMinMax, setPlaylistMinMax] = useContext(StateContext).PlaylistMinMax;
-  const [marks, setMarks] = marksState;
+  const [openNav, setOpenNav] = props.openNav;
+  const [chartValues, setChartValues] = props.chartValues;
+  const [userTracks, setTracks] = props.userTracks;
+  const [playlistMinMax, setPlaylistMinMax] = props.playlistMinMax;
+  const [marks, setMarks] = props.marksState;
 
   const loadTracks = (playlist_id, totalTracks) => {
     setOpenNav(false);
@@ -206,8 +206,8 @@ export default function Navigation({ playlists, marksState }) {
 
         <div className="section scroll my-playlists">
           <ul className="playlists">
-            {playlists.length > 0 &&
-              playlists.map((playlist) => {
+            {props.playlists.length > 0 &&
+              props.playlists.map((playlist) => {
                 return (
                   <li
                     key={playlist.id}

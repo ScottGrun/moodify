@@ -148,11 +148,11 @@ const CreatePlaylistModalContainer = styled.div`
   }
 `;
 
-export default function CreatePlaylistModal() {
+export default function CreatePlaylistModal(props) {
   const [accessToken, setAccessToken] = useContext(StateContext).AccessToken;
-  const [openCreatePlaylistModal, setOpenCreatePlaylistModal] = useContext(StateContext).OpenCreatePlaylistModal;
-  const [playlistMinMax, setPlaylistMinMax] = useContext(StateContext).PlaylistMinMax;
-  const [userTracks, setUserTracks] = useContext(StateContext).UserTracks;
+  const [openCreatePlaylistModal, setOpenCreatePlaylistModal] = props.openCreatePlaylistModal;
+  const [playlistMinMax, setPlaylistMinMax] = props.playlistMinMax;
+  const [userTracks, setUserTracks] = props.userTracks;
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [image, setImage] = useState({

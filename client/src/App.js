@@ -23,15 +23,16 @@ export default function App() {
   return (
     <StateContext.Provider value={ {
       AccessToken: [ accessToken, setAccessToken ],
-      ChartData: [ chartData, setChartData ],
-      ChartValues: [ chartValues, setChartValues ],
-      UserTracks: [ userTracks, setUserTracks ],
-      OpenNav: [ openNav, setOpenNav ],
-      OpenCreatePlaylistModal: [ openCreatePlaylistModal, setOpenCreatePlaylistModal ],
-      PlaylistMinMax: [playlistMinMax, setPlaylistMinMax],
     } }>
       { accessToken
-        ? <Main />
+        ? <Main 
+            playlistMinMax={[ playlistMinMax, setPlaylistMinMax ]}
+            openCreatePlaylistModal={[ openCreatePlaylistModal, setOpenCreatePlaylistModal ]}
+            openNav={[ openNav, setOpenNav ]}
+            userTracks={[ userTracks, setUserTracks ]}
+            chartValues={[ chartValues, setChartValues ]}
+            chartData={[ chartData, setChartData ]}
+          />
         : <Landing />
       }
     </StateContext.Provider>

@@ -60,9 +60,9 @@ const PlayListImageContainer = styled.div`
   }
 `;
 
-export default function PlaylistImage() {
-  const [userTracks, setTracks] = useContext(StateContext).UserTracks;
-  const [playlistMinMax, setPlaylistMinMax] = useContext(StateContext).PlaylistMinMax;
+export default function PlaylistImage(props) {
+  const [userTracks, setTracks] = props.userTracks;
+  const [playlistMinMax, setPlaylistMinMax] = props.playlistMinMax;
 
   const filteredTracks = filterTracks(userTracks, playlistMinMax);
   const duration = getTotalDuration(filteredTracks);

@@ -60,17 +60,17 @@ const SlidersContainer = styled.div`
   }
 `;
 
-export default function Sliders({ marksState }) {
-  const [playlistMinMax, setPlaylistMinMax] = useContext(StateContext).PlaylistMinMax;
-  const [chartValues, setChartValues] = useContext(StateContext).ChartValues;
-  const [userTracks, setTracks] = useContext(StateContext).UserTracks;
+export default function Sliders(props) {
+  const [playlistMinMax, setPlaylistMinMax] = props.playlistMinMax;
+  const [chartValues, setChartValues] = props.chartValues;
+  const [userTracks, setTracks] = props.userTracks;
   const [tempo, setTempo] = useState([0, 0]);
   const [danceability, setDanceability] = useState([0, 0]);
   const [energy, setEnergy] = useState([0, 0]);
   const [instrumentalness, setInstrumentalness] = useState([0, 0]);
   const [loudness, setLoudness] = useState([0, 0]);
   const [valence, setValence] = useState([0, 0]);
-  const [marks, setMarks] = marksState;
+  const [marks, setMarks] = props.marksState;
 
   useEffect(() => {
     if (playlistMinMax.data.tempo) {

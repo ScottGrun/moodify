@@ -86,9 +86,9 @@ const SectionHeader = styled.h2`
 `;
 
 const PlaylistRecomendationContainer = (props) => {
-  const [playlistMinMax, setPlaylistMinMax] = useContext(StateContext).PlaylistMinMax;
+  const [playlistMinMax, setPlaylistMinMax] = props.playlistMinMax;
   const [accessToken, setAccessToken] = useContext(StateContext).AccessToken;
-  const [userTracks, setUserTracks] = useContext(StateContext).UserTracks;
+  const [userTracks, setUserTracks] = props.userTracks;
   const [isShown, setShown] = useState(false);
  const [renderSongs, setRenderSongs] = useState([]);
   

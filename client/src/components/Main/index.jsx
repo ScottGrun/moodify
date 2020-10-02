@@ -153,15 +153,13 @@ const ControlsContainer = styled.div`
   }
 `;
 
-const Main = () => {
+const Main = (props) => {
   const [accessToken, setAccessToken] = useContext(StateContext).AccessToken;
-  const [userTracks, setTracks] = useContext(StateContext).UserTracks;
-  const [chartValues, setChartValues] = useContext(StateContext).ChartValues;
-  const [openNav, setOpenNav] = useContext(StateContext).OpenNav;
-  const [openCreatePlaylistModal, setOpenCreatePlaylistModal] = useContext(
-    StateContext,
-  ).OpenCreatePlaylistModal;
-  const [playlistMinMax, setPlaylistMinMax] = useContext(StateContext).PlaylistMinMax;
+  const [userTracks, setTracks] = props.userTracks;
+  const [chartValues, setChartValues] = props.chartValues;
+  const [openNav, setOpenNav] = props.openNav;
+  const [openCreatePlaylistModal, setOpenCreatePlaylistModal] = props.openCreatePlaylistModal;
+  const [playlistMinMax, setPlaylistMinMax] = props.playlistMinMax;
   const [playlists, setPlaylists] = useState([]);
   const [marks, setMarks] = useState({});
 
@@ -195,7 +193,7 @@ const Main = () => {
   return (
     <>
       <HamburgerMenu onClick={() => setOpenNav(!openNav)}>
-        <OpenMenu />
+        <OpenMenu openNav={props.openNav}/>
       </HamburgerMenu>
       <Overlay
         openCYP={openCreatePlaylistModal || openNav}
@@ -207,30 +205,58 @@ const Main = () => {
 
       <MainContainer openNav={openNav}>
         <HeaderContainer>
-          <Header />
+          <Header openNav={props.openNav}/>
         </HeaderContainer>
 
         <Sidebar open={openNav}>
-          <Navigation playlists={playlists} marksState={[marks, setMarks]} />
+          <Navigation 
+            playlists={playlists} 
+            marksState={[marks, setMarks]} 
+            playlistMinMax={props.playlistMinMax}
+            openNav={props.openNav}
+            userTracks={props.userTracks}
+            chartValues={props.chartValues}
+          />
         </Sidebar>
 
         <MainContent>
-          <CreatePlaylistModal />
+          <CreatePlaylistModal 
+            playlistMinMax={props.playlistMinMax}
+            openCreatePlaylistModal={props.openCreatePlaylistModal}
+            userTracks={props.userTracks}
+          />
 
           <div className="playlists-container">
             <div className="playlist-image-container">
-              <PlaylistImage />
+              <PlaylistImage 
+                playlistMinMax={props.playlistMinMax}
+                userTracks={props.userTracks}
+              />
             </div>
           </div>
-          <PlaylistItemContainer />
-
-          <PlaylistRecomendationContainer />
+          <PlaylistItemContainer 
+            playlistMinMax={props.playlistMinMax}
+            userTracks={props.userTracks}
+            chartValues={props.chartValues}
+          />
+          <PlaylistRecomendationContainer 
+            playlistMinMax={props.playlistMinMax}
+            userTracks={props.userTracks}
+          />
         </MainContent>
         <PlaylistControls>
-          <RadarChart />
+          <RadarChart 
+            chartValues={props.chartValues}
+            chartData={props.chartData}
+          />
 
           <ControlsContainer>
-            <Sliders marksState={[marks, setMarks]} />
+            <Sliders 
+              marksState={[marks, setMarks]} 
+              playlistMinMax={props.playlistMinMax}
+              userTracks={props.userTracks}
+              chartValues={props.chartValues}
+            />
             <CreatePlaylistButton onClick={() => setOpenCreatePlaylistModal(true)}>
               Create Playlist
             </CreatePlaylistButton>

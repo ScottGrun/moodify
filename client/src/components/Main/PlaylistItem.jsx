@@ -173,9 +173,9 @@ const initialPosition = {
 
 const PlaylistItem = (props) => {
   const [accessToken, setAccessToken] = useContext(StateContext).AccessToken;
-  const [chartValues, setChartValues] = useContext(StateContext).ChartValues;
-  const [userTracks, setTracks] = useContext(StateContext).UserTracks;
-  const [playlistMinMax, setPlaylistMinMax] = useContext(StateContext).PlaylistMinMax;
+  const [chartValues, setChartValues] = props.chartValues;
+  const [userTracks, setTracks] = props.userTracks;
+  const [playlistMinMax, setPlaylistMinMax] = props.playlistMinMax;
 
   const [currentSong, setCurrentSong] = useState(null);
   const [isPlaying, setPlaying] = useState(false);
