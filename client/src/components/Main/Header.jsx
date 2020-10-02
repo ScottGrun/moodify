@@ -13,7 +13,7 @@ const HeaderContainer = styled.div`
   align-content: center;
 
   @media(max-width: 1280px) {
-    .profile {
+    .profile-container {
       display: none;
     }
   }
@@ -25,7 +25,9 @@ export default function(Header) {
   return(
     <HeaderContainer>
         <img src={logo} />
-        <Profile />
+        <div className='profile-container'>
+          <Profile />
+        </div>
     </HeaderContainer>
   );
 };

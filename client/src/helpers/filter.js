@@ -22,3 +22,13 @@ export const matchFilter = (song, playlistMinMax) => {
   }
   return false;
 };
+
+export function filterTracks(userTracks, playlistMinMax) {
+  let filteredTracks;
+  
+  if (playlistMinMax.loaded && userTracks.loading) {
+    filteredTracks = userTracks.songs
+      .filter(song => matchFilter(song, playlistMinMax));
+  }
+  return filteredTracks;
+}

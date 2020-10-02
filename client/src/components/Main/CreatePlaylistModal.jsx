@@ -2,13 +2,15 @@ import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { StateContext } from '../../App';
 import axios from 'axios';
-import { matchFilter } from '../../helpers/matchFilter';
+import { matchFilter } from '../../helpers/filter';
+import { filterTracks } from '../../helpers/filter';
+import { getTotalDuration } from '../../helpers/calculations';
 
 const CreatePlaylistModalContainer = styled.div`
   width: 100%;
   max-width: 614px;
   height: 100%;
-  max-height: 551px;
+  max-height: 500px;
   position: absolute;
   border-radius: 5px;
   top: 50%;
@@ -59,6 +61,7 @@ const CreatePlaylistModalContainer = styled.div`
     .form {
       display: flex;
       flex-direction: column;
+      width: 100%;
 
       label {
         display: flex;
@@ -99,28 +102,23 @@ const CreatePlaylistModalContainer = styled.div`
         }
       }
 
-      .update-weekly {
-        display: flex;
+      .image-label {
+        margin-bottom: 7px;
+      }
 
-        .checkbox {
-          width: 16px;
-          height: 16px;
-        }
+      .upload-file {
+        padding: 5px 7px 5px 0;
+        ${({ imageErrors }) => !imageErrors &&`
+          margin-bottom: 15px;
+        `}
+      }
 
-        .explanation {
-          margin-left: 7px;
+      .image-error {
+        color: #f02b0f;
+        font-size: 12px;
 
-          h3 {
-            font-size: 10px;
-            font-weight: 500;
-            margin-bottom: 7px;
-          }
-
-          p {
-            font-size: 8px;
-            color: #999999;
-            margin-bottom: 15px;
-          }
+        &:last-of-type {
+          margin-bottom: 10px;
         }
       }
 
@@ -157,55 +155,96 @@ export default function CreatePlaylistModal() {
   const [userTracks, setUserTracks] = useContext(StateContext).UserTracks;
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
+  const [image, setImage] = useState({
+    lastModified: null,
+    lastModifiedDate: null,
+    name: null,
+    size: null,
+    type: 'image/jpeg',
+    webkitRelativePath: ''
+  });
+  const [imageErrors, setImageErrors] = useState('');
+
+  const filteredTracks = filterTracks(userTracks, playlistMinMax);
+  const duration = getTotalDuration(filteredTracks);
 
   const savePlaylist = (songs) => {
     const uris = songs.filter(song => matchFilter(song, playlistMinMax)).map(song => song.uri)
+    axios.post(`http://localhost:9000/playlists/create`, {
+      accessToken,
+      name,
+      description,
+      uris,
+      image
+    })
+    .then((res) => {
+      console.log(res);
+      setOpenCreatePlaylistModal(false);
+    });
+  };
 
-    axios
-      .post(`http://localhost:9000/playlists/create`, {
-        accessToken,
-        name,
-        description,
-        uris,
-        imageUrl 
-      })
-      .then((res) => {
-        console.log(res);
-      });
+  // const setImageToInitial = () => {
+  //   setImage({
+  //     lastModified: null,
+  //     lastModifiedDate: null,
+  //     name: null,
+  //     size: null,
+  //     type: 'image/jpeg',
+  //     webkitRelativePath: ''
+  //   });
+  // }
+
+  const handleFileUpload = (e) => {
+    const imageFile = e.target.files[0];
+    const reader = new FileReader();
+    const errors = [];
+
+    if (!imageFile) {
+      setImage('');
+      return;
+    }
+    if (imageFile.size > 1024 * 256) {
+      errors.push('max size - 256kb');
+      setImage('');
+    }
+    if (imageFile.type !== 'image/jpeg') {
+      errors.push('file type must be jpeg');
+      setImage('');
+    }
+    setImageErrors(errors);
+    if (errors.length) return;
+
+    reader.readAsDataURL(imageFile);
+    reader.onload = (e) => {
+      setImage(e.target.result);
+    };
   };
 
   return(
-    <CreatePlaylistModalContainer open={openCreatePlaylistModal}>
+    <CreatePlaylistModalContainer open={openCreatePlaylistModal} imageErrors={imageErrors[0]}>
       <h1>Create Your Playlist</h1>
       <div className='content-container'>
         <div className='image-container'>
-          <img />
+          <img src={image} />
           <div className='playlist-stats'>
-            <p>Total Listening Time  — 2:31 </p>
-            <p>Songs In Playlist — 436</p>
+            <p>Songs In Playlist — {filteredTracks && filteredTracks.length || 'NA'}</p>
+            <p>Total Listening Time  — {duration || 'NA'}</p>
           </div>
         </div>
         <div className='form'>
           <label>
             Playlist Name
-            <input placeholder={'A super awesome playlist.'} value={name} onChange={e => setName(e.target.value)}/>
+            <input placeholder={'Best Playlist'} value={name} onChange={e => setName(e.target.value)}/>
           </label>
+          <label className='image-label'>Image (optional)</label>
+          <input className='upload-file' type='file' onChange={e => handleFileUpload(e)}/>
+          {
+            imageErrors.length > 0 && imageErrors.map((error, index) => <p key={index} className='image-error'>{error}</p>)
+          }
           <label>
-            Image URL
-            <input placeholder='A super awesome playlist.' value={imageUrl} onChange={e => setImageUrl(e.target.value)}/>
-          </label>
-          <label>
-            Description
+            Description (optional)
             <textarea placeholder='A super awesome playlist.' value={description} onChange={e => setDescription(e.target.value)}/>
           </label>
-          <div className='update-weekly'>
-            <input type='checkbox' />
-            <div className='explanation'>
-              <h3>Update Weekly</h3>
-              <p>Automatically update your playlist every Monday with new music that matches your filters.</p>
-            </div>
-          </div>
           <button className='save-playlist' onClick={() => savePlaylist(userTracks.songs)}>Save Playlist</button>
         </div>
       </div>

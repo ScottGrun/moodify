@@ -4,8 +4,7 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
 const authRouter = require('./routes/auth');
-const dataRouter = require('./routes/data');
-const getTracksRouter = require('./routes/getTracks');
+const tracksRouter = require('./routes/tracks');
 const playlistsRouter = require('./routes/playlists');
 const presetsRouter = require('./routes/presets');
 
@@ -23,13 +22,9 @@ app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
 
 app.use('/auth', authRouter(db));
 app.use('/data', dataRouter);
-app.use('/getTracks', getTracksRouter);
+app.use('/tracks', tracksRouter);
 app.use('/playlists', playlistsRouter);
 app.use('/presets', presetsRouter(db));
-
-app.get('/', (req, res) => {
-  res.send('hi');
-});
 
 app.listen(9000, () => {
   console.log(`server listening on port 9000`);

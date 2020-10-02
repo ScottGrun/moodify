@@ -1,22 +1,26 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { StateContext } from '../../App';
-
 import styled from 'styled-components';
 import Slider from '@material-ui/core/Slider';
+import { filterTracks } from '../../helpers/filter';
+import { getAverages } from '../../helpers/calculations';
 
 const SlidersContainer = styled.div`
   width: 100%;
-  height: 100%;
+  height: auto;
   padding: 10px;
-  
- 
-  
 
   .values-container {
     width: 100%;
     color: #ccc;
     font-size: 10px;
     text-align: right;
+  }
+
+  .MuiSlider-mark {
+    width: 1;
+    transform: translateY(-6px);
+    height: 15px;
   }
 
   .MuiSlider-markLabel {
@@ -56,17 +60,17 @@ const SlidersContainer = styled.div`
   }
 `;
 
-export default function Sliders() {
+export default function Sliders({ marksState }) {
   const [playlistMinMax, setPlaylistMinMax] = useContext(StateContext).PlaylistMinMax;
-
+  const [chartValues, setChartValues] = useContext(StateContext).ChartValues;
+  const [userTracks, setTracks] = useContext(StateContext).UserTracks;
   const [tempo, setTempo] = useState([0, 0]);
   const [danceability, setDanceability] = useState([0, 0]);
   const [energy, setEnergy] = useState([0, 0]);
   const [instrumentalness, setInstrumentalness] = useState([0, 0]);
   const [loudness, setLoudness] = useState([0, 0]);
   const [valence, setValence] = useState([0, 0]);
-
-  const [marks, setMarks] = useState([]);
+  const [marks, setMarks] = marksState;
 
   useEffect(() => {
     if (playlistMinMax.data.tempo) {
@@ -76,75 +80,15 @@ export default function Sliders() {
       setInstrumentalness(playlistMinMax.data.instrumentalness);
       setLoudness(playlistMinMax.data.loudness);
       setValence(playlistMinMax.data.valence);
-
-      setMarks({
-        tempo: [
-          {
-            value: playlistMinMax.data.tempo[0],
-            label: 'Min',
-          },
-          {
-            value: playlistMinMax.data.tempo[1],
-            label: 'Max',
-          },
-        ],
-        danceability: [
-          {
-            value: playlistMinMax.data.danceability[0],
-            label: 'Min',
-          },
-          {
-            value: playlistMinMax.data.danceability[1],
-            label: 'Max',
-          },
-        ],
-        energy: [
-          {
-            value: playlistMinMax.data.energy[0],
-            label: 'Min',
-          },
-          {
-            value: playlistMinMax.data.energy[1],
-            label: 'Max',
-          },
-        ],
-        instrumentalness: [
-          {
-            value: playlistMinMax.data.instrumentalness[0],
-            label: 'Min',
-          },
-          {
-            value: playlistMinMax.data.instrumentalness[1],
-            label: 'Max',
-          },
-        ],
-        valence: [
-          {
-            value: playlistMinMax.data.valence[0],
-            label: 'Min',
-          },
-          {
-            value: playlistMinMax.data.valence[1],
-            label: 'Max',
-          },
-        ],
-        loudness: [
-          {
-            value: playlistMinMax.data.loudness[0],
-            label: 'Playlist Min',
-          },
-          {
-            value: playlistMinMax.data.loudness[1],
-            label: 'Playlist Max',
-          },
-        ],
-      });
+      const filteredTracks = filterTracks(userTracks, playlistMinMax);
+      const averages = getAverages(filteredTracks);
+      setChartValues(averages);
     }
-  }, [playlistMinMax.loaded]);
+  }, [playlistMinMax.data]);
 
-  // useEffect(() => {
-  //   setChartValues([value1[1], value2[1], value3[1], value4[1], value5[1], value6[1]]);
-  // },[value1[1], value2[1], value3[1], value4[1], value5[1], value6[1]]);
+  const changeCommitedHandler = (event, val, attr) => {
+    setPlaylistMinMax((prev) => ({ ...prev, data: { ...prev.data, [attr]: val } }));
+  };
 
   return (
     <SlidersContainer>
@@ -161,9 +105,7 @@ export default function Sliders() {
             value={tempo}
             step={5}
             marks={marks.tempo}
-            onChangeCommitted={(event, val) => {
-              setPlaylistMinMax((prev) => ({ ...prev, data: { ...prev.data, tempo: val } }));
-            }}
+            onChangeCommitted={(event, val) => changeCommitedHandler(event, val, 'tempo')}
             onChange={(event, val) => {
               setTempo(val);
             }}
@@ -183,12 +125,7 @@ export default function Sliders() {
             min={0}
             max={100}
             value={instrumentalness}
-            onChangeCommitted={(event, val) => {
-              setPlaylistMinMax((prev) => ({
-                ...prev,
-                data: { ...prev.data, instrumentalness: val },
-              }));
-            }}
+            onChangeCommitted={(event, val) => changeCommitedHandler(event, val, 'instrumentalness')}
             marks={marks.instrumentalness}
             onChange={(event, val) => setInstrumentalness(val)}
             valueLabelDisplay="auto"
@@ -202,9 +139,7 @@ export default function Sliders() {
             min={0}
             max={100}
             value={energy}
-            onChangeCommitted={(event, val) => {
-              setPlaylistMinMax((prev) => ({ ...prev, data: { ...prev.data, energy: val } }));
-            }}
+            onChangeCommitted={(event, val) => changeCommitedHandler(event, val, 'energy')}
             marks={marks.energy}
             onChange={(event, val) => setEnergy(val)}
             valueLabelDisplay="auto"
@@ -218,9 +153,7 @@ export default function Sliders() {
             min={0}
             max={100}
             value={valence}
-            onChangeCommitted={(event, val) => {
-              setPlaylistMinMax((prev) => ({ ...prev, data: { ...prev.data, valence: val } }));
-            }}
+            onChangeCommitted={(event, val) => changeCommitedHandler(event, val, 'valence')}
             marks={marks.valence}
             onChange={(event, val) => setValence(val)}
             valueLabelDisplay="auto"
@@ -234,9 +167,7 @@ export default function Sliders() {
             min={0}
             max={100}
             value={danceability}
-            onChangeCommitted={(event, val) => {
-              setPlaylistMinMax((prev) => ({ ...prev, data: { ...prev.data, danceability: val } }));
-            }}
+            onChangeCommitted={(event, val) => changeCommitedHandler(event, val, 'danceability')}
             marks={marks.danceability}
             onChange={(event, val) => setDanceability(val)}
             valueLabelDisplay="auto"
@@ -250,9 +181,7 @@ export default function Sliders() {
             min={-60}
             max={1}
             value={loudness}
-            onChangeCommitted={(event, val) => {
-              setPlaylistMinMax((prev) => ({ ...prev, data: { ...prev.data, loudness: val } }));
-            }}
+            onChangeCommitted={(event, val) => changeCommitedHandler(event, val, 'loudness')}
             marks={marks.loudness}
             onChange={(event, val) => setLoudness(val)}
             valueLabelDisplay="auto"

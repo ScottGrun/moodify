@@ -1,6 +1,7 @@
 import styled, { keyframes } from 'styled-components';
 import PlayButton from '../../assets/icons/PlayButton.svg';
 import WaveFormSource from '../../assets/icons/audio.svg';
+import setCurrentSongPlaying from '../../helpers/songPreviewManager';
 
 import React, { useContext, useState, useEffect } from 'react';
 import { StateContext } from '../../App';
@@ -64,6 +65,10 @@ const AudioFeatures = styled.div`
   font-size: 11px;
   font-weight: normal;
 
+  @media (max-width: 375px) {
+    display: none;
+  }
+
   p {
     width: 75px;
     text-align: center;
@@ -79,6 +84,20 @@ const SongMetaData = styled.div`
   max-width: 275px;
 `;
 
+const animateIn = keyframes`
+
+  0% {
+    opacity: 0;
+    transform: scale(0.6) translateY(-8px);
+  }
+  
+  100% {
+    opacity: 1;
+  }
+
+
+`;
+
 const StyledPlaylistItem = styled.div`
   position: relative;
   display: flex;
@@ -90,6 +109,13 @@ const StyledPlaylistItem = styled.div`
   margin: 12px 0;
   position: relative;
 
+  /* Animations here */
+  animation: ${animateIn} 300ms;
+  animation-delay: calc(${props => props.idx < 50 ? props.idx : 0} * 65ms);
+  animation-fill-mode: both;
+  animation-timing-function: ease-in-out;
+
+  /*  */
   &:hover {
     cursor: pointer;
   }
@@ -142,32 +168,34 @@ const StyledProgressContainer = styled.div`
 `;
 
 const PlaylistItem = (props) => {
-  const [songPlaying, setSongPlaying] = props.songPlaying;
+  const [currentSong, setCurrentSong] = useState(null);
+  const [isPlaying, setPlaying] = useState(false);
+
+  useEffect(() => {
+    if (isPlaying) {
+      const newSong = new Audio(props.previewUrl);
+      setCurrentSong(newSong);
+
+      setCurrentSongPlaying(props.previewUrl, () => {
+        newSong.pause();
+        setCurrentSong(null);
+        setPlaying(false);
+      });
+
+      newSong.play();
+    } else if (currentSong !== null) {
+      currentSong.pause();
+    }
+  }, [isPlaying]);
 
   const playPreview = () => {
-    const newSong = new Audio(props.previewUrl);
-    newSong.loop = true;
-
-    if (songPlaying.src) {
-      if (songPlaying.src === newSong.src) {   // pause old song
-        songPlaying.pause();
-        setSongPlaying({});
-      } else {  // pause old song, play new song
-        songPlaying.pause();
-        newSong.play();
-        setSongPlaying(newSong);
-      }
-    } else {  // play new song
-      newSong.play();
-      setSongPlaying(newSong);
-    }
+    setPlaying(!isPlaying);
   };
-  
-  
-  const playing = songPlaying.src === props.previewUrl;
+
+  const playing = isPlaying;
 
   return (
-    <StyledPlaylistItem onClick={playPreview}>
+    <StyledPlaylistItem idx={props.idx} className="playlist-item" onClick={playPreview}>
       <StyledSongCoverContainer>
         <StyledSongImage src={props.img} />
       </StyledSongCoverContainer>
@@ -177,7 +205,10 @@ const PlaylistItem = (props) => {
         {!playing && <img src={PlayButton} />}
       </OverlayContainer>
       <SongMetaData>
-        <SongName playing={playing}> {props.name.length > 26 ?  props.name.slice(0, 20) + '...' : props.name }</SongName>
+        <SongName playing={playing}>
+          {' '}
+          {props.name.length > 26 ? props.name.slice(0, 20) + '...' : props.name}
+        </SongName>
         <ArtistName>{props.artist}</ArtistName>
       </SongMetaData>
       <AudioFeatures>

@@ -1,9 +1,8 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { StateContext } from '../../App';
-
 import styled from 'styled-components';
 import PlaylistItem from './PlaylistItem';
-import { matchFilter } from '../../helpers/matchFilter';
+import { filterTracks } from '../../helpers/filter';
 
 const StyledHeader = styled.div`
   display: flex;
@@ -28,6 +27,10 @@ const ColumnHeaderContainer = styled.div`
   font-size: 11px;
   font-weight: normal;
 
+  @media(max-width: 375px){
+    display: none;
+  }
+
   p {
     font-size: 14px;
     width: 75px;
@@ -51,16 +54,16 @@ const SectionHeader = styled.h2`
 const PlaylistItemContainer = (props) => {
   const [playlistMinMax, setPlaylistMinMax] = useContext(StateContext).PlaylistMinMax;
   const [userTracks, setUserTracks] = useContext(StateContext).UserTracks;
-  const [songPlaying, setSongPlaying] = useState({});
 
   let renderSongs = [];
   if (playlistMinMax.loaded && userTracks.loading) {
-    renderSongs = userTracks.songs
-      .filter(song => matchFilter(song, playlistMinMax))
-      .map((song, index) => <PlaylistItem 
+    const filteredTracks = filterTracks(userTracks, playlistMinMax);
+    
+    renderSongs = filteredTracks
+      .map((song, index) => <PlaylistItem idx={index} 
         {...song}
         key={song.id + index}
-        songPlaying={[songPlaying, setSongPlaying]}/>);
+       />);
   }
 
   return (

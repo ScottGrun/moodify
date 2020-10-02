@@ -1,11 +1,12 @@
 import React, { useEffect, useContext, useState } from 'react';
 import axios from 'axios';
 import { StateContext } from '../../App';
+import { setSliderMarks } from '../../helpers/util';
 import styled from 'styled-components';
 
 // Components
 import Header from './Header';
-import Navigation from './Navigation';
+import Navigation from './Navigation.jsx';
 import PlaylistImage from './PlaylistImage';
 import PlaylistItemContainer from './PlaylistItemContainer';
 import RadarChart from './RadarChart';
@@ -77,6 +78,15 @@ const MainContainer = styled.div`
       'playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls'
       'main main main main main main main main main main main main ';
   }
+
+  @media(max-width: 375px){
+    grid-template-areas:
+    'header header header header header header header header header header header header'
+    'playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls '
+    'main main main main main main main main main main main main ';
+
+
+  }
 `;
 
 const Sidebar = styled.div`
@@ -86,10 +96,16 @@ const Sidebar = styled.div`
     grid-area: none;
     height: 100vh;
     width: 282px;
-    position: absolute;
+    position: fixed;
     display: block;
     top: 0;
     right: 0;
+    transform: translateX(282px);
+    transition: all 0.5s ease-in-out;
+    z-index: 1000;
+    ${({ open }) => open &&`
+      transform: translateX(0);
+    `}
   }
 `;
 
@@ -104,13 +120,16 @@ const PlaylistControls = styled.div`
     display: flex;
     flex-flow: row;
   }
+
+  @media (max-width: 375px) {
+    display: flex;
+    flex-flow: column;
+  }
 `;
 
 const HeaderContainer = styled.div`
   grid-area: header;
 `;
-
-
 
 const CreatePlaylistButton = styled.button`
   width: 100%;
@@ -120,10 +139,12 @@ const CreatePlaylistButton = styled.button`
   font-size: 14px;
   border: solid 2px white;
   padding: 10px;
+  cursor: pointer;
+  outline: none;
 
   &:hover {
     background-color: #2ed689;
-    color: #191f35;
+    color: white;
   }
 `;
 
@@ -161,10 +182,11 @@ const Main = () => {
   const [playlistMinMax, setPlaylistMinMax] = useContext(StateContext).PlaylistMinMax;
   const [playlists, setPlaylists] = useState([]);
   const [openSavePresetModal, setOpenSavePresetModal] = useContext(StateContext).OpenSavePresetModal;
+  const [marks, setMarks] = useState({});
 
-  const getTracks = () => {
+  const getSavedTracks = () => {
     axios
-      .post(`http://localhost:9000/getTracks/`, {
+      .post(`http://localhost:9000/tracks/saved`, {
         accessToken,
       })
       .then((res) => {
@@ -174,32 +196,29 @@ const Main = () => {
         });
         setChartValues(res.data.averages);
         setPlaylistMinMax({ data: res.data.minMax, loaded: true });
+        setSliderMarks(res.data.minMax, setMarks);
       });
   };
 
   const getPlaylists = () => {
-    axios.post('http://localhost:9000/playlists/ids', { accessToken }).then((res) => {
+    axios.post('http://localhost:9000/playlists/ids', { accessToken })
+    .then((res) => {
       setPlaylists(res.data);
     });
   };
 
   useEffect(() => {
-    getTracks();
+    getSavedTracks();
     getPlaylists();
   }, []);
 
-  const handleClick = () => {
-    console.log('sdfsdfsdfsd');
-    setOpenNav(!openNav);
-  };
-
   return (
     <>
-      <HamburgerMenu onClick={handleClick}>
+      <HamburgerMenu onClick={() => setOpenNav(!openNav)}>
         <OpenMenu />
       </HamburgerMenu>
       <Overlay
-        openCYP={openCreatePlaylistModal}
+        openCYP={openCreatePlaylistModal || openNav}
         openPreset={openSavePresetModal}
         onClick={() => {
           setOpenNav(false);
@@ -213,8 +232,8 @@ const Main = () => {
           <Header />
         </HeaderContainer>
 
-        <Sidebar>
-          <Navigation playlists={playlists} open={openNav} />
+        <Sidebar open={openNav}>
+          <Navigation playlists={playlists} marksState={[marks, setMarks]}/>
         </Sidebar>
 
         <MainContent>
@@ -227,15 +246,14 @@ const Main = () => {
             </div>
           </div>
 
-          {userTracks.loading && <PlaylistItemContainer />}
+        <PlaylistItemContainer />
         </MainContent>
         <PlaylistControls>
             <RadarChart />
 
           <ControlsContainer>
-            <Sliders />
+            <Sliders marksState={[marks, setMarks]}/>
             <CreatePlaylistButton
-              className="create-playlist-btn"
               onClick={() => setOpenCreatePlaylistModal(true)}
             >
               Create Playlist

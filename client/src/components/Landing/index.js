@@ -3,12 +3,12 @@ import axios from 'axios';
 import styled from 'styled-components';
 import { useCookies } from 'react-cookie';
 import { StateContext } from '../../App';
-
 import logo from '../../assets/logo.svg';
-// import TurntableModel from './TurntableModel';
-import vinylRecord from '../../assets/vinyl-record.png';
-import hand from '../../assets/hand.png';
-import Parallax from './Parallax';
+import Playlist from './Playlist';
+
+// images
+import vinylRecord from './assets/vinyl-record.png';
+import hand from './assets/hand.png';
 
 const LandingPageContainer = styled.div`
   width: 100%;
@@ -17,27 +17,16 @@ const LandingPageContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #191F35;
+  background-color: #101422;
   overflow: hidden;
-  background-image: url('https://i.imgur.com/pafOlyj.jpg');
-  background-size: cover;
 
   .section1 {
     width: 100%;
     height: 100vh;
+    padding-bottom: 50px;
     position: relative;
     display: flex;
     justify-content: center;
-
-    .overlay {
-      height: 100%;
-      width: 100%;
-      background-color: rgba(0,0,0,.4);
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: 5;
-    }
 
     .content-container {
       position: relative;
@@ -112,6 +101,34 @@ const LandingPageContainer = styled.div`
   }
 `;
 
+const PlaylistContainer = styled.div`
+  width: 100%;
+  overflow: hidden;
+  color: white;
+  height: 140vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  
+  h1 {
+    font-size: 40px;
+  }
+
+  .playlist-items {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    img {
+      margin-bottom: 7px;
+      border-radius: 4px;
+    }
+  }
+`;
+
 const Landing = () => {
   const [ cookies, setCookie, removeCookie ] = useCookies(['cookie-name']);
   const [ accessToken, setAccessToken ] = useContext(StateContext).AccessToken;
@@ -181,7 +198,6 @@ const Landing = () => {
   return(
     <LandingPageContainer>
       <section className='section1'>
-        <div className='overlay' />
         <div className='content-container'>
           <img className='logo' src={logo} />
           <div className='cta-container'>
@@ -202,7 +218,7 @@ const Landing = () => {
           </div>
         </div>
       </section>
-      <Parallax />
+      <Playlist />
     </LandingPageContainer>
   );
 

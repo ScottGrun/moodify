@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { StateContext } from '../../App';
 import styled from 'styled-components';
+import { StateContext } from '../../App';
 import { Radar } from 'react-chartjs-2';
+import { getAverages } from '../../helpers/calculations';
 
 const RadarChartContainer = styled.div`
   width: 100%;
 
   h2 {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     font-family: Inter;
     font-style: normal;
     font-weight: 900;
@@ -42,7 +43,7 @@ export default function RadarChart(props) {
     legend: {
       display: false,
     },
-   
+
     layout: {
       padding: {
         left: 0,
@@ -81,13 +82,18 @@ export default function RadarChart(props) {
   };
 
   useEffect(() => {
+    if (window.innerWidth <= 768) {
+      chartOptions.aspectRatio = 1;
+    } else {
+      chartOptions.aspectRatio = 2;
+    }
     chart();
   }, [chartValues]);
 
   return (
     <RadarChartContainer>
       <h2>Curate Your Playlist</h2>
-      <Radar data={chartData} options={chartOptions} />
+      <Radar data={chartData} height={null} width={null} options={chartOptions} />
     </RadarChartContainer>
   );
 }

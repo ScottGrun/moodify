@@ -8,16 +8,9 @@ const ProfileContainer = styled.div`
   border-radius: 5px;
   position: absolute;
   top: 0;
-  right: 0%;
+  right: 0;
   width: 200px;
   height: 100px;
-
-  @media(max-width: 1280px) {
-   
-      display: none;
-    
-  }
-  
 
   .profile-dropdown {
     position: relative;
@@ -36,9 +29,6 @@ const ProfileContainer = styled.div`
     .profile-pic {
       width: 30px;
       height: 30px;
-      background-image: url('https://i.imgur.com/fH8okuG.jpg');
-      background-size: cover;
-      background-position: center;
       margin-right: 10px;
       border-radius: 3px;
     }
@@ -57,26 +47,21 @@ const ProfileContainer = styled.div`
   }
 
   .dropdown-container {
-    opacity: 0;
-    height: 60px;
+    height: 40px;
     background-color: #12172C;
     width: 100%;
-    padding: 10px;
     transition: transform 0.2s ease-in-out;
     transform: translateY(-60px);
     ${({ open }) => open && `
       transform: translateY(0);
-      opacity: 1;
-      
     `}
-
 
     ul {
       color: #ccc;
 
       li {
         list-style: none;
-        padding: 10px 20px;
+        padding: 10px 14px;
         display: flex;
         align-items: center;
         user-select: none;
@@ -88,8 +73,26 @@ const ProfileContainer = styled.div`
         }
 
         &:hover {
-          background-color: #191F35;
+          background-color: #242e51;
           cursor: pointer;
+        }
+      }
+    }
+  }
+  /* #1a1b1d */
+  @media(max-width: 1280px) {
+    position: static;
+    
+    .profile-dropdown {
+      background-color: #161719;
+    }
+
+    .dropdown-container {
+      background-color: #25262a;
+
+      ul li {
+        &:hover {
+          background-color: #161719;
         }
       }
     }
@@ -114,16 +117,20 @@ export default function Profile() {
 
   const logout = () => {
     removeCookie('accessToken');
+    removeCookie('refreshToken');
+    removeCookie('userData');
     setAccessToken(null);
     window.location = 'http://localhost:3000';
   };
 
+  const userData = cookies.userData;
+  
   return(
-    <ProfileContainer open={open}>
+    <ProfileContainer open={open} >
   
       <div className='profile-dropdown' onClick={toggleDropdown}>
-        <img className='profile-pic' />
-        <p className='profile-name'>Eirc Romar</p>
+        <img src={userData.images[0].url} className='profile-pic' />
+        <p className='profile-name'>{userData.display_name || 'NA'}</p>
         <ion-icon className='dropdown-icon' name="chevron-down-outline"></ion-icon>
       </div>
 

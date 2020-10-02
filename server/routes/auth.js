@@ -23,12 +23,13 @@ const generateRandomString = function (length) {
 
 module.exports = (db) => {
 
+// when user presses 'login with spotify' redirect them to authorization screen
   router.get('/login', (req, res) => {
     const state = generateRandomString(16);
     res.cookie(stateKey, state);
 
     const scope =
-      'playlist-read-private playlist-modify-private streaming user-read-email user-read-private user-library-read streaming playlist-modify-public playlist-read-collaborative user-modify-playback-state user-library-modify';
+      'ugc-image-upload playlist-read-private playlist-modify-private streaming user-read-email user-read-private user-library-read streaming playlist-modify-public playlist-read-collaborative user-modify-playback-state user-library-modify';
     res.send(
       'https://accounts.spotify.com/authorize?' +
         querystring.stringify({
@@ -42,6 +43,7 @@ module.exports = (db) => {
     );
   });
 
+  // send back access, refresh tokens, and user data (ie. name)
   router.post('/token', async (req, res) => {
     const code = req.body.code;
 
