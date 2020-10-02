@@ -54,7 +54,8 @@ export default function Presets() {
   const [state, setState] = useState({
     presets: [],
     popular: [],
-    yourpresets: []
+    yourpresets: [],
+    yourlikedpresets: [],
   });
 
   const getPopularPresets = () => {
@@ -67,6 +68,11 @@ export default function Presets() {
       .get(`http://localhost:9000/presets/yourpresets`, { withCredentials: true });
   };
 
+  const getUserLikedPresets = () => {
+    return axios
+      .get(`http://localhost:9000/presets/yourlikedpresets`, { withCredentials: true });
+  };
+
   const buildSwiperSlidesFromPresets = (presets) => {
     const swiperSlides = presets.map((preset) => <SwiperSlide key={preset.id}><Preset {...preset} /></SwiperSlide>);
     return swiperSlides;
@@ -76,10 +82,12 @@ export default function Presets() {
     Promise.all([
       getPopularPresets(),
       getUserPresets(),
+      getUserLikedPresets(),
     ]).then((all) => {
       const popularSwiperSlides = buildSwiperSlidesFromPresets(all[0].data);
       const userSwiperSlides = buildSwiperSlidesFromPresets(all[1].data);
-      setState(prev => ({ ...prev, presets: popularSwiperSlides, popular: popularSwiperSlides, yourpresets: userSwiperSlides }));
+      const likedSwiperSlides = buildSwiperSlidesFromPresets(all[2].data);
+      setState(prev => ({ ...prev, presets: popularSwiperSlides, popular: popularSwiperSlides, yourpresets: userSwiperSlides, yourlikedpresets: likedSwiperSlides }));
     })
   }, []);
 
@@ -90,7 +98,7 @@ export default function Presets() {
     
   return(
     <PresetsContainer>
-      <h2><button onClick={() => setActivePresets(state.popular)}>Popular Presets</button> | <button onClick={() => setActivePresets(state.yourpresets)}>Your Presets</button></h2>
+      <h2><button onClick={() => setActivePresets(state.popular)}>Popular Presets</button> | <button onClick={() => setActivePresets(state.yourpresets)}>Your Presets</button> | <button onClick={() => setActivePresets(state.yourlikes)}>Your Liked Presets</button></h2>
       <div className='presets'>
         <div className='swiper-button-prev swiper-button-white' />
         <Swiper

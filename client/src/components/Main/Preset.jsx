@@ -1,4 +1,5 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
+import axios from 'axios';
 import styled from "styled-components";
 import { StateContext } from '../../App';
 
@@ -19,6 +20,10 @@ import image13 from '../../assets/preset-image-library/preset-image13.svg';
 import image14 from '../../assets/preset-image-library/preset-image14.svg';
 import image15 from '../../assets/preset-image-library/preset-image15.svg';
 
+// like heart icon
+import heartoutline from '../../assets/icons/heartoutline.svg';
+import heartfilled from '../../assets/icons/heartfilled.svg';
+
 const images = [image1, image2, image3, image4, image5, image6, image7, image8, image9, image10, image11, image12, image13, image14, image15];
 
 const randomImage = () => {
@@ -37,6 +42,16 @@ const PresetItem = styled.div`
     width: auto;
   }
 
+  .heart {
+    float: right;
+    position: absolute;
+    right: 190px;
+    bottom: 0px;
+    z-index: 1000;
+    background-color: none;
+    padding: 5px;
+  }
+
   @media(max-width: 768px) {
     height: 70px;
     width: 70px;
@@ -52,28 +67,35 @@ export default function Preset(props) {
   
   const [chartValues, setChartValues] = useContext(StateContext).ChartValues;
   const [playlistMinMax, setPlaylistMinMax] = useContext(StateContext).PlaylistMinMax;
+  const [state, setState] = useState({
+    liked: false
+  });
 
   const handleClick = () => {
     console.log(props.audio_features);
     setPlaylistMinMax({ data: props.audio_features, loaded: true });
   };
 
+  const handleHeartClick = () => {
+    const presetID = props.id;
+    console.log(presetID);
+    axios
+      .post(`http://localhost:9000/presets/${presetID}/like`, null, { withCredentials: true })
+      .then((res) => {
+        console.log(res);
+        // setState(prev => ({ ...prev, liked: res.data }))
+      });
+  };
+
   return(
-    <PresetItem
-      name={props.name}
-      description={props.description}
-      danceability={props.danceability}
-      instrumentalness={props.instrumentalness}
-      loudness={props.loudness}
-      speechiness={props.speechiness}
-      valence={props.valence}
-      tempo={props.tempo}
-      times_applied={props.times_applied}
-      onClick={handleClick}
-      >
+    <PresetItem>
       <img src={randomImage()} 
+      onClick={handleClick}
       className="preset-image" 
       alt="preset"/>
+      <div className="heart">
+        <img src={heartoutline} onClick={handleHeartClick} alt="heart"/> 
+      </div>
     </PresetItem>
   );
 };
