@@ -129,7 +129,7 @@ export default function Profile() {
     <ProfileContainer open={open} >
   
       <div className='profile-dropdown' onClick={toggleDropdown}>
-        <img src={userData.images[0].url} className='profile-pic' />
+        <img src={userData.images.length > 0 && userData.images[0].url} className='profile-pic' />
         <p className='profile-name'>{userData.display_name || 'NA'}</p>
         <ion-icon className='dropdown-icon' name="chevron-down-outline"></ion-icon>
       </div>

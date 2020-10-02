@@ -21,7 +21,6 @@ app.use(cookieParser());
 app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
 
 app.use('/auth', authRouter(db));
-app.use('/data', dataRouter);
 app.use('/tracks', tracksRouter);
 app.use('/playlists', playlistsRouter);
 app.use('/presets', presetsRouter(db));
