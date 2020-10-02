@@ -128,7 +128,7 @@ export default function SavePresetModal() {
   const [playlistMinMax, setPlaylistMinMax] = useContext(StateContext).PlaylistMinMax;
   
   const savePreset = () => {
-    const user_id = cookies.userData;
+    const user_id = cookies.userData.display_name;
     // console.log(user_id, name, imageUrl, playlistMinMax.data);
     // console.log(playlistMinMax.data.tempo);
     // console.log(playlistMinMax.data.instrumentalness);
