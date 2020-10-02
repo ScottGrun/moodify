@@ -63,7 +63,6 @@ router.post('/featured', async (req, res) => {
     const playlistTracks = await getTracksFromPlaylist(playlist.id, playlist.tracks.total, accessToken);
     featuredPlaylistsTracks.push(...playlistTracks);
   }
-
   const formattedTracks = formatTracks(featuredPlaylistsTracks);
   const trackAudioFeatures = await getAudioFeaturesOfTracks(formattedTracks, accessToken);
   const allTracks = addAudioFeaturesToTracks(formattedTracks, trackAudioFeatures);

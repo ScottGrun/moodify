@@ -12,7 +12,9 @@ const generateString = (length) => {
 
 //format
 const formatTracks = (songList) => {
-  const songs = songList.map((song) => {
+  const songs = songList
+  .filter(song => song.track)
+  .map(song => {
     return {
       name: song.track.name,
       id: song.track.id,
