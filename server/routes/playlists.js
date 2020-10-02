@@ -36,15 +36,18 @@ router.post('/create', async (req, res) => {
   };
 
   // add playlist image
-  // if (image) {
-  //   console.log(image);
-  //   axios({
-  //     method: 'put',
-  //     url: `https://api.spotify.com/v1/playlists/${playlist_id}/images`,
-  //     headers: { Authorization: 'Bearer ' + accessToken, 'Content-Type': 'image/jpeg' },
-  //     data: { image }
-  //   });
-  // }
+  // console.log(image, typeof image);
+  if (image) {
+    axios({
+      method: 'put',
+      url: `https://api.spotify.com/v1/playlists/${playlist_id}/images`,
+      headers: { 
+        Authorization: 'Bearer ' + accessToken, 
+        'Content-Type': 'image/jpeg' 
+      },
+      data: image.slice(23),
+    }).catch(err => console.log(err));
+  }
 
   res.send('New playlist created and songs added!');
 });
