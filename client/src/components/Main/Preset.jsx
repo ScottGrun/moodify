@@ -20,7 +20,7 @@ import image13 from '../../assets/preset-image-library/preset-image13.svg';
 import image14 from '../../assets/preset-image-library/preset-image14.svg';
 import image15 from '../../assets/preset-image-library/preset-image15.svg';
 
-// like heart icon
+// like heart icons
 import heartoutline from '../../assets/icons/heartoutline.svg';
 import heartfilled from '../../assets/icons/heartfilled.svg';
 
@@ -68,7 +68,7 @@ export default function Preset(props) {
   const [chartValues, setChartValues] = useContext(StateContext).ChartValues;
   const [playlistMinMax, setPlaylistMinMax] = useContext(StateContext).PlaylistMinMax;
   const [state, setState] = useState({
-    liked: false
+    liked: props.liked
   });
 
   const handleClick = () => {
@@ -80,10 +80,10 @@ export default function Preset(props) {
     const presetID = props.id;
     console.log(presetID);
     axios
-      .post(`http://localhost:9000/presets/${presetID}/like`, null, { withCredentials: true })
+      .post(`http://localhost:9000/presets/${presetID}/${state.liked ? "unlike" : "like"}`, null, { withCredentials: true })
       .then((res) => {
         console.log(res);
-        // setState(prev => ({ ...prev, liked: res.data }))
+        setState(prev => ({ ...prev, liked: !state.liked }))
       });
   };
 
@@ -94,7 +94,7 @@ export default function Preset(props) {
       className="preset-image" 
       alt="preset"/>
       <div className="heart">
-        <img src={heartoutline} onClick={handleHeartClick} alt="heart"/> 
+        <img src={state.liked ? heartfilled : heartoutline} onClick={handleHeartClick} alt="heart"/> 
       </div>
     </PresetItem>
   );

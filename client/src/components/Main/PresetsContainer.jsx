@@ -54,8 +54,8 @@ export default function Presets() {
   const [state, setState] = useState({
     presets: [],
     popular: [],
-    yourpresets: [],
-    yourlikedpresets: [],
+    yourPresets: [],
+    yourLikedPresets: [],
   });
 
   const getPopularPresets = () => {
@@ -73,10 +73,20 @@ export default function Presets() {
       .get(`http://localhost:9000/presets/yourlikedpresets`, { withCredentials: true });
   };
 
-  const buildSwiperSlidesFromPresets = (presets) => {
-    const swiperSlides = presets.map((preset) => <SwiperSlide key={preset.id}><Preset {...preset} /></SwiperSlide>);
+  const buildSwiperSlidesFromPresets = (presets, userLikesLookup) => {
+    const swiperSlides = presets.map((preset) => <SwiperSlide key={preset.id}><Preset { ...preset } liked={userLikesLookup[preset.id]}/></SwiperSlide>);
     return swiperSlides;
   };
+
+  const buildLikesLookup = (userLikedPresets) => {
+    let likedPresets = {};
+
+    for (const currentPreset of userLikedPresets) {
+      likedPresets[currentPreset.id] = true;
+    }
+
+    return likedPresets;
+  }; 
 
   useEffect(() => {
     Promise.all([
@@ -84,10 +94,11 @@ export default function Presets() {
       getUserPresets(),
       getUserLikedPresets(),
     ]).then((all) => {
-      const popularSwiperSlides = buildSwiperSlidesFromPresets(all[0].data);
-      const userSwiperSlides = buildSwiperSlidesFromPresets(all[1].data);
-      const likedSwiperSlides = buildSwiperSlidesFromPresets(all[2].data);
-      setState(prev => ({ ...prev, presets: popularSwiperSlides, popular: popularSwiperSlides, yourpresets: userSwiperSlides, yourlikedpresets: likedSwiperSlides }));
+      const userLikesLookup = buildLikesLookup(all[2].data);
+      const popularSwiperSlides = buildSwiperSlidesFromPresets(all[0].data, userLikesLookup);
+      const userSwiperSlides = buildSwiperSlidesFromPresets(all[1].data, userLikesLookup);
+      const likedSwiperSlides = buildSwiperSlidesFromPresets(all[2].data, userLikesLookup);
+      setState(prev => ({ ...prev, presets: popularSwiperSlides, popular: popularSwiperSlides, yourPresets: userSwiperSlides, yourLikedPresets: likedSwiperSlides }));
     })
   }, []);
 
@@ -98,7 +109,7 @@ export default function Presets() {
     
   return(
     <PresetsContainer>
-      <h2><button onClick={() => setActivePresets(state.popular)}>Popular Presets</button> | <button onClick={() => setActivePresets(state.yourpresets)}>Your Presets</button> | <button onClick={() => setActivePresets(state.yourlikes)}>Your Liked Presets</button></h2>
+      <h2><button onClick={() => setActivePresets(state.popular)}>Popular Presets</button> | <button onClick={() => setActivePresets(state.yourPresets)}>Your Presets</button> | <button onClick={() => setActivePresets(state.yourLikedPresets)}>Your Liked Presets</button></h2>
       <div className='presets'>
         <div className='swiper-button-prev swiper-button-white' />
         <Swiper
