@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { StateContext } from '../../App';
 import styled from 'styled-components';
+import { StateContext } from '../../App';
 import { Radar } from 'react-chartjs-2';
+import { getAverages } from '../../helpers/calculations';
 
 const RadarChartContainer = styled.div`
   width: 100%;

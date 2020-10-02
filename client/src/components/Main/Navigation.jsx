@@ -111,24 +111,25 @@ export default function Navigation({ playlists, marksState }) {
   const [marks, setMarks] = marksState;
 
   const loadTracks = (playlist_id, totalTracks) => {
-    axios
-      .post(`http://localhost:9000/tracks/playlist`, {
-        accessToken,
-        playlist_id,
-        totalTracks,
-      })
-      .then((res) => {
-        setTracks({
-          loading: true,
-          songs: res.data.songs,
-        });
-        setChartValues(res.data.averages);
-        setPlaylistMinMax({ data: res.data.minMax, loaded: true });
-        setSliderMarks(res.data.minMax, setMarks);
+    setOpenNav(false);
+    axios.post(`http://localhost:9000/tracks/playlist`, {
+      accessToken,
+      playlist_id,
+      totalTracks,
+    })
+    .then((res) => {
+      setTracks({
+        loading: true,
+        songs: res.data.songs,
       });
+      setChartValues(res.data.averages);
+      setPlaylistMinMax({ data: res.data.minMax, loaded: true });
+      setSliderMarks(res.data.minMax, setMarks);
+    });
   };
 
   const loadFeaturedSongs = () => {
+    setOpenNav(false);
     axios.post(`http://localhost:9000/tracks/featured`, {
       accessToken,
     })
@@ -144,6 +145,7 @@ export default function Navigation({ playlists, marksState }) {
   };
 
   const loadRecommendedSongs = () => {
+    setOpenNav(false);
     let recomendationSeeds = filterTracks(userTracks, playlistMinMax).map((track) => ({
       track_id: track.id,
       artist_id: track.artist_id,
@@ -167,7 +169,6 @@ export default function Navigation({ playlists, marksState }) {
 
   const handlePlaylistClick = (playlistId, trackTotal) => {
     loadTracks(playlistId, trackTotal);
-    setOpenNav(false);
   }
 
   return (
