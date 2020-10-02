@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import axios from "axios";
 import Preset from './Preset';
 // import Swiper React components
 import SwiperCore, { Navigation, Pagination } from 'swiper';
@@ -30,93 +31,6 @@ const PresetsContainer = styled.div`
   }
 `;
 
-const presetsData = [
-  {
-    id: '1',
-    name: 'Cool preset',
-    description: 'This is my cool preset.',
-    acousticness: 0.514,
-    danceability: 0.735,
-    energy: 0.578,
-    instrumentalness: 0.0902,
-    loudness: -11.840,
-    speechiness: 0.0461,
-    valence: 0.624,
-    tempo: 98.002,
-    times_applied: 1
-  }, 
-  {
-    id: '2',
-    name: 'My awesome preset',
-    description: 'Awesome soundz.',
-    acousticness: 0.675,
-    danceability: 0.421,
-    energy: 0.318,
-    instrumentalness: 0.046,
-    loudness: -23.040,
-    speechiness: 0.024,
-    valence: 0.384,
-    tempo: 85.000,
-    times_applied: 1
-  }, 
-  {
-    id: '3',
-    name: 'Preset for my music',
-    description: 'How does this sound?',
-    acousticness: 1.0,
-    danceability: 1.0,
-    energy: 1.0,
-    instrumentalness: 1.0,
-    loudness: -50.00,
-    speechiness: 1.0,
-    valence: 1.0,
-    tempo: 100.0,
-    times_applied: 1
-  }, 
-  {
-    id: '4',
-    name: 'PrEsEt!!!',
-    description: 'Wut does it do?',
-    acousticness: 0.023,
-    danceability: 0.45,
-    energy: 0.745,
-    instrumentalness: 1.0,
-    loudness: 10.00,
-    speechiness: 1.0,
-    valence: 0.80,
-    tempo: 95.0,
-    times_applied: 25
-  },
-  {
-    id: '5',
-    name: 'my preset',
-    description: 'good tunes',
-    acousticness: 0.023,
-    danceability: 0.45,
-    energy: 0.745,
-    instrumentalness: 1.0,
-    loudness: 10.00,
-    speechiness: 1.0,
-    valence: 0.80,
-    tempo: 95.0,
-    times_applied: 10
-  },
-  {
-    id: '6',
-    name: 'great filter',
-    description: 'sick',
-    acousticness: 0.023,
-    danceability: 0.45,
-    energy: 0.745,
-    instrumentalness: 1.0,
-    loudness: 10.00,
-    speechiness: 1.0,
-    valence: 0.80,
-    tempo: 95.0,
-    times_applied: 33
-  } 
-];
-
 const breakpoints = {
   1800: {slidesPerView: 4, slidesPerGroup: 4, spaceBetween: -200},
   1700: {slidesPerView: 4, slidesPerGroup: 3, spaceBetween: -100},
@@ -137,9 +51,25 @@ const breakpoints = {
 
 export default function Presets() {
 
-  const sortedPresets = presetsData.sort((a, b) => b.times_applied - a.times_applied); 
+  const [state, setState] = useState({
+    presets: []
+  });
 
-  const presets = sortedPresets.map((preset) => <SwiperSlide key={preset.id}><Preset {...preset} /></SwiperSlide>);
+  useEffect(() => {
+    axios
+      .get(`http://localhost:9000/presets/popular`)
+        .then((res) => {
+          const presetsResponse = res.data;
+          console.log(presetsResponse);
+          const presets = presetsResponse.map((preset) => <SwiperSlide key={preset.id}><Preset {...preset} /></SwiperSlide>);
+          setState(prev => ({ ...prev, presets }));
+          console.log(presets);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+  }, []);
+    
 
   return(
     <PresetsContainer>
@@ -163,7 +93,7 @@ export default function Presets() {
           onSlideChange={() => console.log('slide change')}
           onSwiper={(swiper) => console.log(swiper)}
         >
-          {presets}
+          {state.presets}
         </Swiper>
         <div className='swiper-button-next swiper-button-white' />
         <div className='swiper-pagination swiper-pagination-white'/>

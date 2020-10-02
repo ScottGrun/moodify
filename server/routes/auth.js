@@ -65,7 +65,7 @@ module.exports = (db) => {
         const user = await axios.get('https://api.spotify.com/v1/me', {
           headers: { Authorization: 'Bearer ' + access_token },
         }).then(res => {
-          const user = res.data.id;
+          const user = res.data.id.replace(/"/g, '');
           addUser(db, user, refresh_token);
           return user;
         });
