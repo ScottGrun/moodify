@@ -6,7 +6,6 @@ CREATE TABLE presets (
   name VARCHAR(255) NOT NULL,
   image_url TEXT,
   audio_features JSON NOT NULL,
-  likes INTEGER DEFAULT 0,
   created_at TIMESTAMP DEFAULT NOW() NOT NULL,
   user_id VARCHAR(255) REFERENCES users(id) ON DELETE CASCADE
 );

@@ -9,8 +9,14 @@ const addPreset = function(db, preset) {
 
 const getPopularPresets = function(db) {
   return db.query(`
-  SELECT *
+  WITH preset_like_counts AS (
+    SELECT preset_id, count(*) AS like_count
+    FROM user_likes
+    GROUP BY preset_id
+  )
+  SELECT *, CASE WHEN plc.like_count IS NULL THEN 0 ELSE plc.like_count END AS likes
   FROM presets
+  LEFT JOIN preset_like_counts plc ON plc.preset_id = presets.id 
   ORDER BY likes DESC
   LIMIT 25
   `)
