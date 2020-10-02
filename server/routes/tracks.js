@@ -77,24 +77,10 @@ router.post('/featured', async (req, res) => {
 router.post('/recommendations', async (req, res) => {
   const { accessToken, recomendationSeeds, playlistMinMax } = req.body;
   const randomTracks = [];
-  const randomArtists = [];
-  let randomGenres = [];
 
   for (let i = 0; i < 5; i++) {
     const randomNum = Math.floor(Math.random() * recomendationSeeds.length);
     randomTracks.push(recomendationSeeds[randomNum].track_id);
-  }
-
-  for (let i = 0; i < 5; i++) {
-    const randomNum = Math.floor(Math.random() * recomendationSeeds.length);
-    randomArtists.push(recomendationSeeds[randomNum].artist_id);
-  }
-  
-  randomGenres = await getGenresFromArtists(accessToken, randomArtists);
-  randomGenres = randomGenres.filter(randomGenres => randomGenres !== undefined);
- 
-  if (randomGenres.length < 1) {
-    randomGenres = ['Test', 'Pop'];
   }
 
   //Get recomended tracks

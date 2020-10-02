@@ -66,11 +66,10 @@ export default function PlaylistImage() {
 
   const filteredTracks = filterTracks(userTracks, playlistMinMax);
   const duration = getTotalDuration(filteredTracks);
-
   const randomImageFromSpotify = 'https://i.imgur.com/iuyq8dP.png'
 
   return(
-    <PlayListImageContainer playlistImage={randomImageFromSpotify}>
+    <PlayListImageContainer playlistImage={randomImageFromSpotify}> 
       <div className='dark-overlay' />
       <div className='playlist-text'>
         <h2 className='playlist-name'>
