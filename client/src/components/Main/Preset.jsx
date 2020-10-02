@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
+import { StateContext } from '../../App';
 
 // images 
 import image1 from '../../assets/preset-image-library/preset-image1.svg';
@@ -49,6 +50,14 @@ const PresetItem = styled.div`
 
 export default function Preset(props) {
   
+  const [chartValues, setChartValues] = useContext(StateContext).ChartValues;
+  const [playlistMinMax, setPlaylistMinMax] = useContext(StateContext).PlaylistMinMax;
+
+  const handleClick = () => {
+    console.log(props.audio_features);
+    setPlaylistMinMax({ data: props.audio_features, loaded: true });
+  };
+
   return(
     <PresetItem
       name={props.name}
@@ -60,7 +69,7 @@ export default function Preset(props) {
       valence={props.valence}
       tempo={props.tempo}
       times_applied={props.times_applied}
-      onClick={() => console.log(props)}
+      onClick={handleClick}
       >
       <img src={randomImage()} 
       className="preset-image" 
