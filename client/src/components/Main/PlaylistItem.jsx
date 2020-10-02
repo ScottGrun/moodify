@@ -176,7 +176,6 @@ const PlaylistItem = (props) => {
   const [chartValues, setChartValues] = useContext(StateContext).ChartValues;
   const [userTracks, setTracks] = useContext(StateContext).UserTracks;
   const [playlistMinMax, setPlaylistMinMax] = useContext(StateContext).PlaylistMinMax;
-  const [marks, setMarks] = props.marksState;
 
   const [currentSong, setCurrentSong] = useState(null);
   const [isPlaying, setPlaying] = useState(false);

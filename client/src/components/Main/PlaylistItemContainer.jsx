@@ -74,7 +74,6 @@ const PlaylistItemContainer = (props) => {
         key={song.uid}
         idx={index} 
         key={song.id + index}
-        marksState={props.marksState}
        />);
   }
 

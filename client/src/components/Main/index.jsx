@@ -224,8 +224,7 @@ const Main = () => {
           </div>
           <PlaylistItemContainer />
 
-        <PlaylistRecomendationContainer />
-        <PlaylistItemContainer marksState={[marks, setMarks]}/>
+          <PlaylistRecomendationContainer />
         </MainContent>
         <PlaylistControls>
           <RadarChart />

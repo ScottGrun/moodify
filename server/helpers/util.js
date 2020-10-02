@@ -9,27 +9,22 @@ const generateString = (length) => {
   return string;
 };
 
-
 //format
 const formatTracks = (songList) => {
-<<<<<<< HEAD
-  const songs = songList.map((song, index) => {
-=======
   const songs = songList
-  .filter(song => song.track)
-  .map(song => {
->>>>>>> 286a9e47a1a291173b4010c2167adfbfa4b14bf6
-    return {
-      name: song.track.name,
-      id: song.track.id,
-      uid: index,
-      artist: song.track.artists[0].name,
-      artist_id: song.track.artists[0].id,
-      img: song.track.album.images[2] ? song.track.album.images[2].url : null,
-      previewUrl: song.track.preview_url,
-      uri: song.track.uri,
-    };
-  });
+    .filter((song) => song.track)
+    .map((song, index) => {
+      return {
+        name: song.track.name,
+        id: song.track.id,
+        uid: index,
+        artist: song.track.artists[0].name,
+        artist_id: song.track.artists[0].id,
+        img: song.track.album.images[2] ? song.track.album.images[2].url : null,
+        previewUrl: song.track.preview_url,
+        uri: song.track.uri,
+      };
+    });
   return songs;
 };
 
