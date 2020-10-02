@@ -69,7 +69,7 @@ module.exports = (db) => {
         }).then(res => {
           const user = res.data.id.replace(/"/g, '');
           addUser(db, user, refresh_token);
-          return user;
+          return res.data;
         });
         
         res.send({ access_token, refresh_token, user });
