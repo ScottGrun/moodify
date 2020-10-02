@@ -26,10 +26,6 @@ const NavigationContainer = styled.div`
     overflow-y: scroll;
     overflow-x: hidden;
 
-    .discover-container {
-      margin-top: 7px;
-    }
-
     .section {
       margin-bottom: 20px;
 
@@ -86,6 +82,10 @@ const NavigationContainer = styled.div`
       overflow-x: hidden;
       background-color: #1c1d20;
       position: relative;
+
+      .discover-container {
+        margin-top: 7px;
+      }
 
       .header {
         display: flex;
