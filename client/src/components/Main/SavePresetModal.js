@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import { StateContext } from '../../App';
 import axios from 'axios';
@@ -129,7 +129,7 @@ export default function SavePresetModal() {
   
   const savePreset = () => {
     const user_id = cookies.userData;
-    console.log(user_id, name, imageUrl, playlistMinMax.data);
+    // console.log(user_id, name, imageUrl, playlistMinMax.data);
     // console.log(playlistMinMax.data.tempo);
     // console.log(playlistMinMax.data.instrumentalness);
     // console.log(playlistMinMax.data.energy);
@@ -140,16 +140,28 @@ export default function SavePresetModal() {
       .post(`http://localhost:9000/presets`, {
         name,
         audio_features: playlistMinMax.data,
-        imageUrl,
+        image_url: imageUrl,
         user_id
       })
       .then((res) => {
+        setImageUrl(randomImageUrl());
         console.log(res);
       })
       .catch((err) => {
         console.log(err);
       });
   };
+
+  const randomImageUrl = () => {
+    const randomNumber = Math.ceil(Math.random() * 15);
+    const imageUrl = `http://localhost:3000/preset-image-library/preset-image${randomNumber}.svg`;
+    // console.log(imageUrl)
+    return imageUrl;
+  };
+
+  useEffect(() => {
+    setImageUrl(randomImageUrl());
+  }, []);
 
   const presetStats = () => {
     if (Object.keys(playlistMinMax.data).length > 0) {
@@ -163,7 +175,7 @@ export default function SavePresetModal() {
       <h1>Save Your Preset</h1>
       <div className='content-container'>
         <div className='image-container'>
-          <img />
+          <img src={imageUrl} alt="preset-default"/>
           <div className='preset-stats'>
             {presetStats()}
           </div>
