@@ -3,6 +3,7 @@ import axios from 'axios';
 import styled from 'styled-components';
 import { StateContext } from '../../App';
 import { filterTracks } from '../../helpers/filter';
+import { setSliderMarks } from '../../helpers/util';
 // components
 import Profile from './Profile';
 
@@ -101,11 +102,13 @@ const NavigationContainer = styled.div`
   }
 `;
 
-export default function Navigation({ playlists }) {
+export default function Navigation({ playlists, marksState }) {
   const [accessToken, setAccessToken] = useContext(StateContext).AccessToken;
+  const [openNav, setOpenNav] = useContext(StateContext).OpenNav;
   const [chartValues, setChartValues] = useContext(StateContext).ChartValues;
   const [userTracks, setTracks] = useContext(StateContext).UserTracks;
   const [playlistMinMax, setPlaylistMinMax] = useContext(StateContext).PlaylistMinMax;
+  const [marks, setMarks] = marksState;
 
   const loadTracks = (playlist_id, totalTracks) => {
     axios
@@ -121,22 +124,23 @@ export default function Navigation({ playlists }) {
         });
         setChartValues(res.data.averages);
         setPlaylistMinMax({ data: res.data.minMax, loaded: true });
+        setSliderMarks(res.data.minMax, setMarks);
       });
   };
 
   const loadFeaturedSongs = () => {
-    axios
-      .post(`http://localhost:9000/tracks/featured`, {
-        accessToken,
-      })
-      .then((res) => {
-        setTracks({
-          loading: true,
-          songs: res.data.songs,
-        });
-        setChartValues(res.data.averages);
-        setPlaylistMinMax({ data: res.data.minMax, loaded: true });
+    axios.post(`http://localhost:9000/tracks/featured`, {
+      accessToken,
+    })
+    .then(res => {
+      setTracks({
+        loading: true,
+        songs: res.data.songs,
       });
+      setChartValues(res.data.averages);
+      setPlaylistMinMax({ data: res.data.minMax, loaded: true });
+      setSliderMarks(res.data.minMax, setMarks);
+    });
   };
 
   const loadRecommendedSongs = () => {
@@ -145,21 +149,26 @@ export default function Navigation({ playlists }) {
       artist_id: track.artist_id,
     }));
 
-    axios
-      .post(`http://localhost:9000/tracks/recommendations`, {
-        accessToken,
-        recomendationSeeds,
-        playlistMinMax
-      })
-      .then((res) => {
-        setTracks({
-          loading: true,
-          songs: res.data.songs,
-        });
-        setChartValues(res.data.averages);
-        setPlaylistMinMax({ data: res.data.minMax, loaded: true });
+    axios.post(`http://localhost:9000/tracks/recommendations`, {
+      accessToken,
+      recomendationSeeds,
+      playlistMinMax
+    })
+    .then((res) => {
+      setTracks({
+        loading: true,
+        songs: res.data.songs,
       });
+      setChartValues(res.data.averages);
+      setPlaylistMinMax({ data: res.data.minMax, loaded: true });
+      setSliderMarks(res.data.minMax, setMarks);
+    });
   };
+
+  const handlePlaylistClick = (playlistId, trackTotal) => {
+    loadTracks(playlistId, trackTotal);
+    setOpenNav(false);
+  }
 
   return (
     <NavigationContainer >
@@ -185,7 +194,7 @@ export default function Navigation({ playlists }) {
                 return (
                   <li
                     key={playlist.id}
-                    onClick={() => loadTracks(playlist.id, playlist.tracks.total)}
+                    onClick={() => handlePlaylistClick(playlist.id, playlist.tracks.total)}
                   >
                     <img src={musicIcon} />
                     <p>

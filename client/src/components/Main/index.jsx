@@ -1,6 +1,7 @@
 import React, { useEffect, useContext, useState } from 'react';
 import axios from 'axios';
 import { StateContext } from '../../App';
+import { setSliderMarks } from '../../helpers/util';
 import styled from 'styled-components';
 
 // Components
@@ -158,6 +159,7 @@ const Main = () => {
   ).OpenCreatePlaylistModal;
   const [playlistMinMax, setPlaylistMinMax] = useContext(StateContext).PlaylistMinMax;
   const [playlists, setPlaylists] = useState([]);
+  const [marks, setMarks] = useState({});
 
   const getSavedTracks = () => {
     axios
@@ -171,6 +173,7 @@ const Main = () => {
         });
         setChartValues(res.data.averages);
         setPlaylistMinMax({ data: res.data.minMax, loaded: true });
+        setSliderMarks(res.data.minMax, setMarks);
       });
   };
 
@@ -205,7 +208,7 @@ const Main = () => {
         </HeaderContainer>
 
         <Sidebar open={openNav}>
-          <Navigation playlists={playlists} />
+          <Navigation playlists={playlists} marksState={[marks, setMarks]}/>
         </Sidebar>
 
         <MainContent>
@@ -223,7 +226,7 @@ const Main = () => {
             <RadarChart />
 
           <ControlsContainer>
-            <Sliders />
+            <Sliders marksState={[marks, setMarks]}/>
             <CreatePlaylistButton
               onClick={() => setOpenCreatePlaylistModal(true)}
             >

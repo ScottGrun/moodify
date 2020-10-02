@@ -136,25 +136,24 @@ export default function CreatePlaylistModal() {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [imageUrl, setImageUrl] = useState('');
-  const [validImage, setValidImage] = useState(false);
+  // const [validImage, setValidImage] = useState(false);
 
   const filteredTracks = filterTracks(userTracks, playlistMinMax);
   const duration = getTotalDuration(filteredTracks);
 
   const savePlaylist = (songs) => {
     const uris = songs.filter(song => matchFilter(song, playlistMinMax)).map(song => song.uri)
-
-    axios
-      .post(`http://localhost:9000/playlists/create`, {
-        accessToken,
-        name,
-        description,
-        uris,
-        imageUrl 
-      })
-      .then((res) => {
-        console.log(res);
-      });
+    axios.post(`http://localhost:9000/playlists/create`, {
+      accessToken,
+      name,
+      description,
+      uris,
+      imageUrl 
+    })
+    .then((res) => {
+      console.log(res);
+      setOpenCreatePlaylistModal(false);
+    });
   };
 
   return(

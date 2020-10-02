@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { StateContext } from '../../App';
+import { setSliderMarks } from '../../helpers/util';
 
 import styled from 'styled-components';
 import Slider from '@material-ui/core/Slider';
@@ -59,17 +60,15 @@ const SlidersContainer = styled.div`
   }
 `;
 
-export default function Sliders() {
+export default function Sliders({ marksState }) {
   const [playlistMinMax, setPlaylistMinMax] = useContext(StateContext).PlaylistMinMax;
-
   const [tempo, setTempo] = useState([0, 0]);
   const [danceability, setDanceability] = useState([0, 0]);
   const [energy, setEnergy] = useState([0, 0]);
   const [instrumentalness, setInstrumentalness] = useState([0, 0]);
   const [loudness, setLoudness] = useState([0, 0]);
   const [valence, setValence] = useState([0, 0]);
-
-  const [marks, setMarks] = useState([]);
+  const [marks, setMarks] = marksState;
 
   useEffect(() => {
     if (playlistMinMax.data.tempo) {
@@ -79,63 +78,8 @@ export default function Sliders() {
       setInstrumentalness(playlistMinMax.data.instrumentalness);
       setLoudness(playlistMinMax.data.loudness);
       setValence(playlistMinMax.data.valence);
-
-      setMarks({
-        tempo: [
-          {
-            value: playlistMinMax.data.tempo[0],
-          },
-          {
-            value: playlistMinMax.data.tempo[1],
-          },
-        ],
-        danceability: [
-          {
-            value: playlistMinMax.data.danceability[0],
-          },
-          {
-            value: playlistMinMax.data.danceability[1],
-          },
-        ],
-        energy: [
-          {
-            value: playlistMinMax.data.energy[0],
-          },
-          {
-            value: playlistMinMax.data.energy[1],
-          },
-        ],
-        instrumentalness: [
-          {
-            value: playlistMinMax.data.instrumentalness[0],
-          },
-          {
-            value: playlistMinMax.data.instrumentalness[1],
-          },
-        ],
-        valence: [
-          {
-            value: playlistMinMax.data.valence[0],
-          },
-          {
-            value: playlistMinMax.data.valence[1],
-          },
-        ],
-        loudness: [
-          {
-            value: playlistMinMax.data.loudness[0],
-          },
-          {
-            value: playlistMinMax.data.loudness[1],
-          },
-        ],
-      });
     }
   }, [playlistMinMax.loaded]);
-
-  // useEffect(() => {
-  //   setChartValues([value1[1], value2[1], value3[1], value4[1], value5[1], value6[1]]);
-  // },[value1[1], value2[1], value3[1], value4[1], value5[1], value6[1]]);
 
   return (
     <SlidersContainer>
