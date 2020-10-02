@@ -102,6 +102,26 @@ const CreatePlaylistModalContainer = styled.div`
         }
       }
 
+      .image-label {
+        margin-bottom: 7px;
+      }
+
+      .upload-file {
+        padding: 5px 7px 5px 0;
+        ${({ imageErrors }) => !imageErrors &&`
+          margin-bottom: 15px;
+        `}
+      }
+
+      .image-error {
+        color: #f02b0f;
+        font-size: 12px;
+
+        &:last-of-type {
+          margin-bottom: 10px;
+        }
+      }
+
       .save-playlist {
         height: 36px;
         width: 100%;
@@ -135,8 +155,15 @@ export default function CreatePlaylistModal() {
   const [userTracks, setUserTracks] = useContext(StateContext).UserTracks;
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
-  // const [validImage, setValidImage] = useState(false);
+  const [image, setImage] = useState({
+    lastModified: null,
+    lastModifiedDate: null,
+    name: null,
+    size: null,
+    type: 'image/jpeg',
+    webkitRelativePath: ''
+  });
+  const [imageErrors, setImageErrors] = useState('');
 
   const filteredTracks = filterTracks(userTracks, playlistMinMax);
   const duration = getTotalDuration(filteredTracks);
@@ -148,7 +175,7 @@ export default function CreatePlaylistModal() {
       name,
       description,
       uris,
-      imageUrl 
+      image
     })
     .then((res) => {
       console.log(res);
@@ -156,12 +183,49 @@ export default function CreatePlaylistModal() {
     });
   };
 
+  // const setImageToInitial = () => {
+  //   setImage({
+  //     lastModified: null,
+  //     lastModifiedDate: null,
+  //     name: null,
+  //     size: null,
+  //     type: 'image/jpeg',
+  //     webkitRelativePath: ''
+  //   });
+  // }
+
+  const handleFileUpload = (e) => {
+    const imageFile = e.target.files[0];
+    const reader = new FileReader();
+    const errors = [];
+
+    if (!imageFile) {
+      setImage('');
+      return;
+    }
+    if (imageFile.size > 1024 * 256) {
+      errors.push('max size - 256kb');
+      setImage('');
+    }
+    if (imageFile.type !== 'image/jpeg') {
+      errors.push('file type must be jpeg');
+      setImage('');
+    }
+    setImageErrors(errors);
+    if (errors.length) return;
+
+    reader.readAsDataURL(imageFile);
+    reader.onload = (e) => {
+      setImage(e.target.result);
+    };
+  };
+
   return(
-    <CreatePlaylistModalContainer open={openCreatePlaylistModal}>
+    <CreatePlaylistModalContainer open={openCreatePlaylistModal} imageErrors={imageErrors[0]}>
       <h1>Create Your Playlist</h1>
       <div className='content-container'>
         <div className='image-container'>
-          <img src={imageUrl} />
+          <img src={image} />
           <div className='playlist-stats'>
             <p>Songs In Playlist — {filteredTracks && filteredTracks.length || 'NA'}</p>
             <p>Total Listening Time  — {duration || 'NA'}</p>
@@ -169,13 +233,14 @@ export default function CreatePlaylistModal() {
         </div>
         <div className='form'>
           <label>
-            Playlist Name (optional)
+            Playlist Name
             <input placeholder={'Best Playlist'} value={name} onChange={e => setName(e.target.value)}/>
           </label>
-          <label>
-            Image URL (optional)
-            <input placeholder='A super awesome playlist.' value={imageUrl} onChange={e => setImageUrl(e.target.value)}/>
-          </label>
+          <label className='image-label'>Image (optional)</label>
+          <input className='upload-file' type='file' onChange={e => handleFileUpload(e)}/>
+          {
+            imageErrors.length > 0 && imageErrors.map((error, index) => <p key={index} className='image-error'>{error}</p>)
+          }
           <label>
             Description (optional)
             <textarea placeholder='A super awesome playlist.' value={description} onChange={e => setDescription(e.target.value)}/>

@@ -3,15 +3,11 @@ const axios = require('axios');
 const express = require('express');
 const router = express.Router();
 const { getUserId } = require('../helpers/spotify');
-const { generateString } = require('../helpers/util');
 
 // create playlist
 router.post('/create', async (req, res) => {
-  let { accessToken, name, description, uris, imageUrl } = req.body;
-  if (!name) name = generateString(8);
-  if (!description) description = '';
-  if (uris.length === 0) {
-    console.log('no songs');
+  let { accessToken, name, description, uris, image } = req.body;
+  if (!uris.length) {
     return;
   };
   
@@ -38,6 +34,21 @@ router.post('/create', async (req, res) => {
     });
     songsAdded += 100;
   };
+
+  // add playlist image
+  // console.log(image, typeof image);
+  if (image) {
+    axios({
+      method: 'put',
+      url: `https://api.spotify.com/v1/playlists/${playlist_id}/images`,
+      headers: { 
+        Authorization: 'Bearer ' + accessToken, 
+        'Content-Type': 'image/jpeg' 
+      },
+      data: image.slice(23),
+    }).catch(err => console.log(err));
+  }
+
   res.send('New playlist created and songs added!');
 });
 

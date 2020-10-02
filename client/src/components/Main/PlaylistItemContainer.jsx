@@ -10,13 +10,6 @@ const StyledHeader = styled.div`
   border-bottom: solid 1px white;
 `;
 
-const StyledPlaylistContainer = styled.div`
-  .song-list {
-    height: calc(100vh - 400px);
-    overflow-y: scroll;
-  }
-`;
-
 const ColumnHeaderContainer = styled.div`
   width: 100%;
   display: flex;
@@ -51,6 +44,22 @@ const SectionHeader = styled.h2`
   color: #ffffff;
 `;
 
+const StyledPlaylistContainer = styled.div`
+  position: relative;
+
+  .song-list {
+    height: calc(100vh - 400px);
+    overflow-y: scroll;
+  }
+
+  .context-menu-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+  }
+`;
+
 const PlaylistItemContainer = (props) => {
   const [playlistMinMax, setPlaylistMinMax] = useContext(StateContext).PlaylistMinMax;
   const [userTracks, setUserTracks] = useContext(StateContext).UserTracks;
@@ -63,11 +72,14 @@ const PlaylistItemContainer = (props) => {
       .map((song, index) => <PlaylistItem idx={index} 
         {...song}
         key={song.uid}
+        idx={index} 
+        key={song.id + index}
+        marksState={props.marksState}
        />);
   }
 
   return (
-    <StyledPlaylistContainer>
+    <StyledPlaylistContainer >
       <StyledHeader>
         <SectionHeader>Yours Songs</SectionHeader>
         <ColumnHeaderContainer>

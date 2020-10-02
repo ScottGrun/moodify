@@ -1,10 +1,14 @@
+import React, { useContext, useState, useEffect } from 'react';
+import { StateContext } from '../../App';
+import axios from 'axios';
+
 import styled, { keyframes } from 'styled-components';
 import PlayButton from '../../assets/icons/PlayButton.svg';
 import WaveFormSource from '../../assets/icons/audio.svg';
 import setCurrentSongPlaying from '../../helpers/songPreviewManager';
 
-import React, { useContext, useState, useEffect } from 'react';
-import { StateContext } from '../../App';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
 const StyledSongCoverContainer = styled.div`
   position: relative;
@@ -85,17 +89,13 @@ const SongMetaData = styled.div`
 `;
 
 const animateIn = keyframes`
-
   0% {
     opacity: 0;
     transform: scale(0.6) translateY(-8px);
   }
-  
   100% {
     opacity: 1;
   }
-
-
 `;
 
 const StyledPlaylistItem = styled.div`
@@ -133,7 +133,6 @@ const playProgress = keyframes`
 from {
   width: 0%;
 }
-
 to {
  width: 100%;
 }
@@ -167,9 +166,28 @@ const StyledProgressContainer = styled.div`
   }
 `;
 
+const initialPosition = {
+  mouseX: null,
+  mouseY: null,
+}
+
 const PlaylistItem = (props) => {
+  const [accessToken, setAccessToken] = useContext(StateContext).AccessToken;
+  const [chartValues, setChartValues] = useContext(StateContext).ChartValues;
+  const [userTracks, setTracks] = useContext(StateContext).UserTracks;
+  const [playlistMinMax, setPlaylistMinMax] = useContext(StateContext).PlaylistMinMax;
+  const [marks, setMarks] = props.marksState;
+
   const [currentSong, setCurrentSong] = useState(null);
   const [isPlaying, setPlaying] = useState(false);
+  const [position, setPosition] = useState(initialPosition);
+  const handleClick = (event) => {
+    event.preventDefault();
+    setPosition({
+      mouseX: event.clientX - 2,
+      mouseY: event.clientY - 4,
+    });
+  };
 
   useEffect(() => {
     if (isPlaying) {
@@ -194,8 +212,57 @@ const PlaylistItem = (props) => {
 
   const playing = isPlaying;
 
+  const handleClose = (event) => {
+    event.stopPropagation();
+    setPosition(initialPosition);
+  };
+
+  const addSimilarSongs = (event, trackId) => {
+    event.stopPropagation();
+    setPosition(initialPosition);
+
+    axios.post(`http://localhost:9000/tracks/recommendations`, {
+      accessToken,
+      recomendationSeeds: [{ track_id: trackId }],
+      playlistMinMax
+    })
+    .then(res => {
+      setTracks(prev => {
+        return {
+          loading: true,
+          songs: [...res.data.songs, ...prev.songs],
+        }
+      });
+      setChartValues(res.data.averages);
+    });
+  };
+
+  // const setSongMinMaxes = (event, minMaxes) => {
+
+  // };
+  
   return (
-    <StyledPlaylistItem idx={props.idx} className="playlist-item" onClick={playPreview}>
+    <StyledPlaylistItem 
+      idx={props.idx} className="playlist-item" 
+      onClick={playPreview} 
+      onContextMenu={handleClick} 
+      styled={{ cursor: 'context-menu' }}
+    >
+      <Menu
+        open={position.mouseY !== null}
+        onClose={handleClose}
+        autoFocus={false}
+        anchorReference="anchorPosition"
+        anchorPosition={
+          position.mouseY !== null && position.mouseX !== null
+          ? { top: position.mouseY, left: position.mouseX }
+          : undefined
+        }
+      >
+        <MenuItem onClick={event => addSimilarSongs(event, props.id)}>add similar songs</MenuItem>
+        <MenuItem onClick={handleClose}>remove song</MenuItem>
+      </Menu>
+
       <StyledSongCoverContainer>
         <StyledSongImage src={props.img} />
       </StyledSongCoverContainer>
