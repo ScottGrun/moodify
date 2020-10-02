@@ -34,10 +34,11 @@ router.post('/playlist', async (req, res) => {
 });
 
 const formatTracksRecommendations = (songList) => {
-  const songs = songList.map((song) => {
+  const songs = songList.map((song, index) => {
     return {
       name: song.name,
       id: song.id,
+      uid: index,
       artist: song.artists[0].name,
       artist_id: song.artists[0].id,
       img: song.album.images[2] ? song.album.images[2].url : null,

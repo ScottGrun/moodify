@@ -62,7 +62,7 @@ const PlaylistItemContainer = (props) => {
     renderSongs = filteredTracks
       .map((song, index) => <PlaylistItem idx={index} 
         {...song}
-        key={song.id + index}
+        key={song.uid}
        />);
   }
 

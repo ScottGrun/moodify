@@ -9,6 +9,8 @@ import Header from './Header';
 import Navigation from './Navigation.jsx';
 import PlaylistImage from './PlaylistImage';
 import PlaylistItemContainer from './PlaylistItemContainer';
+import PlaylistRecomendationContainer from './PlaylistIRecomendationContainer';
+
 import RadarChart from './RadarChart';
 import Sliders from './Sliders';
 import OpenMenu from './OpenMenu';
@@ -72,13 +74,11 @@ const MainContainer = styled.div`
       'main main main main main main main main main main main main ';
   }
 
-  @media(max-width: 375px){
+  @media (max-width: 375px) {
     grid-template-areas:
-    'header header header header header header header header header header header header'
-    'playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls '
-    'main main main main main main main main main main main main ';
-
-
+      'header header header header header header header header header header header header'
+      'playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls '
+      'main main main main main main main main main main main main ';
   }
 `;
 
@@ -96,7 +96,9 @@ const Sidebar = styled.div`
     transform: translateX(282px);
     transition: all 0.5s ease-in-out;
     z-index: 1000;
-    ${({ open }) => open &&`
+    ${({ open }) =>
+      open &&
+      `
       transform: translateX(0);
     `}
   }
@@ -104,6 +106,8 @@ const Sidebar = styled.div`
 
 const MainContent = styled.div`
   grid-area: main;
+  display: flex;
+  flex-flow: column;
 `;
 
 const PlaylistControls = styled.div`
@@ -178,8 +182,7 @@ const Main = () => {
   };
 
   const getPlaylists = () => {
-    axios.post('http://localhost:9000/playlists/ids', { accessToken })
-    .then((res) => {
+    axios.post('http://localhost:9000/playlists/ids', { accessToken }).then((res) => {
       setPlaylists(res.data);
     });
   };
@@ -208,7 +211,7 @@ const Main = () => {
         </HeaderContainer>
 
         <Sidebar open={openNav}>
-          <Navigation playlists={playlists} marksState={[marks, setMarks]}/>
+          <Navigation playlists={playlists} marksState={[marks, setMarks]} />
         </Sidebar>
 
         <MainContent>
@@ -219,17 +222,16 @@ const Main = () => {
               <PlaylistImage />
             </div>
           </div>
+          <PlaylistItemContainer />
 
-        <PlaylistItemContainer />
+          <PlaylistRecomendationContainer />
         </MainContent>
         <PlaylistControls>
-            <RadarChart />
+          <RadarChart />
 
           <ControlsContainer>
-            <Sliders marksState={[marks, setMarks]}/>
-            <CreatePlaylistButton
-              onClick={() => setOpenCreatePlaylistModal(true)}
-            >
+            <Sliders marksState={[marks, setMarks]} />
+            <CreatePlaylistButton onClick={() => setOpenCreatePlaylistModal(true)}>
               Create Playlist
             </CreatePlaylistButton>
           </ControlsContainer>

@@ -12,10 +12,11 @@ const generateString = (length) => {
 
 //format
 const formatTracks = (songList) => {
-  const songs = songList.map((song) => {
+  const songs = songList.map((song, index) => {
     return {
       name: song.track.name,
       id: song.track.id,
+      uid: index,
       artist: song.track.artists[0].name,
       artist_id: song.track.artists[0].id,
       img: song.track.album.images[2] ? song.track.album.images[2].url : null,
