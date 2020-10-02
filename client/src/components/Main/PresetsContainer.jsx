@@ -52,21 +52,8 @@ const breakpoints = {
 export default function Presets() {
 
   const [state, setState] = useState({
-    presets: [],
-    popular: [],
-    yourPresets: [],
-    yourLikedPresets: [],
+    swiperSlides: [],
   });
-
-  const getPopularPresets = () => {
-    return axios
-      .get(`http://localhost:9000/presets/popular`, { withCredentials: true });
-  };
-  
-  const getUserPresets = () => {
-    return axios
-      .get(`http://localhost:9000/presets/yourpresets`, { withCredentials: true });
-  };
 
   const getUserLikedPresets = () => {
     return axios
@@ -88,28 +75,25 @@ export default function Presets() {
     return likedPresets;
   }; 
 
-  useEffect(() => {
+  const setActivePresets = (path) => {
     Promise.all([
-      getPopularPresets(),
-      getUserPresets(),
+      axios
+        .get(`http://localhost:9000/presets/${path}`, { withCredentials: true }),
       getUserLikedPresets(),
     ]).then((all) => {
-      const userLikesLookup = buildLikesLookup(all[2].data);
-      const popularSwiperSlides = buildSwiperSlidesFromPresets(all[0].data, userLikesLookup);
-      const userSwiperSlides = buildSwiperSlidesFromPresets(all[1].data, userLikesLookup);
-      const likedSwiperSlides = buildSwiperSlidesFromPresets(all[2].data, userLikesLookup);
-      setState(prev => ({ ...prev, presets: popularSwiperSlides, popular: popularSwiperSlides, yourPresets: userSwiperSlides, yourLikedPresets: likedSwiperSlides }));
+      const userLikesLookup = buildLikesLookup(all[1].data);
+      const swiperSlides = buildSwiperSlidesFromPresets(all[0].data, userLikesLookup);
+      setState(prev => ({ ...prev, swiperSlides }));
     })
-  }, []);
-
-  const setActivePresets = (presets) => {
-    console.log(presets);
-    setState(prev => ({ ...prev, presets }));
   };
-    
+
+  useEffect(() => {
+    setActivePresets('popular');
+  }, []);
+  
   return(
     <PresetsContainer>
-      <h2><button onClick={() => setActivePresets(state.popular)}>Popular Presets</button> | <button onClick={() => setActivePresets(state.yourPresets)}>Your Presets</button> | <button onClick={() => setActivePresets(state.yourLikedPresets)}>Your Liked Presets</button></h2>
+      <h2><button onClick={() => setActivePresets('popular')}>Popular Presets</button> | <button onClick={() => setActivePresets('yourpresets')}>Your Presets</button> | <button onClick={() => setActivePresets('yourlikedpresets')}>Your Liked Presets</button></h2>
       <div className='presets'>
         <div className='swiper-button-prev swiper-button-white' />
         <Swiper
@@ -129,7 +113,7 @@ export default function Presets() {
           onSlideChange={() => console.log('slide change')}
           onSwiper={(swiper) => console.log(swiper)}
         >
-          {state.presets}
+          {state.swiperSlides}
         </Swiper>
         <div className='swiper-button-next swiper-button-white' />
         <div className='swiper-pagination swiper-pagination-white'/>
