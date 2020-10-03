@@ -109,31 +109,55 @@ router.post('/recommendations', async (req, res) => {
 router.post('/saved', async (req, res) => {
   const { accessToken } = req.body;
 
-  let apiEndpoint = `https://api.spotify.com/v1/me/tracks?limit=50`;
   let allTracks = [];
-  while (apiEndpoint) {
-    const tracks = await axios({
-      method: 'get',
-      url: apiEndpoint,
-      headers: { Authorization: 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
-    });
-    apiEndpoint = tracks.data.next;
-    console.log('get tracks');
+  let totalSongs = null;
+  axios({
+    method: 'get',
+    url: `https://api.spotify.com/v1/me/tracks?offset=0&limit=50`,
+    headers: { Authorization: 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
+  }).then((apiRes) => {
+    totalSongs = apiRes.data.total;
+    for (let i = 0; i <= Math.max(totalSongs / 50); i++) {
+      axios({
+        method: 'get',
+        url: `https://api.spotify.com/v1/me/tracks?offset=${i * 50}&limit=50`,
+        headers: { Authorization: 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
+      }).then((rawTracks) => {
+        let formattedTracks = formatTracks(rawTracks.data.items);
+        getAudioFeaturesOfTracks(formattedTracks, accessToken).then((audioFeatures) => {
+          let finalTracks = addAudioFeaturesToTracks(formattedTracks, audioFeatures);
 
-    let formattedTracks = formatTracks(tracks.data.items);
+          allTracks.push(...finalTracks);
 
-    getAudioFeaturesOfTracks(formattedTracks, accessToken).then((audioFeatures) => {
-      let finalTracks = addAudioFeaturesToTracks(formattedTracks, audioFeatures);
-      allTracks.push(...finalTracks);
-      // console.log(finalTracks)
-    });
-  }
-  console.log('Data sent', allTracks.length);
-  res.send({
-    songs: allTracks,
-    minMax: getMinMaxes(allTracks),
-    averages: getAverages(allTracks),
+          if (allTracks.length === totalSongs) {
+            console.log(`Server sent ${allTracks.length} songs.`);
+            res.send({
+              songs: allTracks,
+              minMax: getMinMaxes(allTracks),
+              averages: getAverages(allTracks),
+            });
+          }
+        });
+      });
+    }
   });
+
+  // while (apiEndpoint) {
+  // axios({
+  //   method: 'get',
+  //   url: apiEndpoint,
+  //   headers: { Authorization: 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
+  // });
+  // apiEndpoint = tracks.data.next;
+  // console.log('get tracks');
+
+  // let formattedTracks = formatTracks(tracks.data.items);
+
+  // getAudioFeaturesOfTracks(formattedTracks, accessToken).then((audioFeatures) => {
+  //   let finalTracks = addAudioFeaturesToTracks(formattedTracks, audioFeatures);
+  //   allTracks.push(...finalTracks);
+  // });
+  // }
 });
 
 module.exports = router;
