@@ -21,7 +21,6 @@ const StyledPlaylistContainer = styled.div`
   .song-list {
     height: calc(100vh - 400px);
     overflow-y: scroll;
- 
   }
 `;
 
@@ -86,12 +85,11 @@ const SectionHeader = styled.h2`
 `;
 
 const PlaylistRecomendationContainer = (props) => {
+  const {accessToken} = props;
   const [playlistMinMax, setPlaylistMinMax] = props.playlistMinMax;
-  const [accessToken, setAccessToken] = useContext(StateContext).AccessToken;
   const [userTracks, setUserTracks] = props.userTracks;
   const [isShown, setShown] = useState(false);
- const [renderSongs, setRenderSongs] = useState([]);
-  
+  const [renderSongs, setRenderSongs] = useState([]);
 
   const getRecomendations = () => {
     const recomendationSeeds = filterTracks(userTracks, playlistMinMax).map((track) => ({
@@ -106,18 +104,13 @@ const PlaylistRecomendationContainer = (props) => {
         playlistMinMax,
       })
       .then((res) => {
-       
-
         let recomendedSongs = res.data.songs;
 
-
         recomendedSongs = recomendedSongs.map((song, index) => (
-            <PlaylistItem idx={index} {...song} key={song.uid} />
-          ));
+          <PlaylistItem idx={index} {...song} key={song.uid} />
+        ));
 
-          setRenderSongs(recomendedSongs);
-
-        
+        setRenderSongs(recomendedSongs);
       });
   };
 

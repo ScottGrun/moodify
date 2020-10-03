@@ -240,6 +240,7 @@ const Main = (props) => {
             chartValues={props.chartValues}
           />
           <PlaylistRecomendationContainer 
+          accessToken={accessToken}
             playlistMinMax={props.playlistMinMax}
             userTracks={props.userTracks}
           />
