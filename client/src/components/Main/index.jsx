@@ -2,6 +2,7 @@ import React, { useEffect, useContext, useState } from 'react';
 import axios from 'axios';
 import { StateContext } from '../../App';
 import { setSliderMarks } from '../../helpers/util';
+import { Snackbar } from '@material-ui/core';
 import styled from 'styled-components';
 
 // Components
@@ -153,6 +154,10 @@ const ControlsContainer = styled.div`
   }
 `;
 
+const StyledSnackbar = styled(Snackbar)`
+
+`;
+
 const Main = (props) => {
   const [accessToken, setAccessToken] = useContext(StateContext).AccessToken;
   const [loading, setLoading] = useState(false);
@@ -164,6 +169,12 @@ const Main = (props) => {
   const [playlistMinMax, setPlaylistMinMax] = props.playlistMinMax;
   const [playlists, setPlaylists] = useState([]);
   const [marks, setMarks] = useState({});
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    vertical: 'top',
+    horizontal: 'center',
+    message: '',
+  });
 
   const getSavedTracks = () => {
     axios
@@ -184,7 +195,8 @@ const Main = (props) => {
   const getPlaylists = () => {
     axios.post('http://localhost:9000/playlists/ids', { accessToken }).then((res) => {
       setPlaylists(res.data);
-    });
+    })
+    .catch(res => console.log(res));
   };
 
   useEffect(() => {
@@ -192,11 +204,32 @@ const Main = (props) => {
     getPlaylists();
   }, []);
 
+  const openSnackbar = () => {
+    setSnackbar({ ...snackbar, open: true, message: "I'm an error!"})
+  };
+
+  const closeSnackbar = () => {
+    setSnackbar({ ...snackbar, open: false, message: '' });
+  };
+
   return (
     <>
+      <button onClick={openSnackbar}>Open Snackbar</button>
+      <StyledSnackbar 
+        anchorOrigin={{ 
+          vertical: snackbar.vertical, 
+          horizontal: snackbar.horizontal 
+        }}
+        open={snackbar.open}
+        onClose={closeSnackbar}
+        message={snackbar.message}
+        key={ snackbar.vertical + snackbar.horizontal }
+      />
+
       <HamburgerMenu onClick={() => setOpenNav(!openNav)}>
         <OpenMenu openNav={props.openNav} />
       </HamburgerMenu>
+
       <Overlay
         openCYP={openCreatePlaylistModal || openNav}
         onClick={() => {
@@ -218,6 +251,7 @@ const Main = (props) => {
             openNav={props.openNav}
             userTracks={props.userTracks}
             chartValues={props.chartValues}
+            snackbar={[snackbar, setSnackbar]}
           />
         </Sidebar>
 
@@ -226,6 +260,7 @@ const Main = (props) => {
             playlistMinMax={props.playlistMinMax}
             openCreatePlaylistModal={props.openCreatePlaylistModal}
             userTracks={props.userTracks}
+            snackbar={[snackbar, setSnackbar]}
           />
 
           <div className="playlists-container">
@@ -238,13 +273,14 @@ const Main = (props) => {
             playlistMinMax={props.playlistMinMax}
             userTracks={props.userTracks}
             chartValues={props.chartValues}
+            snackbar={[snackbar, setSnackbar]}
           />
           {/* <PlaylistRecomendationContainer 
           accessToken={accessToken}
             playlistMinMax={props.playlistMinMax}
             chartValues={props.chartValues}
             userTracks={props.userTracks}
-         
+            snackbar={[snackbar, setSnackbar]}
           /> */}
         </MainContent>
         <PlaylistControls>

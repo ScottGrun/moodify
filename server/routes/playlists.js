@@ -11,7 +11,7 @@ router.post('/create', async (req, res) => {
     return;
   };
   
-  const user_id = await getUserId(accessToken);
+  const user_id = await getUserId(accessToken, res);
   
   // create playlist
   const playlist_id = await axios({
@@ -19,7 +19,9 @@ router.post('/create', async (req, res) => {
     url: `https://api.spotify.com/v1/users/${user_id}/playlists`,
     headers: { Authorization: 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
     data: { name, description }
-  }).then(playlist => playlist.data.id);
+  })
+  .then(playlist => playlist.data.id)
+  .catch(err => res.sendStatus(err.response.status));
   
   //add songs to playlist
   let songsAdded = 0;
@@ -31,7 +33,8 @@ router.post('/create', async (req, res) => {
       url: `https://api.spotify.com/v1/playlists/${playlist_id}/tracks?uris=${songURIS}`,
       headers: { Authorization: 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
       data: { name, description }
-    });
+    })
+    .catch(err => res.sendStatus(err.response.status));
     songsAdded += 100;
   };
   // add playlist image
@@ -44,7 +47,7 @@ router.post('/create', async (req, res) => {
         'Content-Type': 'image/jpeg' 
       },
       data: image.slice(23),
-    }).catch(err => console.log(err));
+    }).catch(err => res.sendStatus(err.response.status));
   }
 
   res.send('New playlist created and songs added!');
@@ -58,9 +61,9 @@ router.post('/ids', async (req, res) => {
     method: 'get',
     url: `https://api.spotify.com/v1/me/playlists?limit=50`,
     headers: { Authorization: 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
-  }).then(playlists => {
-    res.send(playlists.data.items)
-  });
+  })
+  .then(playlists => res.send(playlists.data.items))
+  .catch(err => res.sendStatus(err.response.status));
 });
 
 module.exports = router;

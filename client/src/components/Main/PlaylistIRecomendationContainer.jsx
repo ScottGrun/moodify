@@ -98,6 +98,7 @@ const PlaylistRecomendationContainer = (props) => {
   const { accessToken } = props;
   const [playlistMinMax, setPlaylistMinMax] = props.playlistMinMax;
   const [userTracks, setUserTracks] = props.userTracks;
+  const [snackbar, setSnackbar] = props.snackbar;
   const [renderSongs, setRenderSongs] = useState([]);
   const [renderSongData, setRenderSongData] = useState([]);
 
@@ -128,11 +129,13 @@ const PlaylistRecomendationContainer = (props) => {
             playlistMinMax={props.playlistMinMax}
             userTracks={props.userTracks}
             chartValues={props.chartValues}
+            snackbar={props.snackbar}
           />
         ));
 
         setRenderSongs(recommendedSongs);
-      });
+      })
+      .catch(err => console.log(err));
   };
 
 

@@ -153,6 +153,7 @@ export default function CreatePlaylistModal(props) {
   const [openCreatePlaylistModal, setOpenCreatePlaylistModal] = props.openCreatePlaylistModal;
   const [playlistMinMax, setPlaylistMinMax] = props.playlistMinMax;
   const [userTracks, setUserTracks] = props.userTracks;
+  const [snackbar, setSnackbar] = props.snackbar;
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [image, setImage] = useState({
@@ -180,7 +181,8 @@ export default function CreatePlaylistModal(props) {
     .then((res) => {
       
       setOpenCreatePlaylistModal(false);
-    });
+    })
+    .catch(res => console.log(res));
   };
 
   // const setImageToInitial = () => {

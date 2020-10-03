@@ -183,6 +183,7 @@ const PlaylistItem = (props) => {
   const [chartValues, setChartValues] = props.chartValues;
   const [userTracks, setTracks] = props.userTracks;
   const [playlistMinMax, setPlaylistMinMax] = props.playlistMinMax;
+  const [snackbar, setSnackbar] = props.snackbar;
 
   const [currentSong, setCurrentSong] = useState(null);
   const [isPlaying, setPlaying] = useState(false);
@@ -228,26 +229,25 @@ const PlaylistItem = (props) => {
     event.stopPropagation();
     setPosition(initialPosition);
 
-    axios
-      .post(`http://localhost:9000/tracks/recommendations`, {
-        accessToken,
-        recommendationSeeds: [{ track_id: trackId }],
-        playlistMinMax,
-      })
-      .then((res) => {
-        setTracks((prev) => {
-          const allSongs = {
-            songs: [...prev.songs, ...res.data.songs],
-          };
-          const filteredTracks = filterTracks(allSongs, playlistMinMax);
+    axios.post(`http://localhost:9000/tracks/recommendations`, {
+      accessToken,
+      recommendationSeeds: [{ track_id: trackId }],
+      playlistMinMax,
+    })
+    .then((res) => {
+      setTracks((prev) => {
+        const allSongs = {
+          songs: [...prev.songs, ...res.data.songs],
+        };
+        const filteredTracks = filterTracks(allSongs, playlistMinMax);
 
-          return {
-            loading: true,
-            songs: filteredTracks,
-          };
-        });
-        setChartValues(res.data.averages);
+        return {
+          loading: true,
+          songs: filteredTracks,
+        };
       });
+      setChartValues(res.data.averages);
+    });
   };
 
   const removeSong = (event, trackId) => {

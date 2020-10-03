@@ -185,6 +185,7 @@ const PlaylistItem = (props) => {
   const [chartValues, setChartValues] = props.chartValues;
   const [userTracks, setTracks] = props.userTracks;
   const [playlistMinMax, setPlaylistMinMax] = props.playlistMinMax;
+  const [snackbar, setSnackbar] = props.snackbar;
 
   const [currentSong, setCurrentSong] = useState(null);
   const [isPlaying, setPlaying] = useState(false);
@@ -249,7 +250,8 @@ const PlaylistItem = (props) => {
           };
         });
         setChartValues(res.data.averages);
-      });
+      })
+      .catch(err => console.log(err));
   };
 
   const removeSong = (event, trackId) => {
