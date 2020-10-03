@@ -76,7 +76,7 @@ const PlaylistItemContainer = (props) => {
         playlistMinMax={props.playlistMinMax}
         userTracks={props.userTracks}
         chartValues={props.chartValues}
-        snackBarMessage={props.snackBarMessage}
+        snackbar={props.snackbar}
        />);
   }
 

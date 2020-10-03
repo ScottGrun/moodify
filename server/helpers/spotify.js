@@ -48,7 +48,8 @@ const getTracksFromPlaylist = async (playlist_id, totalTracks, accessToken, res)
     tracksReceived += 100;
     playlistTracks.push(...playlistItems.data.items);
   }
-  return playlistTracks.status !== 200 ? playlistTracks.status : playlistTracks;
+
+  return playlistTracks;
 };
 
 const getRecommendationsFromSeeds = async (accessToken, trackIds, playlistMinMax, res) => {
