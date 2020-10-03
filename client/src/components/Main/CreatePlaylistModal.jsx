@@ -178,7 +178,7 @@ export default function CreatePlaylistModal(props) {
       image
     })
     .then((res) => {
-      console.log(res);
+      
       setOpenCreatePlaylistModal(false);
     });
   };

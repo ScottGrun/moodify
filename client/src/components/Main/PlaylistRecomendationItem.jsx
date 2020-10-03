@@ -229,7 +229,6 @@ const PlaylistItem = (props) => {
   const addSimilarSongs = (event, trackId) => {
     event.stopPropagation();
     setPosition(initialPosition);
-    console.log(trackId);
 
     axios
       .post(`http://localhost:9000/tracks/recommendations`, {

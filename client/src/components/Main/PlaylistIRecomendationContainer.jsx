@@ -94,7 +94,6 @@ const StyledAddIcon = styled.img`
 `;
 
 const PlaylistRecomendationContainer = (props) => {
-  console.log('render container');
   
   const { accessToken } = props;
   const [playlistMinMax, setPlaylistMinMax] = props.playlistMinMax;
@@ -124,7 +123,7 @@ const PlaylistRecomendationContainer = (props) => {
         recommendedSongs = recommendedSongs.map((song, index) => (
           <PlaylistRecomendationItem
             {...song}
-            key={song.uid}
+            key={song.id}
             idx={index}
             playlistMinMax={props.playlistMinMax}
             userTracks={props.userTracks}
@@ -136,9 +135,6 @@ const PlaylistRecomendationContainer = (props) => {
       });
   };
 
-  useEffect(() => {
-    console.log('Now loading recommendations');
-  }, [playlistMinMax]);
 
   return (
     <StyledPlaylistContainer>

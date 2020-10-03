@@ -239,13 +239,13 @@ const Main = (props) => {
             userTracks={props.userTracks}
             chartValues={props.chartValues}
           />
-          <PlaylistRecomendationContainer 
+          {/* <PlaylistRecomendationContainer 
           accessToken={accessToken}
             playlistMinMax={props.playlistMinMax}
             chartValues={props.chartValues}
             userTracks={props.userTracks}
          
-          />
+          /> */}
         </MainContent>
         <PlaylistControls>
           <RadarChart 

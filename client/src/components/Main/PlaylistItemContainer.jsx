@@ -71,7 +71,7 @@ const PlaylistItemContainer = (props) => {
     renderSongs = filteredTracks
       .map((song, index) => <PlaylistItem idx={index} 
         {...song}
-        key={song.uid}
+        key={song.id}
         idx={index} 
         playlistMinMax={props.playlistMinMax}
         userTracks={props.userTracks}

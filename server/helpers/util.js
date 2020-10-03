@@ -11,7 +11,6 @@ const generateString = (length) => {
 
 //format
 const formatTracks = (songList) => {
-  console.log(songList);
   const songs = songList
     .filter(song => song.track)
     .map((song, index) => {
