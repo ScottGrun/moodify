@@ -109,15 +109,20 @@ router.post('/recommendations', async (req, res) => {
 router.post('/saved', async (req, res) => {
   const { accessToken } = req.body;
 
-  let allTracks = [];
+  let allTracks;
   let totalSongs = null;
+  let numOfRequests;
+
   axios({
     method: 'get',
     url: `https://api.spotify.com/v1/me/tracks?offset=0&limit=50`,
     headers: { Authorization: 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
   }).then((apiRes) => {
     totalSongs = apiRes.data.total;
-    for (let i = 0; i <= Math.max(totalSongs / 50); i++) {
+    numOfRequests = Math.ceil(totalSongs / 50);
+    allTracks = new Array(numOfRequests).fill([]);
+
+    for (let i = 0; i < numOfRequests; i++) {
       axios({
         method: 'get',
         url: `https://api.spotify.com/v1/me/tracks?offset=${i * 50}&limit=50`,
@@ -126,38 +131,24 @@ router.post('/saved', async (req, res) => {
         let formattedTracks = formatTracks(rawTracks.data.items);
         getAudioFeaturesOfTracks(formattedTracks, accessToken).then((audioFeatures) => {
           let finalTracks = addAudioFeaturesToTracks(formattedTracks, audioFeatures);
+          allTracks[i] = [...finalTracks];
 
-          allTracks.push(...finalTracks);
-
-          if (allTracks.length === totalSongs) {
+          if (allTracks.reduce((total, tracks) => total + tracks.length,0) === totalSongs) {
             console.log(`Server sent ${allTracks.length} songs.`);
+
+            const result = [];
+            allTracks.forEach(tracks => result.push(...tracks));
+
             res.send({
-              songs: allTracks,
-              minMax: getMinMaxes(allTracks),
-              averages: getAverages(allTracks),
+              songs: result,
+              minMax: getMinMaxes(result),
+              averages: getAverages(result),
             });
           }
         });
       });
     }
   });
-
-  // while (apiEndpoint) {
-  // axios({
-  //   method: 'get',
-  //   url: apiEndpoint,
-  //   headers: { Authorization: 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
-  // });
-  // apiEndpoint = tracks.data.next;
-  // console.log('get tracks');
-
-  // let formattedTracks = formatTracks(tracks.data.items);
-
-  // getAudioFeaturesOfTracks(formattedTracks, accessToken).then((audioFeatures) => {
-  //   let finalTracks = addAudioFeaturesToTracks(formattedTracks, audioFeatures);
-  //   allTracks.push(...finalTracks);
-  // });
-  // }
 });
 
 module.exports = router;

@@ -4,6 +4,9 @@ import styled from 'styled-components';
 import PlaylistItem from './PlaylistItem';
 import { filterTracks } from '../../helpers/filter';
 
+//Spinners
+import Loading from './Loading';
+
 const StyledHeader = styled.div`
   display: flex;
   align-items: center;
@@ -72,7 +75,7 @@ const PlaylistItemContainer = (props) => {
   if (playlistMinMax.data.tempo) {
     const filteredTracks = filterTracks(userTracks, playlistMinMax);
 
-    renderSongs = filteredTracks.map((song, index) => (
+    renderSongs = filteredTracks.slice(0,50).map((song, index) => (
       <PlaylistItem
         idx={index}
         {...song}
@@ -99,7 +102,7 @@ const PlaylistItemContainer = (props) => {
         </ColumnHeaderContainer>
       </StyledHeader>
       <div className="song-list">
-        {renderSongs.length === 0 ? <img src="https://i.imgur.com/xwQzRkv.gif" /> : renderSongs}
+        {renderSongs.length === 0 ? <Loading/> : renderSongs}
       </div>
     </StyledPlaylistContainer>
   );
