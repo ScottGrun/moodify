@@ -117,7 +117,7 @@ const StyledPlaylistItem = styled.div`
 
   /*  */
   &:hover {
-    cursor: pointer;
+    cursor: ${props => props.previewUrl ? 'pointer' : 'default'};
   }
 
   &:hover ${SongName} {
@@ -125,7 +125,7 @@ const StyledPlaylistItem = styled.div`
   }
 
   &:hover ${OverlayContainer} {
-    display: flex;
+    display: ${props => props.previewUrl ? 'flex' : 'none'};
   }
 `;
 
@@ -206,6 +206,7 @@ const PlaylistItem = (props) => {
   }, [isPlaying]);
 
   const playPreview = () => {
+    if (!props.previewUrl) return;
     setPlaying(!isPlaying);
   };
 
@@ -246,6 +247,7 @@ const PlaylistItem = (props) => {
       onClick={playPreview} 
       onContextMenu={handleClick} 
       styled={{ cursor: 'context-menu' }}
+      previewUrl={props.previewUrl}
     >
       <Menu
         open={position.mouseY !== null}
