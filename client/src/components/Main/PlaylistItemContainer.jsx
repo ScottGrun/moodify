@@ -53,7 +53,7 @@ const SectionHeader = styled.h2`
 
 const StyledPlaylistContainer = styled.div`
   position: relative;
-
+  width: 100%;
   .song-list {
     height: calc(100vh - 400px);
     overflow-y: scroll;
@@ -70,6 +70,7 @@ const StyledPlaylistContainer = styled.div`
 const PlaylistItemContainer = (props) => {
   const [playlistMinMax, setPlaylistMinMax] = props.playlistMinMax;
   const [userTracks, setUserTracks] = props.userTracks;
+  const [loading, setLoading] = props.loading;
 
   let renderSongs = [];
   if (playlistMinMax.data.tempo) {
@@ -80,7 +81,6 @@ const PlaylistItemContainer = (props) => {
         idx={index}
         {...song}
         key={song.id}
-        idx={index}
         playlistMinMax={props.playlistMinMax}
         userTracks={props.userTracks}
         chartValues={props.chartValues}
@@ -88,6 +88,8 @@ const PlaylistItemContainer = (props) => {
        />)
     );
   }
+
+console.log(loading)
 
   return (
     <StyledPlaylistContainer>

@@ -11,12 +11,12 @@ import Header from './Header';
 import Navigation from './Navigation.jsx';
 import PlaylistImage from './PlaylistImage';
 import PlaylistItemContainer from './PlaylistItemContainer';
-import PlaylistRecomendationContainer from './PlaylistIRecomendationContainer';
 
 import RadarChart from './RadarChart';
 import Sliders from './Sliders';
 import OpenMenu from './OpenMenu';
 import CreatePlaylistModal from './CreatePlaylistModal';
+
 
 const HamburgerMenu = styled.div`
   height: 24px;
@@ -49,7 +49,7 @@ const Overlay = styled.div`
 `;
 
 const MainContainer = styled.div`
-  max-width: 1440px;
+  max-width: 1600px;
   margin: 24px auto 0 auto;
   position: relative;
   display: grid;
@@ -165,6 +165,8 @@ function TransitionDown(props) {
 
 const Main = (props) => {
   const [accessToken, setAccessToken] = useContext(StateContext).AccessToken;
+  const [loading, setLoading] = useState(false);
+  
   const [userTracks, setTracks] = props.userTracks;
   const [chartValues, setChartValues] = props.chartValues;
   const [openNav, setOpenNav] = props.openNav;
@@ -273,6 +275,7 @@ const Main = (props) => {
             </div>
           </div>
           <PlaylistItemContainer
+            loading={[loading, setLoading]}
             playlistMinMax={props.playlistMinMax}
             userTracks={props.userTracks}
             chartValues={props.chartValues}

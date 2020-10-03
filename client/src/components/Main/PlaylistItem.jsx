@@ -117,10 +117,10 @@ const StyledPlaylistItem = styled.div`
   position: relative;
 
   /* Animations here */
-  /* animation: ${animateIn} 300ms;
+  animation: ${animateIn} 220ms;
   animation-delay: calc(${(props) => (props.idx < 50 ? props.idx : 0)} * 65ms);
   animation-fill-mode: both;
-  animation-timing-function: ease-in-out; */
+  animation-timing-function: ease-in-out;
 
   /*  */
   &:hover {
