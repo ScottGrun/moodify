@@ -48,7 +48,7 @@ const Overlay = styled.div`
 `;
 
 const MainContainer = styled.div`
-  max-width: 1440px;
+  max-width: 1600px;
   margin: 24px auto 0 auto;
   position: relative;
   display: grid;
