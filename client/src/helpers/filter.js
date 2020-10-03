@@ -29,17 +29,13 @@ export function filterTracks(userTracks, playlistMinMax, trackId=null) {
   
   if (playlistMinMax.data.tempo) {
     filteredTracks = userTracks.songs
-      .map(song => {
+      .filter(song => {
         if (!songs.has(song.id)) {
           songs.add(song.id);
-          return song;
+          return matchFilter(song, playlistMinMax) && song.id !== trackId
         }
-      })
-    console.log(filteredTracks);
-      // .filter(song => {
-      //   return matchFilter(song, playlistMinMax) 
-      //     && song.id !== trackId
-      // });
+        return false;
+      });
   }
   return filteredTracks;
 }
