@@ -47,6 +47,7 @@ const SongName = styled.h4`
   line-height: 16px;
   color: white;
   margin: 0;
+
   color: ${(props) => (props.playing ? '#2ed589' : null)};
 `;
 
@@ -71,12 +72,16 @@ const AudioFeatures = styled.div`
   font-size: 11px;
   font-weight: normal;
 
-  @media (max-width: 375px) {
+  @media (max-width: 450px) {
     display: none;
   }
 
   p {
     width: 75px;
+
+    @media (max-width: 1125px) {
+      width: 50px;
+    }
     text-align: center;
   }
 `;
@@ -242,8 +247,7 @@ const PlaylistItem = (props) => {
         };
       });
       setChartValues(res.data.averages);
-    })
-    .catch(err => console.log(err));
+    });
   };
 
   const removeSong = (event, trackId) => {
@@ -293,9 +297,11 @@ const PlaylistItem = (props) => {
             : undefined
         }
       >
-        <MenuItem onClick={event => addSimilarSongs(event, props.id)}>add similar songs</MenuItem>
-        <MenuItem onClick={event => applySongFeatures(event, props.audio)}>use as filter</MenuItem>
-        <MenuItem onClick={event => removeSong(event, props.id)}>remove song</MenuItem>
+        <MenuItem onClick={(event) => addSimilarSongs(event, props.id)}>add similar songs</MenuItem>
+        <MenuItem onClick={(event) => applySongFeatures(event, props.audio)}>
+          use as filter
+        </MenuItem>
+        <MenuItem onClick={(event) => removeSong(event, props.id)}>remove song</MenuItem>
       </Menu>
 
       <StyledSongCoverContainer>
@@ -308,7 +314,6 @@ const PlaylistItem = (props) => {
       </OverlayContainer>
       <SongMetaData>
         <SongName playing={playing}>
-          {' '}
           {props.name.length > 26 ? props.name.slice(0, 20) + '...' : props.name}
         </SongName>
         <ArtistName>{props.artist}</ArtistName>

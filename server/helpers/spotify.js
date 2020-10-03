@@ -35,6 +35,7 @@ const getAudioFeaturesOfTracks = async (formattedTracks, accessToken, res) => {
 
 const getTracksFromPlaylist = async (playlist_id, totalTracks, accessToken, res) => {
   const playlistTracks = [];
+  
   let tracksReceived = 0;
 
   while (tracksReceived < totalTracks) {

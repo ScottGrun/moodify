@@ -67,7 +67,7 @@ const MainContainer = styled.div`
       'main main main main main main main playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls';
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 800px) {
     margin: 16px;
     grid-template-areas:
       'header header header header header header header header header header header header'
@@ -75,7 +75,7 @@ const MainContainer = styled.div`
       'main main main main main main main main main main main main ';
   }
 
-  @media (max-width: 375px) {
+  @media (max-width: 450px) {
     grid-template-areas:
       'header header header header header header header header header header header header'
       'playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls '
@@ -114,12 +114,12 @@ const MainContent = styled.div`
 const PlaylistControls = styled.div`
   grid-area: playlist-controls;
 
-  @media (max-width: 768px) {
+  @media (max-width: 800px) {
     display: flex;
     flex-flow: row;
   }
 
-  @media (max-width: 375px) {
+  @media (max-width: 450px) {
     display: flex;
     flex-flow: column;
   }
@@ -149,7 +149,7 @@ const CreatePlaylistButton = styled.button`
 const ControlsContainer = styled.div`
   width: 100%;
 
-  @media (mix-max: 768px) {
+  @media (mix-max: 800px) {
     width: 50%;
   }
 `;
@@ -225,7 +225,7 @@ const Main = (props) => {
       />
 
       <HamburgerMenu onClick={() => setOpenNav(!openNav)}>
-        <OpenMenu openNav={props.openNav}/>
+        <OpenMenu openNav={props.openNav} />
       </HamburgerMenu>
 
       <Overlay
@@ -238,13 +238,13 @@ const Main = (props) => {
 
       <MainContainer openNav={openNav}>
         <HeaderContainer>
-          <Header openNav={props.openNav}/>
+          <Header openNav={props.openNav} />
         </HeaderContainer>
 
         <Sidebar open={openNav}>
-          <Navigation 
-            playlists={playlists} 
-            marksState={[marks, setMarks]} 
+          <Navigation
+            playlists={playlists}
+            marksState={[marks, setMarks]}
             playlistMinMax={props.playlistMinMax}
             openNav={props.openNav}
             userTracks={props.userTracks}
@@ -254,7 +254,7 @@ const Main = (props) => {
         </Sidebar>
 
         <MainContent>
-          <CreatePlaylistModal 
+          <CreatePlaylistModal
             playlistMinMax={props.playlistMinMax}
             openCreatePlaylistModal={props.openCreatePlaylistModal}
             userTracks={props.userTracks}
@@ -263,13 +263,10 @@ const Main = (props) => {
 
           <div className="playlists-container">
             <div className="playlist-image-container">
-              <PlaylistImage 
-                playlistMinMax={props.playlistMinMax}
-                userTracks={props.userTracks}
-              />
+              <PlaylistImage playlistMinMax={props.playlistMinMax} userTracks={props.userTracks} />
             </div>
           </div>
-          <PlaylistItemContainer 
+          <PlaylistItemContainer
             playlistMinMax={props.playlistMinMax}
             userTracks={props.userTracks}
             chartValues={props.chartValues}
@@ -284,14 +281,11 @@ const Main = (props) => {
           /> */}
         </MainContent>
         <PlaylistControls>
-          <RadarChart 
-            chartValues={props.chartValues}
-            chartData={props.chartData}
-          />
+          <RadarChart chartValues={props.chartValues} chartData={props.chartData} />
 
           <ControlsContainer>
-            <Sliders 
-              marksState={[marks, setMarks]} 
+            <Sliders
+              marksState={[marks, setMarks]}
               playlistMinMax={props.playlistMinMax}
               userTracks={props.userTracks}
               chartValues={props.chartValues}

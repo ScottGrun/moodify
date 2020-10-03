@@ -74,7 +74,7 @@ const AudioFeatures = styled.div`
   font-size: 12px;
   font-weight: normal;
 
-  @media (max-width: 375px) {
+  @media (max-width: 450px) {
     display: none;
   }
 

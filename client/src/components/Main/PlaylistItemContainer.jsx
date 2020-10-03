@@ -4,6 +4,9 @@ import styled from 'styled-components';
 import PlaylistItem from './PlaylistItem';
 import { filterTracks } from '../../helpers/filter';
 
+//Spinners
+import Loading from './Loading';
+
 const StyledHeader = styled.div`
   display: flex;
   align-items: center;
@@ -20,7 +23,7 @@ const ColumnHeaderContainer = styled.div`
   font-size: 11px;
   font-weight: normal;
 
-  @media(max-width: 375px){
+  @media (max-width: 450px) {
     display: none;
   }
 
@@ -28,6 +31,10 @@ const ColumnHeaderContainer = styled.div`
     font-size: 14px;
     width: 75px;
     text-align: center;
+    
+    @media (max-width: 1125px) {
+      width: 50px;
+    }
   }
 `;
 
@@ -67,34 +74,36 @@ const PlaylistItemContainer = (props) => {
   let renderSongs = [];
   if (playlistMinMax.data.tempo) {
     const filteredTracks = filterTracks(userTracks, playlistMinMax);
-    
-    renderSongs = filteredTracks
-      .map((song, index) => <PlaylistItem idx={index} 
+
+    renderSongs = filteredTracks.slice(0,50).map((song, index) => (
+      <PlaylistItem
+        idx={index}
         {...song}
         key={song.id}
-        idx={index} 
+        idx={index}
         playlistMinMax={props.playlistMinMax}
         userTracks={props.userTracks}
         chartValues={props.chartValues}
         snackbar={props.snackbar}
-       />);
+       />)
+    );
   }
 
   return (
-    <StyledPlaylistContainer >
+    <StyledPlaylistContainer>
       <StyledHeader>
         <SectionHeader>Yours Songs</SectionHeader>
         <ColumnHeaderContainer>
           <p>BPM</p>
           <p>Energy</p>
-          <p>Danceability</p>
+          <p>Dance.</p>
           <p>Valence</p>
           <p>Instru.</p>
           <p>Loudness</p>
         </ColumnHeaderContainer>
       </StyledHeader>
       <div className="song-list">
-        {renderSongs.length === 0 ? <img src="https://i.imgur.com/xwQzRkv.gif" /> : renderSongs}
+        {renderSongs.length === 0 ? <Loading/> : renderSongs}
       </div>
     </StyledPlaylistContainer>
   );

@@ -55,7 +55,7 @@ const PlayListImageContainer = styled.div`
     }
   }
 
-  @media(max-width: 768px) {
+  @media(max-width: 800px) {
     display: none;
   }
 `;
