@@ -222,6 +222,7 @@ const PlaylistItem = (props) => {
   const addSimilarSongs = (event, trackId) => {
     event.stopPropagation();
     setPosition(initialPosition);
+    console.log(trackId);
 
     axios.post(`http://localhost:9000/tracks/recommendations`, {
       accessToken,
@@ -230,9 +231,17 @@ const PlaylistItem = (props) => {
     })
     .then(res => {
       setTracks(prev => {
+        const allSongs = {
+          songs: [
+            ...prev.songs,
+            ...res.data.songs
+          ]
+        }
+        const filteredTracks = filterTracks(allSongs, playlistMinMax)
+
         return {
           loading: true,
-          songs: [...res.data.songs, ...prev.songs],
+          songs: filteredTracks,
         }
       });
       setChartValues(res.data.averages);
@@ -257,9 +266,7 @@ const PlaylistItem = (props) => {
     setPosition(initialPosition);
 
     const { danceability, energy, instrumentalness, loudness, tempo, valence } = audioFeatures;
-
     const newFeatures = getAudioFeatures(audioFeatures);
-    console.log(newFeatures);
     setPlaylistMinMax(prev => {
       return {
         loading: true,

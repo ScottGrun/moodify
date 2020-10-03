@@ -78,7 +78,6 @@ const PlaylistItemContainer = (props) => {
         userTracks={props.userTracks}
         chartValues={props.chartValues}
        />);
-    console.log(renderSongs);
   }
 
   return (

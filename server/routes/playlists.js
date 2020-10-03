@@ -36,7 +36,6 @@ router.post('/create', async (req, res) => {
   };
 
   // add playlist image
-  // console.log(image, typeof image);
   if (image) {
     axios({
       method: 'put',

@@ -25,12 +25,21 @@ export const matchFilter = (song, playlistMinMax) => {
 
 export function filterTracks(userTracks, playlistMinMax, trackId=null) {
   let filteredTracks;
+  const songs = new Set();
   
   if (playlistMinMax.data.tempo) {
     filteredTracks = userTracks.songs
-      .filter(song => {
-        return matchFilter(song, playlistMinMax) && song.id !== trackId
-      });
+      .map(song => {
+        if (!songs.has(song.id)) {
+          songs.add(song.id);
+          return song;
+        }
+      })
+    console.log(filteredTracks);
+      // .filter(song => {
+      //   return matchFilter(song, playlistMinMax) 
+      //     && song.id !== trackId
+      // });
   }
   return filteredTracks;
 }
