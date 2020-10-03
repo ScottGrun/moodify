@@ -2,8 +2,9 @@ import React, { useEffect, useContext, useState } from 'react';
 import axios from 'axios';
 import { StateContext } from '../../App';
 import { setSliderMarks } from '../../helpers/util';
-import { Snackbar } from '@material-ui/core';
 import styled from 'styled-components';
+import { Snackbar } from '@material-ui/core';
+import Slide from '@material-ui/core/Slide';
 
 // Components
 import Header from './Header';
@@ -158,6 +159,10 @@ const StyledSnackbar = styled(Snackbar)`
 
 `;
 
+function TransitionDown(props) {
+  return <Slide {...props} direction="down" />;
+}
+
 const Main = (props) => {
   const [accessToken, setAccessToken] = useContext(StateContext).AccessToken;
   const [userTracks, setTracks] = props.userTracks;
@@ -169,32 +174,34 @@ const Main = (props) => {
   const [marks, setMarks] = useState({});
   const [snackbar, setSnackbar] = useState({
     open: false,
-    vertical: 'top',
-    horizontal: 'center',
     message: '',
   });
 
   const getSavedTracks = () => {
-    axios
-      .post(`http://localhost:9000/tracks/saved`, {
-        accessToken,
-      })
-      .then((res) => {
-        setTracks({
-          loading: true,
-          songs: res.data.songs,
-        });
-        setChartValues(res.data.averages);
-        setPlaylistMinMax({ data: res.data.minMax, loaded: true });
-        setSliderMarks(res.data.minMax, setMarks);
+    axios.post(`http://localhost:9000/tracks/saved`, {
+      accessToken,
+    })
+    .then((res) => {
+      setTracks({
+        loading: true,
+        songs: res.data.songs,
       });
+      setChartValues(res.data.averages);
+      setPlaylistMinMax({ data: res.data.minMax, loaded: true });
+      setSliderMarks(res.data.minMax, setMarks);
+    })
+    .catch(res => {
+      setSnackbar({...snackbar, open: true, message: res.message});
+    });;
   };
 
   const getPlaylists = () => {
     axios.post('http://localhost:9000/playlists/ids', { accessToken }).then((res) => {
       setPlaylists(res.data);
     })
-    .catch(res => console.log(res));
+    .catch(res => {
+      setSnackbar({...snackbar, open: true, message: res.message});
+    });
   };
 
   useEffect(() => {
@@ -202,27 +209,26 @@ const Main = (props) => {
     getPlaylists();
   }, []);
 
-  const openSnackbar = () => {
-    setSnackbar({ ...snackbar, open: true, message: "I'm an error!"})
-  };
-
   const closeSnackbar = () => {
     setSnackbar({ ...snackbar, open: false, message: '' });
   };
 
   return (
     <>
-      <button onClick={openSnackbar}>Open Snackbar</button>
       <StyledSnackbar 
+        key={ 'top' + 'center' }
         anchorOrigin={{ 
-          vertical: snackbar.vertical, 
-          horizontal: snackbar.horizontal 
+          vertical: 'top', 
+          horizontal: 'center' 
         }}
         open={snackbar.open}
         onClose={closeSnackbar}
+        autoHideDuration={4000}
         message={snackbar.message}
-        key={ snackbar.vertical + snackbar.horizontal }
-      />
+        TransitionComponent={TransitionDown}
+      >
+
+      </StyledSnackbar>
 
       <HamburgerMenu onClick={() => setOpenNav(!openNav)}>
         <OpenMenu openNav={props.openNav} />

@@ -111,31 +111,32 @@ const PlaylistRecomendationContainer = (props) => {
       }
     });
 
-    axios
-      .post(`http://localhost:9000/tracks/recommendations`, {
-        accessToken,
-        recommendationSeeds,
-        playlistMinMax,
-      })
-      .then((res) => {
-        let recommendedSongs = res.data.songs;
-        setRenderSongData(recommendedSongs);
+    axios.post(`http://localhost:9000/tracks/recommendations`, {
+      accessToken,
+      recommendationSeeds,
+      playlistMinMax,
+    })
+    .then((res) => {
+      let recommendedSongs = res.data.songs;
+      setRenderSongData(recommendedSongs);
 
-        recommendedSongs = recommendedSongs.map((song, index) => (
-          <PlaylistRecomendationItem
-            {...song}
-            key={song.id}
-            idx={index}
-            playlistMinMax={props.playlistMinMax}
-            userTracks={props.userTracks}
-            chartValues={props.chartValues}
-            snackbar={props.snackbar}
-          />
-        ));
+      recommendedSongs = recommendedSongs.map((song, index) => (
+        <PlaylistRecomendationItem
+          {...song}
+          key={song.id}
+          idx={index}
+          playlistMinMax={props.playlistMinMax}
+          userTracks={props.userTracks}
+          chartValues={props.chartValues}
+          snackbar={props.snackbar}
+        />
+      ));
 
-        setRenderSongs(recommendedSongs);
-      })
-      .catch(err => console.log(err));
+      setRenderSongs(recommendedSongs);
+    })
+    .catch(res => {
+      setSnackbar({...snackbar, open: true, message: res.message});
+    });
   };
 
 

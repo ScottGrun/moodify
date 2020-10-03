@@ -37,8 +37,9 @@ router.post('/create', async (req, res) => {
     .catch(err => res.sendStatus(err.response.status));
     songsAdded += 100;
   };
+  
   // add playlist image
-  if (image) {
+  if (image.size !== null) {
     axios({
       method: 'put',
       url: `https://api.spotify.com/v1/playlists/${playlist_id}/images`,

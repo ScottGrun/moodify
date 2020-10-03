@@ -231,27 +231,28 @@ const PlaylistItem = (props) => {
     event.stopPropagation();
     setPosition(initialPosition);
 
-    axios
-      .post(`http://localhost:9000/tracks/recommendations`, {
-        accessToken,
-        recommendationSeeds: [{ track_id: trackId }],
-        playlistMinMax,
-      })
-      .then((res) => {
-        setTracks((prev) => {
-          const allSongs = {
-            songs: [...prev.songs, ...res.data.songs],
-          };
-          const filteredTracks = filterTracks(allSongs, playlistMinMax);
+    axios.post(`http://localhost:9000/tracks/recommendations`, {
+      accessToken,
+      recommendationSeeds: [{ track_id: trackId }],
+      playlistMinMax,
+    })
+    .then((res) => {
+      setTracks((prev) => {
+        const allSongs = {
+          songs: [...prev.songs, ...res.data.songs],
+        };
+        const filteredTracks = filterTracks(allSongs, playlistMinMax);
 
-          return {
-            loading: true,
-            songs: filteredTracks,
-          };
-        });
-        setChartValues(res.data.averages);
-      })
-      .catch(err => console.log(err));
+        return {
+          loading: true,
+          songs: filteredTracks,
+        };
+      });
+      setChartValues(res.data.averages);
+    })
+    .catch(res => {
+      setSnackbar({...snackbar, open: true, message: res.message});
+    });
   };
 
   const removeSong = (event, trackId) => {

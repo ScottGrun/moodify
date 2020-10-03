@@ -139,7 +139,10 @@ export default function Navigation(props) {
         setChartValues(res.data.averages);
         setPlaylistMinMax({ data: res.data.minMax, loaded: true });
         setSliderMarks(res.data.minMax, setMarks);
-      });
+      })
+      .catch(res => {
+        setSnackbar({...snackbar, open: true, message: res.message});
+      });;
   };
 
   const loadFeaturedSongs = () => {
@@ -156,6 +159,9 @@ export default function Navigation(props) {
         setChartValues(res.data.averages);
         setPlaylistMinMax({ data: res.data.minMax, loaded: true });
         setSliderMarks(res.data.minMax, setMarks);
+      })
+      .catch(res => {
+        setSnackbar({...snackbar, open: true, message: res.message});
       });
   };
 
@@ -180,7 +186,9 @@ export default function Navigation(props) {
       setPlaylistMinMax({ data: res.data.minMax, loaded: true });
       setSliderMarks(res.data.minMax, setMarks);
     })
-    .catch(err => console.log(err));
+    .catch(res => {
+      setSnackbar({...snackbar, open: true, message: res.message});
+    });
   };
 
   const handlePlaylistClick = (playlistId, trackTotal) => {

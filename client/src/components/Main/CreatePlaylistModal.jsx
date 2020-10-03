@@ -179,22 +179,24 @@ export default function CreatePlaylistModal(props) {
       image
     })
     .then((res) => {
-      
       setOpenCreatePlaylistModal(false);
+      setSnackbar({...snackbar, open: true, message: 'Successfully created playlist!'})
     })
-    .catch(res => console.log(res));
+    .catch(res => {
+      setSnackbar({...snackbar, open: true, message: res.message});
+    });
   };
 
-  // const setImageToInitial = () => {
-  //   setImage({
-  //     lastModified: null,
-  //     lastModifiedDate: null,
-  //     name: null,
-  //     size: null,
-  //     type: 'image/jpeg',
-  //     webkitRelativePath: ''
-  //   });
-  // }
+  const setImageToInitial = () => {
+    setImage({
+      lastModified: null,
+      lastModifiedDate: null,
+      name: null,
+      size: null,
+      type: 'image/jpeg',
+      webkitRelativePath: ''
+    });
+  };
 
   const handleFileUpload = (e) => {
     const imageFile = e.target.files[0];
@@ -202,16 +204,16 @@ export default function CreatePlaylistModal(props) {
     const errors = [];
 
     if (!imageFile) {
-      setImage('');
+      setImageToInitial();
       return;
     }
     if (imageFile.size > 1024 * 256) {
       errors.push('max size - 256kb');
-      setImage('');
+      setImageToInitial();
     }
     if (imageFile.type !== 'image/jpeg') {
       errors.push('file type must be jpeg');
-      setImage('');
+      setImageToInitial();
     }
     setImageErrors(errors);
     if (errors.length) return;

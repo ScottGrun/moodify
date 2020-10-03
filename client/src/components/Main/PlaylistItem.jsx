@@ -245,8 +245,11 @@ const PlaylistItem = (props) => {
           loading: true,
           songs: filteredTracks,
         };
-      });
+      })
       setChartValues(res.data.averages);
+    })
+    .catch(res => {
+      setSnackbar({...snackbar, open: true, message: res.message});
     });
   };
 
