@@ -34,7 +34,7 @@ router.post('/create', async (req, res) => {
     });
     songsAdded += 100;
   };
-
+  console.log(image);
   // add playlist image
   if (image) {
     axios({
