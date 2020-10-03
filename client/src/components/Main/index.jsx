@@ -116,6 +116,20 @@ const MainContent = styled.div`
 const PlaylistControls = styled.div`
   grid-area: playlist-controls;
 
+  .presets-container {
+    margin-top: 20px;
+    border: 1px solid white;
+    padding: 10px;
+    border-radius: 4px;
+
+    .title {
+      display: flex;
+      align-items: center;
+      color: white;
+      margin-bottom: 10px;
+    }
+  }
+
   @media (max-width: 768px) {
     display: flex;
     flex-flow: row;
@@ -154,12 +168,18 @@ const SavePresetButton = styled.button`
   color: white;
   font-weight: bold;
   font-size: 14px;
-  border: solid 2px white;
-  padding: 10px;
+  border: solid 1px white;
+  padding: 5px;
+  cursor: pointer;
+  outline: none;
+  margin-left: 20px;
 
   &:hover {
     background-color: #2ed689;
-    color: #191f35;
+  }
+
+  &:active {
+    outline: none;
   }
 `;
     
@@ -261,11 +281,14 @@ const Main = () => {
           </ControlsContainer>
 
           <div className="presets-container">
-            <SavePresetButton
-              className="save-preset-btn" 
-              onClick={() => setOpenSavePresetModal(true)}>
-                Save Preset
-            </SavePresetButton>
+            <div className='title'>
+              <h3>Presets</h3>
+              <SavePresetButton
+                className="save-preset-btn" 
+                onClick={() => setOpenSavePresetModal(true)}>
+                  Save Preset
+              </SavePresetButton>
+            </div>
             <PresetsContainer /> 
           </div>
     

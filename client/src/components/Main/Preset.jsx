@@ -11,19 +11,22 @@ const PresetItem = styled.div`
   height: 80px;
   width: 80px;
   cursor: pointer;
+  position: relative;
+  transition: filter 0.2s ease-in-out;
+
+  &:hover {
+    filter: brightness(150%);
+  }
   
   .preset-image {
-    /* height: 100%;
-    width: 100%; */
     height: auto;
     width: auto;
   }
 
   .heart {
-    float: right;
     position: absolute;
-    right: 190px;
-    bottom: 0px;
+    right: 0;
+    bottom: 0;
     z-index: 1000;
     background-color: none;
     padding: 5px;
