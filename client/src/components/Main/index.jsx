@@ -242,7 +242,9 @@ const Main = (props) => {
           <PlaylistRecomendationContainer 
           accessToken={accessToken}
             playlistMinMax={props.playlistMinMax}
+            chartValues={props.chartValues}
             userTracks={props.userTracks}
+         
           />
         </MainContent>
         <PlaylistControls>

@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { StateContext } from '../../App';
 import styled from 'styled-components';
-import PlaylistItem from './PlaylistItem';
+import PlaylistRecomendationItem from './PlaylistRecomendationItem';
 import { filterTracks } from '../../helpers/filter';
 import axios from 'axios';
 
@@ -84,19 +84,29 @@ const SectionHeader = styled.h2`
   color: #ffffff;
 `;
 
+const StyledAddIcon = styled.img`
+  margin-right: 5px;
+  z-index: 99;
+
+  &:hover {
+    transform: scale(2);
+  }
+`;
+
 const PlaylistRecomendationContainer = (props) => {
-  const {accessToken} = props;
+  console.log('render container');
+  
+  const { accessToken } = props;
   const [playlistMinMax, setPlaylistMinMax] = props.playlistMinMax;
   const [userTracks, setUserTracks] = props.userTracks;
-  const [isShown, setShown] = useState(false);
   const [renderSongs, setRenderSongs] = useState([]);
+  const [renderSongData, setRenderSongData] = useState([]);
 
   const getRecomendations = () => {
     const recomendationSeeds = filterTracks(userTracks, playlistMinMax).map((track) => ({
       track_id: track.id,
       artist_id: track.artist_id,
     }));
-
     axios
       .post(`http://localhost:9000/tracks/recommendations`, {
         accessToken,
@@ -104,13 +114,21 @@ const PlaylistRecomendationContainer = (props) => {
         playlistMinMax,
       })
       .then((res) => {
-        let recomendedSongs = res.data.songs;
+        let recommendedSongs = res.data.songs;
+        setRenderSongData(recommendedSongs);
 
-        recomendedSongs = recomendedSongs.map((song, index) => (
-          <PlaylistItem idx={index} {...song} key={song.uid} />
+        recommendedSongs = recommendedSongs.map((song, index) => (
+          <PlaylistRecomendationItem
+            {...song}
+            key={song.uid}
+            idx={index}
+            playlistMinMax={props.playlistMinMax}
+            userTracks={props.userTracks}
+            chartValues={props.chartValues}
+          />
         ));
 
-        setRenderSongs(recomendedSongs);
+        setRenderSongs(recommendedSongs);
       });
   };
 
@@ -123,8 +141,8 @@ const PlaylistRecomendationContainer = (props) => {
       <StyledHeader>
         <StyledButtonContainer>
           <SectionHeader>Recommended Songs</SectionHeader>
-          <RecomendButton>
-            <img className="spacer" src={AddAllIcon} />
+          <RecomendButton onClick={()=> setUserTracks(prev => ({...prev, songs:[...prev.songs, ...renderSongData]}))}>
+            <StyledAddIcon className="spacer" src={AddAllIcon}  />
             Add All
           </RecomendButton>
         </StyledButtonContainer>

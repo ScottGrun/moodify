@@ -12,6 +12,9 @@ import { getAudioFeatures } from '../../helpers/calculations';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
+//Images
+import addIcon from '../../assets/icons/add.svg';
+
 const StyledSongCoverContainer = styled.div`
   position: relative;
   height: 100%;
@@ -68,7 +71,7 @@ const AudioFeatures = styled.div`
   justify-content: space-around;
   color: white;
   font-family: Inter;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: normal;
 
   @media (max-width: 375px) {
@@ -76,8 +79,12 @@ const AudioFeatures = styled.div`
   }
 
   p {
-    width: 75px;
+    width: 50px;
     text-align: center;
+  }
+
+  .add-icon {
+    margin-right: 5px;
   }
 `;
 
@@ -273,6 +280,9 @@ const PlaylistItem = (props) => {
     });
   };
 
+
+
+
   return (
     <StyledPlaylistItem
       idx={props.idx}
@@ -322,6 +332,9 @@ const PlaylistItem = (props) => {
         <p>{Math.trunc(props.audio.valence * 100)}</p>
         <p>{Math.trunc(props.audio.instrumentalness * 100)}</p>
         <p>{Math.trunc(props.audio.loudness)}db</p>
+        <img className="add-icon" src={addIcon} onClick={()=> setTracks(prev => ({
+          ...prev, songs:[...prev.songs, {...props, uid: userTracks.songs[userTracks.songs.length - 1].uid + 1}]
+        }))}/>
       </AudioFeatures>
       <StyledProgressContainer playing={playing}>
         <div></div>
