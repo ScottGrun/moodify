@@ -237,9 +237,24 @@ const PlaylistItem = (props) => {
     });
   };
 
-  // const setSongMinMaxes = (event, minMaxes) => {
+  const removeSong = (event, trackId) => {
+    event.stopPropagation();
+    setPosition(initialPosition);
+    setTracks(prev => {
+      const newSongs = prev.songs.filter(track => track.id !== trackId);
 
-  // };
+      return {
+        loading: true,
+        songs: [...newSongs]
+      }
+    })
+  };
+
+  const applySongFeatures = (event, audioFeatures) => {
+    event.stopPropagation();
+    setPosition(initialPosition);
+    console.log(audioFeatures);
+  };
   
   return (
     <StyledPlaylistItem 
@@ -261,7 +276,8 @@ const PlaylistItem = (props) => {
         }
       >
         <MenuItem onClick={event => addSimilarSongs(event, props.id)}>add similar songs</MenuItem>
-        <MenuItem onClick={handleClose}>remove song</MenuItem>
+        <MenuItem onClick={event => applySongFeatures(event, props.audio)}>use audio features</MenuItem>
+        <MenuItem onClick={event => removeSong(event, props.id)}>remove song</MenuItem>
       </Menu>
 
       <StyledSongCoverContainer>
