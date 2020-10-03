@@ -65,7 +65,7 @@ const PlaylistItemContainer = (props) => {
   const [userTracks, setUserTracks] = props.userTracks;
 
   let renderSongs = [];
-  if (playlistMinMax.loaded && userTracks.loading) {
+  if (playlistMinMax.data.tempo) {
     const filteredTracks = filterTracks(userTracks, playlistMinMax);
     
     renderSongs = filteredTracks
@@ -78,6 +78,7 @@ const PlaylistItemContainer = (props) => {
         userTracks={props.userTracks}
         chartValues={props.chartValues}
        />);
+    console.log(renderSongs);
   }
 
   return (

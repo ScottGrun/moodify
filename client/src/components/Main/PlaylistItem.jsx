@@ -6,6 +6,8 @@ import styled, { keyframes } from 'styled-components';
 import PlayButton from '../../assets/icons/PlayButton.svg';
 import WaveFormSource from '../../assets/icons/audio.svg';
 import setCurrentSongPlaying from '../../helpers/songPreviewManager';
+import { filterTracks } from '../../helpers/filter';
+import { getAudioFeatures } from '../../helpers/calculations';
 
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -241,11 +243,11 @@ const PlaylistItem = (props) => {
     event.stopPropagation();
     setPosition(initialPosition);
     setTracks(prev => {
-      const newSongs = prev.songs.filter(track => track.id !== trackId);
+      const newSongs = filterTracks(prev, playlistMinMax, trackId);
 
       return {
         loading: true,
-        songs: [...newSongs]
+        songs: newSongs,
       }
     })
   };
@@ -253,7 +255,17 @@ const PlaylistItem = (props) => {
   const applySongFeatures = (event, audioFeatures) => {
     event.stopPropagation();
     setPosition(initialPosition);
-    console.log(audioFeatures);
+
+    const { danceability, energy, instrumentalness, loudness, tempo, valence } = audioFeatures;
+
+    const newFeatures = getAudioFeatures(audioFeatures);
+    console.log(newFeatures);
+    setPlaylistMinMax(prev => {
+      return {
+        loading: true,
+        data: {...newFeatures}
+      }
+    })
   };
   
   return (
@@ -299,7 +311,7 @@ const PlaylistItem = (props) => {
         <p>{Math.trunc(props.audio.tempo)}</p>
         <p>{Math.trunc(props.audio.energy * 100)}</p>
         <p>{Math.trunc(props.audio.danceability * 100)}</p>
-        <p>{props.audio.valence}</p>
+        <p>{Math.trunc(props.audio.valence * 100)}</p>
         <p>{Math.trunc(props.audio.instrumentalness * 100)}</p>
         <p>{Math.trunc(props.audio.loudness)}db</p>
       </AudioFeatures>
