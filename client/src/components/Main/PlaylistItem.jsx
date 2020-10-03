@@ -6,6 +6,8 @@ import styled, { keyframes } from 'styled-components';
 import PlayButton from '../../assets/icons/PlayButton.svg';
 import WaveFormSource from '../../assets/icons/audio.svg';
 import setCurrentSongPlaying from '../../helpers/songPreviewManager';
+import { filterTracks } from '../../helpers/filter';
+import { getAudioFeatures } from '../../helpers/calculations';
 
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -117,7 +119,7 @@ const StyledPlaylistItem = styled.div`
 
   /*  */
   &:hover {
-    cursor: pointer;
+    cursor: ${props => props.previewUrl ? 'pointer' : 'default'};
   }
 
   &:hover ${SongName} {
@@ -125,7 +127,7 @@ const StyledPlaylistItem = styled.div`
   }
 
   &:hover ${OverlayContainer} {
-    display: flex;
+    display: ${props => props.previewUrl ? 'flex' : 'none'};
   }
 `;
 
@@ -206,6 +208,7 @@ const PlaylistItem = (props) => {
   }, [isPlaying]);
 
   const playPreview = () => {
+    if (!props.previewUrl) return;
     setPlaying(!isPlaying);
   };
 
@@ -219,6 +222,7 @@ const PlaylistItem = (props) => {
   const addSimilarSongs = (event, trackId) => {
     event.stopPropagation();
     setPosition(initialPosition);
+    console.log(trackId);
 
     axios.post(`http://localhost:9000/tracks/recommendations`, {
       accessToken,
@@ -227,18 +231,49 @@ const PlaylistItem = (props) => {
     })
     .then(res => {
       setTracks(prev => {
+        const allSongs = {
+          songs: [
+            ...prev.songs,
+            ...res.data.songs
+          ]
+        }
+        const filteredTracks = filterTracks(allSongs, playlistMinMax)
+
         return {
           loading: true,
-          songs: [...res.data.songs, ...prev.songs],
+          songs: filteredTracks,
         }
       });
       setChartValues(res.data.averages);
     });
   };
 
-  // const setSongMinMaxes = (event, minMaxes) => {
+  const removeSong = (event, trackId) => {
+    event.stopPropagation();
+    setPosition(initialPosition);
+    setTracks(prev => {
+      const newSongs = filterTracks(prev, playlistMinMax, trackId);
 
-  // };
+      return {
+        loading: true,
+        songs: newSongs,
+      }
+    })
+  };
+
+  const applySongFeatures = (event, audioFeatures) => {
+    event.stopPropagation();
+    setPosition(initialPosition);
+
+    const { danceability, energy, instrumentalness, loudness, tempo, valence } = audioFeatures;
+    const newFeatures = getAudioFeatures(audioFeatures);
+    setPlaylistMinMax(prev => {
+      return {
+        loading: true,
+        data: {...newFeatures}
+      }
+    })
+  };
   
   return (
     <StyledPlaylistItem 
@@ -246,6 +281,7 @@ const PlaylistItem = (props) => {
       onClick={playPreview} 
       onContextMenu={handleClick} 
       styled={{ cursor: 'context-menu' }}
+      previewUrl={props.previewUrl}
     >
       <Menu
         open={position.mouseY !== null}
@@ -259,7 +295,8 @@ const PlaylistItem = (props) => {
         }
       >
         <MenuItem onClick={event => addSimilarSongs(event, props.id)}>add similar songs</MenuItem>
-        <MenuItem onClick={handleClose}>remove song</MenuItem>
+        <MenuItem onClick={event => applySongFeatures(event, props.audio)}>use audio features</MenuItem>
+        <MenuItem onClick={event => removeSong(event, props.id)}>remove song</MenuItem>
       </Menu>
 
       <StyledSongCoverContainer>
@@ -281,7 +318,7 @@ const PlaylistItem = (props) => {
         <p>{Math.trunc(props.audio.tempo)}</p>
         <p>{Math.trunc(props.audio.energy * 100)}</p>
         <p>{Math.trunc(props.audio.danceability * 100)}</p>
-        <p>{props.audio.valence}</p>
+        <p>{Math.trunc(props.audio.valence * 100)}</p>
         <p>{Math.trunc(props.audio.instrumentalness * 100)}</p>
         <p>{Math.trunc(props.audio.loudness)}db</p>
       </AudioFeatures>

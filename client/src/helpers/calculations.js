@@ -19,12 +19,11 @@ export function getAverages(songs) {
 
   for (const key in playlistAudioFeaturesAverages) {
     if (key === 'loudness') {
-
-      playlistAudioFeaturesAverages[key] = playlistAudioFeaturesAverages[key] / songs.length;
+      playlistAudioFeaturesAverages[key] = Math.round(
+        playlistAudioFeaturesAverages[key] / songs.length);
     } else {
       playlistAudioFeaturesAverages[key] = Math.round(
-        (playlistAudioFeaturesAverages[key] / songs.length) * 100,
-      );
+        (playlistAudioFeaturesAverages[key] / songs.length) * 100);
     }
   }
   return Object.values(playlistAudioFeaturesAverages);
@@ -56,4 +55,28 @@ export function getTotalDuration(filteredTracks) {
 
   const totalSeconds = totalMs / 1000;
   return formatTime(totalSeconds);
+};
+
+export function getAudioFeatures(audioFeatures) {
+  let { danceability, energy, instrumentalness, loudness, tempo, valence } = audioFeatures;
+
+  danceability *= 100;
+  energy *= 100;
+  instrumentalness *= 100;
+  valence *= 100;
+
+  const newFeatures = {
+    danceability: [Math.max(0, danceability - 10), Math.min(100, danceability + 10)],
+    energy: [Math.max(0, energy - 10), Math.min(100, energy + 10)],
+    instrumentalness: [Math.max(0, instrumentalness - 10), Math.min(100, instrumentalness + 10)],
+    valence: [Math.max(0, valence - 10), Math.min(100, valence + 10)],
+    loudness: [Math.max(-60, loudness - 4), Math.min(0, loudness + 4)],
+    tempo: [Math.max(0, tempo - 10), tempo + 10],
+  }
+
+  for (let feature in newFeatures) {
+    newFeatures[feature] = [ Math.round(newFeatures[feature][0]), Math.round(newFeatures[feature][1]) ];
+  }
+
+  return newFeatures;
 };

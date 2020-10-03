@@ -23,12 +23,23 @@ export const matchFilter = (song, playlistMinMax) => {
   return false;
 };
 
-export function filterTracks(userTracks, playlistMinMax) {
+export function filterTracks(userTracks, playlistMinMax, trackId=null) {
   let filteredTracks;
+  const songs = new Set();
   
-  if (playlistMinMax.loaded && userTracks.loading) {
+  if (playlistMinMax.data.tempo) {
     filteredTracks = userTracks.songs
-      .filter(song => matchFilter(song, playlistMinMax));
+      .map(song => {
+        if (!songs.has(song.id)) {
+          songs.add(song.id);
+          return song;
+        }
+      })
+    console.log(filteredTracks);
+      // .filter(song => {
+      //   return matchFilter(song, playlistMinMax) 
+      //     && song.id !== trackId
+      // });
   }
   return filteredTracks;
 }

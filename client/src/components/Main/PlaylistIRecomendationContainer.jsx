@@ -115,7 +115,7 @@ const PlaylistRecomendationContainer = (props) => {
   };
 
   useEffect(() => {
-    console.log('Now loading recos');
+    console.log('Now loading recommendations');
   }, [playlistMinMax]);
 
   return (
