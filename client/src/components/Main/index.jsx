@@ -285,8 +285,9 @@ const Main = () => {
               <h3>Presets</h3>
               <SavePresetButton
                 className="save-preset-btn" 
-                onClick={() => setOpenSavePresetModal(true)}>
-                  Save Preset
+                onClick={() => setOpenSavePresetModal(true)}
+              >
+                Save Preset
               </SavePresetButton>
             </div>
             <PresetsContainer /> 

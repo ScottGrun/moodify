@@ -8,9 +8,9 @@ const SavePresetModalContainer = styled.div`
   width: 100%;
   max-width: 614px;
   height: 100%;
-  max-height: 551px;
+  max-height: 400px;
   position: absolute;
-  border-radius: 5px;
+  border-radius: 4px;
   top: 50%;
   left: 20%;
   transform: translate(0, -50%);
@@ -39,6 +39,7 @@ const SavePresetModalContainer = styled.div`
 
     .image-container {
       margin-right: 25px;
+      margin-top: 5px;
 
       img {
         width: 212px;
@@ -59,6 +60,7 @@ const SavePresetModalContainer = styled.div`
     .form {
       display: flex;
       flex-direction: column;
+      width: 100%;
 
       label {
         display: flex;
