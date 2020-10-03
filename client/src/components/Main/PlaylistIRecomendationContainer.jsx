@@ -94,28 +94,28 @@ const PlaylistRecomendationContainer = (props) => {
   
 
   const getRecomendations = () => {
-    const recomendationSeeds = filterTracks(userTracks, playlistMinMax).map((track) => ({
-      track_id: track.id,
-      artist_id: track.artist_id,
-    }));
+    const recommendationSeeds = filterTracks(userTracks, playlistMinMax)
+    .map(track => {
+      return {
+        track_id: track.id,
+        artist_id: track.artist_id,
+      }
+    });
 
     axios
       .post(`http://localhost:9000/tracks/recommendations`, {
         accessToken,
-        recomendationSeeds,
+        recommendationSeeds,
         playlistMinMax,
       })
       .then((res) => {
-       
+        let recommendedSongs = res.data.songs;
 
-        let recomendedSongs = res.data.songs;
-
-
-        recomendedSongs = recomendedSongs.map((song, index) => (
+        recommendedSongs = recommendedSongs.map((song, index) => (
             <PlaylistItem idx={index} {...song} key={song.uid} />
           ));
 
-          setRenderSongs(recomendedSongs);
+          setRenderSongs(recommendedSongs);
 
         
       });

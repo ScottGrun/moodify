@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import sliders from './assets/sliders.png';
+import playlistsFull from './assets/playlistsFull.png';
+import radarChart from './assets/radarChart.png';
 
-const SlidersContainer = styled.div`
+const PlaylistContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   max-width: 1200px;
   width: calc(100% - 40px);
-  height: 60vh;
+  height: 80vh;
   color: white;
+  margin-bottom: 100px;
 
   .content-container {
     width: 100%;
@@ -20,6 +22,11 @@ const SlidersContainer = styled.div`
     .text-container {
       width: 48%;
       max-width: 442px;
+
+      img {
+        margin-bottom: 30px;
+        width: 100%;
+      }
 
       h1 {
         font-size: 36px;
@@ -32,8 +39,11 @@ const SlidersContainer = styled.div`
       }
     }
 
-    .sliders {
+    .playlists {
       width: 48%;
+      transform: translateY(50px);
+      display: flex;
+      justify-content: flex-end;
 
       img {
         width: 100%;
@@ -45,16 +55,17 @@ const SlidersContainer = styled.div`
 export default () => {
 
   return (
-    <SlidersContainer>
+    <PlaylistContainer>
       <div className='content-container'>
-        <div className='sliders'>
-          <img src={sliders} />
-        </div>
         <div className='text-container'>
-          <h1>TOTAL CONTROL</h1>
+          <img src={playlistsFull} />
+          <h1>MASTER YOUR MUSIC</h1>
           <p>use custom filtering based on spotify's audio features data to create the perfect playlsit for any mood</p>
         </div>
+        <div className='playlists'>
+          <img src={radarChart} />
+        </div>
       </div>
-    </SlidersContainer>
+    </PlaylistContainer>
   )
 };

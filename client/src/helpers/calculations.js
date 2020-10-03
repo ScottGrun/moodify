@@ -66,12 +66,12 @@ export function getAudioFeatures(audioFeatures) {
   valence *= 100;
 
   const newFeatures = {
-    danceability: [Math.max(0, danceability - 10), Math.min(100, danceability + 10)],
-    energy: [Math.max(0, energy - 10), Math.min(100, energy + 10)],
-    instrumentalness: [Math.max(0, instrumentalness - 10), Math.min(100, instrumentalness + 10)],
-    valence: [Math.max(0, valence - 10), Math.min(100, valence + 10)],
-    loudness: [Math.max(-60, loudness - 4), Math.min(0, loudness + 4)],
-    tempo: [Math.max(0, tempo - 10), tempo + 10],
+    danceability: [Math.max(0, danceability - 15), Math.min(100, danceability + 15)],
+    energy: [Math.max(0, energy - 15), Math.min(100, energy + 15)],
+    instrumentalness: [Math.max(0, instrumentalness - 15), Math.min(100, instrumentalness + 15)],
+    valence: [Math.max(0, valence - 15), Math.min(100, valence + 15)],
+    loudness: [Math.max(-60, loudness - 6), Math.min(0, loudness + 6)],
+    tempo: [Math.max(0, tempo - 15), tempo + 15],
   }
 
   for (let feature in newFeatures) {

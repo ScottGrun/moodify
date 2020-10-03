@@ -4,11 +4,12 @@ import styled from 'styled-components';
 import { useCookies } from 'react-cookie';
 import { StateContext } from '../../App';
 import logo from '../../assets/logo.svg';
-import Playlist from './Playlist';
+import AlbumCovers from './AlbumCovers';
+import Sliders from './Sliders';
+import Playlists from './Playlists';
 
 // images
 import vinylRecord from './assets/vinyl-record.png';
-import hand from './assets/hand.png';
 
 const LandingPageContainer = styled.div`
   width: 100%;
@@ -24,6 +25,9 @@ const LandingPageContainer = styled.div`
     width: 100%;
     height: 100vh;
     padding-bottom: 50px;
+    background-image: url('https://images.unsplash.com/photo-1523821741446-edb2b68bb7a0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80');
+    background-size: cover;
+    background-position: center;
     position: relative;
     display: flex;
     justify-content: center;
@@ -79,52 +83,14 @@ const LandingPageContainer = styled.div`
       }
 
       .vinyl-record {
-        position: absolute;
-        bottom: 0;
-        left: calc(50% - 425px);
-        transform-origin: center;
-        z-index: 8;
+        display: flex;
+        align-items: center;
 
         img {
-          width: 800px;
-          height: 800px;
+          width: 600px;
+          height: 600px;
         }
       }
-
-      .hand {
-        position: absolute;
-        bottom: 0;
-        left: -232px;
-        z-index: 9;
-      }
-    }
-  }
-`;
-
-const PlaylistContainer = styled.div`
-  width: 100%;
-  overflow: hidden;
-  color: white;
-  height: 140vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  
-  h1 {
-    font-size: 40px;
-  }
-
-  .playlist-items {
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    top: 0;
-    right: 0;
-
-    img {
-      margin-bottom: 7px;
-      border-radius: 4px;
     }
   }
 `;
@@ -178,22 +144,18 @@ const Landing = () => {
     }
   },[]);
 
-  const [rotation, setRotation] = useState(0);
-  const [offsetY, setOffsetY] = useState(0);
-  const handleResize = () => setRotation(window.innerWidth)
-  const handleScroll = () => setOffsetY(window.pageYOffset);
+  // const [rotation, setRotation] = useState(0);
+  // const [offsetY, setOffsetY] = useState(0);
+  // const handleResize = () => setRotation(window.innerWidth)
+  // const handleScroll = () => setOffsetY(window.pageYOffset);
 
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
+  // useEffect(() => {
+  //   window.addEventListener('scroll', handleScroll);
+  //   window.addEventListener('resize', handleResize);
 
-    return () => window.removeEventListener('scroll', handleScroll);
-  },[]);
-
-  useEffect(() => {
-    window.addEventListener('resize', handleResize);
-
-    return () => window.removeEventListener('resize', handleResize);
-  },[]);
+  //   return () => window.removeEventListener('scroll', handleScroll);
+  //   return () => window.removeEventListener('resize', handleResize);
+  // },[]);
 
   return(
     <LandingPageContainer>
@@ -207,18 +169,15 @@ const Landing = () => {
             </div>
           </div>
           <div 
-            className='vinyl-record'
-            style={{ transform: `rotateZ(${ rotation * 0.1 + offsetY * 0.05 }deg)` }}>
+            className='vinyl-record'>
+            {/* // style={{ transform: `rotateZ(${ rotation * 0.1 + offsetY * 0.05 }deg)` }}> */}
             <img src={vinylRecord} />
-          </div>
-          <div 
-            className='hand'
-            style={{ transform: `translateY(${ offsetY * -0.5 }px)` }}>
-            <img src={hand} />
           </div>
         </div>
       </section>
-      <Playlist />
+      <AlbumCovers />
+      <Sliders />
+      <Playlists />
     </LandingPageContainer>
   );
 
