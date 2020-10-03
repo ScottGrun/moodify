@@ -34,7 +34,7 @@ const ColumnHeaderContainer = styled.div`
   font-size: 11px;
   font-weight: normal;
 
-  @media (max-width: 375px) {
+  @media (max-width: 450px) {
     display: none;
   }
 
