@@ -293,17 +293,9 @@ const PlaylistItem = (props) => {
             : undefined
         }
       >
-<<<<<<< HEAD
-        <MenuItem onClick={(event) => addSimilarSongs(event, props.id)}>add similar songs</MenuItem>
-        <MenuItem onClick={(event) => applySongFeatures(event, props.audio)}>
-          use audio features
-        </MenuItem>
-        <MenuItem onClick={(event) => removeSong(event, props.id)}>remove song</MenuItem>
-=======
         <MenuItem onClick={event => addSimilarSongs(event, props.id)}>add similar songs</MenuItem>
         <MenuItem onClick={event => applySongFeatures(event, props.audio)}>use as filter</MenuItem>
         <MenuItem onClick={event => removeSong(event, props.id)}>remove song</MenuItem>
->>>>>>> 25e19f579b98e77e82f7476c638ca070c2c757be
       </Menu>
 
       <StyledSongCoverContainer>
