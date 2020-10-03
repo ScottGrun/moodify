@@ -10,6 +10,7 @@ const CarouselContainer = styled.div`
 
 `;
 
+// width of container
 const breakPoints = [
   {width: 250, itemsToShow: 2},
   {width: 300, itemsToShow: 3},
