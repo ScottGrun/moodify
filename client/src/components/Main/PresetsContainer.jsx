@@ -16,22 +16,13 @@ const breakPoints = [
 ]
 
 export default () => {
-  const [state, setState] = useState({
-    swiperSlides: [],
-  });
-
-  const getUserLikedPresets = () => {
-    return axios
-      .get(`http://localhost:9000/presets/yourlikedpresets`, { withCredentials: true });
-  };
+  const [state, setState] = useState({swiperSlides: []});
 
   const buildSwiperSlidesFromPresets = (presets, userLikesLookup) => {
-    const swiperSlides = presets.map((preset) => {
-      return (
-        <Preset { ...preset } liked={userLikesLookup[preset.id]}/>
-      )
+    const slides = presets.map(preset => {
+      return <Preset { ...preset } liked={userLikesLookup[preset.id]}/>
     })
-    return swiperSlides;
+    return slides;
   };
 
   const buildLikesLookup = (userLikedPresets) => {
@@ -41,22 +32,17 @@ export default () => {
       likedPresets[currentPreset.id] = true;
     }
     return likedPresets;
-  }; 
+  };
 
-  const setActivePresets = (path) => {
+  useEffect(() => {
     Promise.all([
-      axios
-        .get(`http://localhost:9000/presets/${path}`, { withCredentials: true }),
-      getUserLikedPresets(),
+      axios.get(`http://localhost:9000/presets/popular`, { withCredentials: true }),
+      axios.get(`http://localhost:9000/presets/yourlikedpresets`, { withCredentials: true })
     ]).then((all) => {
       const userLikesLookup = buildLikesLookup(all[1].data);
       const swiperSlides = buildSwiperSlidesFromPresets(all[0].data, userLikesLookup);
       setState(prev => ({ ...prev, swiperSlides }));
     })
-  };
-
-  useEffect(() => {
-    setActivePresets('popular');
   },[]);
 
   return(
