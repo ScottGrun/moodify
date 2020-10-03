@@ -103,18 +103,30 @@ const PlaylistRecomendationContainer = (props) => {
   const [renderSongData, setRenderSongData] = useState([]);
 
   const getRecomendations = () => {
+<<<<<<< HEAD
     const recomendationSeeds = filterTracks(userTracks, playlistMinMax).map((track) => ({
       track_id: track.id,
       artist_id: track.artist_id,
     }));
+=======
+    const recommendationSeeds = filterTracks(userTracks, playlistMinMax)
+    .map(track => {
+      return {
+        track_id: track.id,
+        artist_id: track.artist_id,
+      }
+    });
+
+>>>>>>> 25e19f579b98e77e82f7476c638ca070c2c757be
     axios
       .post(`http://localhost:9000/tracks/recommendations`, {
         accessToken,
-        recomendationSeeds,
+        recommendationSeeds,
         playlistMinMax,
       })
       .then((res) => {
         let recommendedSongs = res.data.songs;
+<<<<<<< HEAD
         setRenderSongData(recommendedSongs);
 
         recommendedSongs = recommendedSongs.map((song, index) => (
@@ -129,6 +141,16 @@ const PlaylistRecomendationContainer = (props) => {
         ));
 
         setRenderSongs(recommendedSongs);
+=======
+
+        recommendedSongs = recommendedSongs.map((song, index) => (
+            <PlaylistItem idx={index} {...song} key={song.uid} />
+          ));
+
+          setRenderSongs(recommendedSongs);
+
+        
+>>>>>>> 25e19f579b98e77e82f7476c638ca070c2c757be
       });
   };
 

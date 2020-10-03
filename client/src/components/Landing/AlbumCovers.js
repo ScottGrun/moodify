@@ -1,15 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import sliders from './assets/sliders.png';
+import songAlbums from './assets/song-albums.png';
 
-const SlidersContainer = styled.div`
+const StyledCatchPhrase = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   max-width: 1200px;
   width: calc(100% - 40px);
-  height: 60vh;
+  height: 80vh;
   color: white;
+  margin-top: 50px;
 
   .content-container {
     width: 100%;
@@ -32,7 +33,7 @@ const SlidersContainer = styled.div`
       }
     }
 
-    .sliders {
+    .album-images {
       width: 48%;
 
       img {
@@ -43,18 +44,17 @@ const SlidersContainer = styled.div`
 `;
 
 export default () => {
-
-  return (
-    <SlidersContainer>
+  return(
+    <StyledCatchPhrase>
       <div className='content-container'>
-        <div className='sliders'>
-          <img src={sliders} />
-        </div>
         <div className='text-container'>
-          <h1>TOTAL CONTROL</h1>
+          <h1>MASTER YOUR MUSIC</h1>
           <p>use custom filtering based on spotify's audio features data to create the perfect playlsit for any mood</p>
         </div>
+        <div className='album-images'>
+          <img src={songAlbums} />
+        </div>
       </div>
-    </SlidersContainer>
+    </StyledCatchPhrase>
   )
 };
