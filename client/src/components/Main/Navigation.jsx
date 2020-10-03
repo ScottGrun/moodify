@@ -160,7 +160,7 @@ export default function Navigation(props) {
 
   const loadRecommendedSongs = () => {
     setOpenNav(false);
-    let recomendationSeeds = filterTracks(userTracks, playlistMinMax).map((track) => ({
+    let recommendationSeeds = filterTracks(userTracks, playlistMinMax).map((track) => ({
       track_id: track.id,
       artist_id: track.artist_id,
     }));
@@ -168,7 +168,7 @@ export default function Navigation(props) {
     axios
       .post(`http://localhost:9000/tracks/recommendations`, {
         accessToken,
-        recomendationSeeds,
+        recommendationSeeds,
         playlistMinMax,
       })
       .then((res) => {

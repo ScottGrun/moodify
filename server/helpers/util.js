@@ -11,8 +11,9 @@ const generateString = (length) => {
 
 //format
 const formatTracks = (songList) => {
+  console.log(songList);
   const songs = songList
-    .filter((song) => song.track)
+    .filter(song => song.track)
     .map((song, index) => {
       return {
         name: song.track.name,
@@ -30,6 +31,7 @@ const formatTracks = (songList) => {
 
 //Get MinMaxAudio Features
 const getMinMaxes = (songs) => {
+  if (!songs.length) return;
   let playlistAudioFeaturesMinMax = {
     energy: [songs[0].audio.energy, 0],
     danceability: [songs[0].audio.danceability, 0],

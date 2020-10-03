@@ -234,7 +234,7 @@ const PlaylistItem = (props) => {
     axios
       .post(`http://localhost:9000/tracks/recommendations`, {
         accessToken,
-        recomendationSeeds: [{ track_id: trackId }],
+        recommendationSeeds: [{ track_id: trackId }],
         playlistMinMax,
       })
       .then((res) => {

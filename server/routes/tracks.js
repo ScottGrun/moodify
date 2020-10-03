@@ -76,14 +76,14 @@ router.post('/featured', async (req, res) => {
 });
 
 router.post('/recommendations', async (req, res) => {
-  const { accessToken, recomendationSeeds, playlistMinMax } = req.body;
+  const { accessToken, recommendationSeeds, playlistMinMax } = req.body;
   const randomTracks = [];
 
   for (let i = 0; i < 5; i++) {
-    const randomNum = Math.floor(Math.random() * recomendationSeeds.length);
-    randomTracks.push(recomendationSeeds[randomNum].track_id);
+    const randomNum = Math.floor(Math.random() * recommendationSeeds.length);
+    randomTracks.push(recommendationSeeds[randomNum].track_id);
   }
-
+  
   //Get recomended tracks
   const myRecommendations = await getRecommendationsFromSeeds(accessToken, randomTracks, playlistMinMax);
   const formattedTracks = formatTracksRecommendations(myRecommendations);

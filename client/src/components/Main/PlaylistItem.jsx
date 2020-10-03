@@ -222,28 +222,26 @@ const PlaylistItem = (props) => {
   const addSimilarSongs = (event, trackId) => {
     event.stopPropagation();
     setPosition(initialPosition);
-    console.log(trackId);
 
-    axios
-      .post(`http://localhost:9000/tracks/recommendations`, {
-        accessToken,
-        recomendationSeeds: [{ track_id: trackId }],
-        playlistMinMax,
-      })
-      .then((res) => {
-        setTracks((prev) => {
-          const allSongs = {
-            songs: [...prev.songs, ...res.data.songs],
-          };
-          const filteredTracks = filterTracks(allSongs, playlistMinMax);
+    axios.post(`http://localhost:9000/tracks/recommendations`, {
+      accessToken,
+      recommendationSeeds: [{ track_id: trackId }],
+      playlistMinMax,
+    })
+    .then((res) => {
+      setTracks((prev) => {
+        const allSongs = {
+          songs: [...prev.songs, ...res.data.songs],
+        };
+        const filteredTracks = filterTracks(allSongs, playlistMinMax);
 
-          return {
-            loading: true,
-            songs: filteredTracks,
-          };
-        });
-        setChartValues(res.data.averages);
+        return {
+          loading: true,
+          songs: filteredTracks,
+        };
       });
+      setChartValues(res.data.averages);
+    });
   };
 
   const removeSong = (event, trackId) => {
@@ -293,17 +291,11 @@ const PlaylistItem = (props) => {
             : undefined
         }
       >
-<<<<<<< HEAD
         <MenuItem onClick={(event) => addSimilarSongs(event, props.id)}>add similar songs</MenuItem>
         <MenuItem onClick={(event) => applySongFeatures(event, props.audio)}>
           use audio features
         </MenuItem>
         <MenuItem onClick={(event) => removeSong(event, props.id)}>remove song</MenuItem>
-=======
-        <MenuItem onClick={event => addSimilarSongs(event, props.id)}>add similar songs</MenuItem>
-        <MenuItem onClick={event => applySongFeatures(event, props.audio)}>use as filter</MenuItem>
-        <MenuItem onClick={event => removeSong(event, props.id)}>remove song</MenuItem>
->>>>>>> 25e19f579b98e77e82f7476c638ca070c2c757be
       </Menu>
 
       <StyledSongCoverContainer>
