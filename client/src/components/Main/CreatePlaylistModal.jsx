@@ -180,7 +180,8 @@ export default function CreatePlaylistModal(props) {
     .then((res) => {
       
       setOpenCreatePlaylistModal(false);
-    });
+    })
+    .catch(res => console.log(res));
   };
 
   // const setImageToInitial = () => {

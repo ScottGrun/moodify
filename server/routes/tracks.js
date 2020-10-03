@@ -6,7 +6,6 @@ const router = express.Router();
 const {
   getAudioFeaturesOfTracks,
   getTracksFromPlaylist,
-  getGenresFromArtists,
   getRecommendationsFromSeeds
 } = require('../helpers/spotify');
 
@@ -21,9 +20,9 @@ const {
 router.post('/playlist', async (req, res) => {
   const { accessToken, playlist_id, totalTracks } = req.body;
 
-  const playlistTracks = await getTracksFromPlaylist(playlist_id, totalTracks, accessToken);
+  const playlistTracks = await getTracksFromPlaylist(playlist_id, totalTracks, accessToken, res);
   const formattedTracks = formatTracks(playlistTracks);
-  const trackAudioFeatures = await getAudioFeaturesOfTracks(formattedTracks, accessToken);
+  const trackAudioFeatures = await getAudioFeaturesOfTracks(formattedTracks, accessToken, res);
   const allTracks = addAudioFeaturesToTracks(formattedTracks, trackAudioFeatures);
 
   res.send({
@@ -61,11 +60,11 @@ router.post('/featured', async (req, res) => {
   });
 
   for (let playlist of featuredPlaylists.data.playlists.items) {
-    const playlistTracks = await getTracksFromPlaylist(playlist.id, playlist.tracks.total, accessToken);
+    const playlistTracks = await getTracksFromPlaylist(playlist.id, playlist.tracks.total, accessToken, res);
     featuredPlaylistsTracks.push(...playlistTracks);
   }
   const formattedTracks = formatTracks(featuredPlaylistsTracks);
-  const trackAudioFeatures = await getAudioFeaturesOfTracks(formattedTracks, accessToken);
+  const trackAudioFeatures = await getAudioFeaturesOfTracks(formattedTracks, accessToken, res);
   const allTracks = addAudioFeaturesToTracks(formattedTracks, trackAudioFeatures);
 
   res.send({
@@ -85,9 +84,9 @@ router.post('/recommendations', async (req, res) => {
   }
   
   //Get recomended tracks
-  const myRecommendations = await getRecommendationsFromSeeds(accessToken, randomTracks, playlistMinMax);
+  const myRecommendations = await getRecommendationsFromSeeds(accessToken, randomTracks, playlistMinMax, res);
   const formattedTracks = formatTracksRecommendations(myRecommendations);
-  const trackAudioFeatures = await getAudioFeaturesOfTracks(formattedTracks, accessToken);
+  const trackAudioFeatures = await getAudioFeaturesOfTracks(formattedTracks, accessToken, res);
   const allTracks = addAudioFeaturesToTracks(formattedTracks, trackAudioFeatures);
 
   res.send({
@@ -114,7 +113,7 @@ router.post('/saved', async (req, res) => {
   }
 
   const formattedTracks = formatTracks(myTracks);
-  const trackAudioFeatures = await getAudioFeaturesOfTracks(formattedTracks, accessToken);
+  const trackAudioFeatures = await getAudioFeaturesOfTracks(formattedTracks, accessToken, res);
   const allTracks = addAudioFeaturesToTracks(formattedTracks, trackAudioFeatures);
 
   res.send({

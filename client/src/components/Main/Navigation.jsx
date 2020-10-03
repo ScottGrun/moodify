@@ -165,21 +165,21 @@ export default function Navigation(props) {
       artist_id: track.artist_id,
     }));
 
-    axios
-      .post(`http://localhost:9000/tracks/recommendations`, {
-        accessToken,
-        recommendationSeeds,
-        playlistMinMax,
-      })
-      .then((res) => {
-        setTracks({
-          loading: true,
-          songs: res.data.songs,
-        });
-        setChartValues(res.data.averages);
-        setPlaylistMinMax({ data: res.data.minMax, loaded: true });
-        setSliderMarks(res.data.minMax, setMarks);
+    axios.post(`http://localhost:9000/tracks/recommendations`, {
+      accessToken,
+      recommendationSeeds,
+      playlistMinMax,
+    })
+    .then((res) => {
+      setTracks({
+        loading: true,
+        songs: res.data.songs,
       });
+      setChartValues(res.data.averages);
+      setPlaylistMinMax({ data: res.data.minMax, loaded: true });
+      setSliderMarks(res.data.minMax, setMarks);
+    })
+    .catch(err => console.log(err));
   };
 
   const handlePlaylistClick = (playlistId, trackTotal) => {

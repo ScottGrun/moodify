@@ -241,7 +241,8 @@ const PlaylistItem = (props) => {
         };
       });
       setChartValues(res.data.averages);
-    });
+    })
+    .catch(err => console.log(err));
   };
 
   const removeSong = (event, trackId) => {

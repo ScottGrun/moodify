@@ -132,7 +132,8 @@ const PlaylistRecomendationContainer = (props) => {
         ));
 
         setRenderSongs(recommendedSongs);
-      });
+      })
+      .catch(err => console.log(err));
   };
 
 

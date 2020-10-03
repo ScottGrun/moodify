@@ -63,7 +63,9 @@ router.post('/token', async (req, res) => {
 
       const user = await axios.get('https://api.spotify.com/v1/me', {
         headers: { Authorization: 'Bearer ' + access_token },
-      }).then(res => res.data);
+      })
+      .then(res => res.data)
+      .catch(res => console.log(res));
       
       res.send({ access_token, refresh_token, user });
     } else {

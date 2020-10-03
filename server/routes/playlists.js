@@ -11,7 +11,7 @@ router.post('/create', async (req, res) => {
     return;
   };
   
-  const user_id = await getUserId(accessToken);
+  const user_id = await getUserId(accessToken, res);
   
   // create playlist
   const playlist_id = await axios({
