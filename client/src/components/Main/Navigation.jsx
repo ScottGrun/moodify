@@ -121,6 +121,7 @@ export default function Navigation(props) {
   const [userTracks, setTracks] = props.userTracks;
   const [playlistMinMax, setPlaylistMinMax] = props.playlistMinMax;
   const [marks, setMarks] = props.marksState;
+  const [snackBarMessage, setSnackBarMessage] = props.snackBarMessage;
 
   const loadTracks = (playlist_id, totalTracks) => {
     setOpenNav(false);

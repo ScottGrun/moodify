@@ -162,6 +162,7 @@ const Main = (props) => {
   const [playlistMinMax, setPlaylistMinMax] = props.playlistMinMax;
   const [playlists, setPlaylists] = useState([]);
   const [marks, setMarks] = useState({});
+  const [snackBarMessage, setSnackBarMessage] = useState('');
 
   const getSavedTracks = () => {
     axios
@@ -217,6 +218,7 @@ const Main = (props) => {
             openNav={props.openNav}
             userTracks={props.userTracks}
             chartValues={props.chartValues}
+            snackBarMessage={[snackBarMessage, setSnackBarMessage]}
           />
         </Sidebar>
 
@@ -225,6 +227,7 @@ const Main = (props) => {
             playlistMinMax={props.playlistMinMax}
             openCreatePlaylistModal={props.openCreatePlaylistModal}
             userTracks={props.userTracks}
+            snackBarMessage={[snackBarMessage, setSnackBarMessage]}
           />
 
           <div className="playlists-container">
@@ -239,13 +242,14 @@ const Main = (props) => {
             playlistMinMax={props.playlistMinMax}
             userTracks={props.userTracks}
             chartValues={props.chartValues}
+            snackBarMessage={[snackBarMessage, setSnackBarMessage]}
           />
           {/* <PlaylistRecomendationContainer 
           accessToken={accessToken}
             playlistMinMax={props.playlistMinMax}
             chartValues={props.chartValues}
             userTracks={props.userTracks}
-         
+            snackBarMessage={[snackBarMessage, setSnackBarMessage]}
           /> */}
         </MainContent>
         <PlaylistControls>

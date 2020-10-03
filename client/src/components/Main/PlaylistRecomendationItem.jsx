@@ -185,6 +185,7 @@ const PlaylistItem = (props) => {
   const [chartValues, setChartValues] = props.chartValues;
   const [userTracks, setTracks] = props.userTracks;
   const [playlistMinMax, setPlaylistMinMax] = props.playlistMinMax;
+  const [snackBarMessage, setSnackBarMessage] = props.snackBarMessage;
 
   const [currentSong, setCurrentSong] = useState(null);
   const [isPlaying, setPlaying] = useState(false);

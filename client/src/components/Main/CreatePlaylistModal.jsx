@@ -153,6 +153,7 @@ export default function CreatePlaylistModal(props) {
   const [openCreatePlaylistModal, setOpenCreatePlaylistModal] = props.openCreatePlaylistModal;
   const [playlistMinMax, setPlaylistMinMax] = props.playlistMinMax;
   const [userTracks, setUserTracks] = props.userTracks;
+  const [snackBarMessage, setSnackBarMessage] = props.snackBarMessage;
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [image, setImage] = useState({

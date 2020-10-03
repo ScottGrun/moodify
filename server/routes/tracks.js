@@ -57,7 +57,8 @@ router.post('/featured', async (req, res) => {
     method: 'get',
     url: `https://api.spotify.com/v1/browse/featured-playlists?limit=50`,
     headers: { Authorization: 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
-  });
+  })
+  .catch(err => res.sendStatus(err.response.status));;
 
   for (let playlist of featuredPlaylists.data.playlists.items) {
     const playlistTracks = await getTracksFromPlaylist(playlist.id, playlist.tracks.total, accessToken, res);
@@ -107,7 +108,9 @@ router.post('/saved', async (req, res) => {
       method: 'get',
       url: apiEndpoint,
       headers: { Authorization: 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
-    });
+    })
+    .catch(err => res.sendStatus(err.response.status));
+    
     apiEndpoint = tracks.data.next;
     myTracks.push(...tracks.data.items);
   }
