@@ -19,8 +19,10 @@ const PresetItem = styled.div`
   }
   
   .preset-image {
-    height: auto;
-    width: auto;
+    height: 100%;
+    width: 100%;
+    background-size: cover;
+    background-position: center;
   }
 
   .heart {
@@ -69,10 +71,12 @@ export default function Preset(props) {
 
   return(
     <PresetItem>
-      <img src={props.image_url} 
-      onClick={handleClick}
-      className="preset-image" 
-      alt="preset"/>
+      <div 
+        className="preset-image" 
+        style={{ backgroundImage: `url(${props.image_url})` }} 
+        onClick={handleClick}
+        alt="preset"
+      />
       <div className="heart">
         <img src={state.liked ? heartfilled : heartoutline} onClick={handleHeartClick} alt="heart"/> 
       </div>

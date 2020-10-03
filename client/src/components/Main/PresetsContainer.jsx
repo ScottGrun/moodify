@@ -7,7 +7,28 @@ import axios from 'axios';
 const CarouselContainer = styled.div`
   width: 100%;
   overflow: hidden;
+  /* rgba(103,58,183,1) */
+  * {
+    outline: none !important;
+  }
 
+  .rec-arrow {
+    color: white;
+    background-color: #341a68;
+
+    &:hover {
+      background-color: rgba(103,58,183,1);
+    }
+
+    &:disabled:hover {
+      background-color: #341a68;
+    }
+
+    &:disabled {
+      cursor: default;
+      color: #777777;
+    }
+  }
 `;
 
 // width of container
@@ -48,7 +69,14 @@ export default () => {
 
   return(
     <CarouselContainer>
-      <Carousel breakPoints={breakPoints}>
+      <Carousel 
+        breakPoints={breakPoints}
+        enableSwipe={true}
+        enableMouseSwipe={true}
+        pagination={true}
+        enableTilt={true}
+        transitionMs={200}
+      >
         {state.swiperSlides}
       </Carousel>
     </CarouselContainer>
