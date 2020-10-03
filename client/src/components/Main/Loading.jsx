@@ -11,13 +11,30 @@ const spin = keyframes`
   }
 `;
 
+const Loader = styled.div`
+  margin-left: 40%;
+  margin-top: 25%;
+
+  p {
+    display: block;
+    width: 100%;
+    color: white;
+    font-family: 'Inter';
+    font-weight: 500;
+    margin-top: 1rem;
+  }
+`;
+
 const StyledImg = styled.img`
-  margin: 0 auto;
-  animation: ${spin} 8s infinite linear;
+  animation: ${spin} 5s infinite linear;
 `;
 
 const Loading = () => {
-  return <StyledImg src={VinylIcon} />;
+  return (
+    <Loader>
+      <StyledImg src={VinylIcon} />
+    </Loader>
+  );
 };
 
 export default Loading;

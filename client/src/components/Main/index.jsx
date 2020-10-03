@@ -9,12 +9,12 @@ import Header from './Header';
 import Navigation from './Navigation.jsx';
 import PlaylistImage from './PlaylistImage';
 import PlaylistItemContainer from './PlaylistItemContainer';
-import PlaylistRecomendationContainer from './PlaylistIRecomendationContainer';
 
 import RadarChart from './RadarChart';
 import Sliders from './Sliders';
 import OpenMenu from './OpenMenu';
 import CreatePlaylistModal from './CreatePlaylistModal';
+
 
 const HamburgerMenu = styled.div`
   height: 24px;
@@ -155,6 +155,8 @@ const ControlsContainer = styled.div`
 
 const Main = (props) => {
   const [accessToken, setAccessToken] = useContext(StateContext).AccessToken;
+  const [loading, setLoading] = useState(false);
+  
   const [userTracks, setTracks] = props.userTracks;
   const [chartValues, setChartValues] = props.chartValues;
   const [openNav, setOpenNav] = props.openNav;
@@ -232,6 +234,7 @@ const Main = (props) => {
             </div>
           </div>
           <PlaylistItemContainer
+            loading={[loading, setLoading]}
             playlistMinMax={props.playlistMinMax}
             userTracks={props.userTracks}
             chartValues={props.chartValues}
