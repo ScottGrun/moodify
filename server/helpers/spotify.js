@@ -42,6 +42,7 @@ const getGenresFromArtists = async (accessToken, artistIds) => {
 
 const getTracksFromPlaylist = async (playlist_id, totalTracks, accessToken) => {
   const playlistTracks = [];
+  
   let tracksReceived = 0;
 
   while (tracksReceived < totalTracks) {
