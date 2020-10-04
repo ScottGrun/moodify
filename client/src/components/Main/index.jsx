@@ -256,10 +256,10 @@ const Main = (props) => {
   useEffect(() => {
     if (localStorage.getItem('userTracks')) {
       getSessionData();
-      return;
+    } else {
+      getSavedTracks();
+      getPlaylists();
     }
-    getSavedTracks();
-    getPlaylists();
   },[]);
 
   const closeSnackbar = () => {

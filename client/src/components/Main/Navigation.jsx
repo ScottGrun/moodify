@@ -125,6 +125,7 @@ export default function Navigation(props) {
   const setSelectedPlaylist = props.setSelectedPlaylist;
   const loadTracks = (playlist_id, totalTracks) => {
     setOpenNav(false);
+    setTracks({ loading: true, songs: [] });
     axios
       .post(`http://localhost:9000/tracks/playlist`, {
         accessToken,
@@ -148,6 +149,7 @@ export default function Navigation(props) {
 
   const loadFeaturedSongs = () => {
     setOpenNav(false);
+    setTracks({ loading: true, songs: [] });
     axios
       .post(`http://localhost:9000/tracks/featured`, {
         accessToken,
@@ -173,6 +175,7 @@ export default function Navigation(props) {
       track_id: track.id,
       artist_id: track.artist_id,
     }));
+    setTracks({ loading: true, songs: [] });
 
     axios
       .post(`http://localhost:9000/tracks/recommendations`, {

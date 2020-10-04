@@ -322,12 +322,12 @@ const PlaylistItem = (props) => {
         <ArtistName>{props.artist}</ArtistName>
       </SongMetaData>
       <AudioFeatures>
-        <p>{Math.trunc(props.audio.tempo)}</p>
-        <p>{Math.trunc(props.audio.energy * 100)}</p>
-        <p>{Math.trunc(props.audio.danceability * 100)}</p>
-        <p>{Math.trunc(props.audio.valence * 100)}</p>
-        <p>{Math.trunc(props.audio.instrumentalness * 100)}</p>
-        <p>{Math.trunc(props.audio.loudness)}db</p>
+        <p>{Math.round(props.audio.tempo)}</p>
+        <p>{Math.round(props.audio.energy * 100)}</p>
+        <p>{Math.round(props.audio.danceability * 100)}</p>
+        <p>{Math.round(props.audio.valence * 100)}</p>
+        <p>{Math.round(props.audio.instrumentalness * 100)}</p>
+        <p>{Math.round(props.audio.loudness)}db</p>
       </AudioFeatures>
       <StyledProgressContainer playing={playing}>
         <div></div>
