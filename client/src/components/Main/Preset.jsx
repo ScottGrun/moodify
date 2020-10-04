@@ -12,10 +12,12 @@ const PresetItem = styled.div`
   width: 80px;
   cursor: pointer;
   position: relative;
-  transition: filter 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
 
   &:hover {
-    filter: brightness(150%);
+   /* FIX HERE ON HOVER TO SCALE */
+    /* filter: brightness(150%); */
+    transform: scale(1.05);
   }
   
   .preset-image {
@@ -25,14 +27,7 @@ const PresetItem = styled.div`
     background-position: center;
   }
 
-  .heart {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    z-index: 1000;
-    background-color: none;
-    padding: 5px;
-  }
+  
 
   @media(max-width: 768px) {
     height: 70px;
@@ -45,39 +40,50 @@ const PresetItem = styled.div`
   }
 `;
 
+const PresetItemWrapper = styled.div`
+
+display: flex;
+justify-content: center;
+text-align: center;
+color: white;
+align-items: center;
+
+.p{
+  align-self: center;
+}
+`
+
 export default function Preset(props) {
-  
-  const [chartValues, setChartValues] = props.chartValues;
   const [playlistMinMax, setPlaylistMinMax] = props.playlistMinMax;
-  const [state, setState] = useState({
-    liked: props.liked
-  });
+  // const [state, setState] = useState({
+  //   liked: props.liked
+  // });
 
   const handleClick = () => {
-    console.log(props.audio_features);
     setPlaylistMinMax({ data: props.audio_features, loaded: true });
   };
 
-  const handleHeartClick = () => {
-    const presetID = props.id;
-    axios.post(`http://localhost:9000/presets/${presetID}/${state.liked ? "unlike" : "like"}`, null, { withCredentials: true })
-    .then((res) => {
-      console.log(res);
-      setState(prev => ({ ...prev, liked: !state.liked }))
-    });
-  };
+  // const handleHeartClick = () => {
+  //   const presetID = props.id;
+  //   axios.post(`http://localhost:9000/presets/${presetID}/${state.liked ? "unlike" : "like"}`, null, { withCredentials: true })
+  //   .then((res) => {
+  //     console.log(res);
+  //     setState(prev => ({ ...prev, liked: !state.liked }))
+  //   });
+  // };
 
   return(
     <PresetItem>
-      <div 
-        className="preset-image" 
+     <PresetItemWrapper  className="preset-image" 
         style={{ backgroundImage: `url(${props.image_url})` }} 
         onClick={handleClick}
-        alt="preset"
-      />
-      <div className="heart">
-        <img src={state.liked ? heartfilled : heartoutline} onClick={handleHeartClick} alt="heart"/> 
-      </div>
+        alt="preset">
+     
+    
+    
+    <p>{props.name}</p>
+   
+     </PresetItemWrapper>
     </PresetItem>
   );
 };

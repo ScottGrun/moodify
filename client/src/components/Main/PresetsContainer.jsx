@@ -5,6 +5,64 @@ import Preset from './Preset';
 import axios from 'axios';
 
 const CarouselContainer = styled.div`
+* {
+  user-select: none;
+}
+
+.preset-container {
+  width: 100px;
+  height: 110px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.rec-carousel-item{
+  width: auto;
+  min-width: auto;
+}
+
+.rec-slider{
+  display: flex;
+  align-items: center;
+  height: 85px;
+}
+
+.rec.rec-arrow {
+  background:none;
+  padding: none;
+  margin: none;
+  width: auto;
+  min-width: auto;
+  box-shadow: none;
+}
+
+.rec-dot{
+  background-color: #989AA4;
+  border: none;
+  outline: none;
+  width: 6px;
+  height: 6px;
+}
+
+.rec-dot_active{
+  border: none;
+  outline: none;
+  box-shadow: none;
+  background-color: white;
+}
+
+.rec.rec-arrow:disabled:hover {
+  background:none;
+  box-shadow: none;
+}
+
+.rec.rec-arrow:hover {
+  background:none;
+  box-shadow: none;
+
+}
+
   width: 100%;
   overflow: hidden;
   /* rgba(103,58,183,1) */
@@ -35,21 +93,29 @@ const CarouselContainer = styled.div`
 const breakPoints = [
   {width: 250, itemsToShow: 2},
   {width: 300, itemsToShow: 3},
+  {width: 350, itemsToShow: 4},
 ]
 
 export default (props) => {
   const [chartValues, setChartValues] = props.chartValues;
   const [playlistMinMax, setPlaylistMinMax] = props.playlistMinMax;
   const [state, setState] = useState({swiperSlides: []});
+  const [presets, setPresets] = useState([]);
 
   const buildSwiperSlidesFromPresets = (presets, userLikesLookup) => {
+    console.log(presets);
     const slides = presets.map(preset => {
-      return <Preset 
-        { ...preset } 
-        liked={userLikesLookup[preset.id]}
-        chartValues={props.chartValues}
-        playlistMinMax={props.playlistMinMax}
-      />
+      return (
+        <div className='preset-container'>
+          <Preset 
+            { ...preset } 
+            key={preset.id}
+            liked={userLikesLookup[preset.id]}
+            chartValues={props.chartValues}
+            playlistMinMax={props.playlistMinMax}
+          />
+        </div>
+      );
     })
     return slides;
   };

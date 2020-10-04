@@ -39,8 +39,8 @@ const Overlay = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
   background-color: rgba(0, 0, 0, 0.4);
   display: none;
   z-index: 999;
@@ -124,11 +124,8 @@ const PlaylistControls = styled.div`
   grid-area: playlist-controls;
 
   .presets-container {
-    margin-top: 20px;
-    border: 1px solid white;
-    padding: 10px;
-    border-radius: 4px;
-
+    margin-top: 30px;
+    padding: 5px;
     .title {
       display: flex;
       align-items: center;
@@ -168,20 +165,27 @@ const CreatePlaylistButton = styled.button`
   }
 `;
 
+const VerticalDivider = styled.div`
+  height: 20px;
+  width: 2px;
+  background-color: white;
+  display: block;
+  margin: 0 .75rem;
+`
+
 const SavePresetButton = styled.button`
-  width: 25%;
+  
   background-color: transparent;
-  color: white;
+  color: #757986;
   font-weight: bold;
-  font-size: 14px;
-  border: solid 1px white;
-  padding: 5px;
+  font-size: 1.17em;
   cursor: pointer;
   outline: none;
-  margin-left: 20px;
+  border: none;
+  transition: color 200ms ease-ease-in-out;
 
   &:hover {
-    background-color: #2ed689;
+    color: white;
   }
 
   &:active {
@@ -438,6 +442,7 @@ const Main = (props) => {
           <div className="presets-container">
             <div className='title'>
               <h3>Presets</h3>
+              <VerticalDivider/>
               <SavePresetButton
                 className="save-preset-btn" 
                 onClick={() => setOpenSavePresetModal(true)}
