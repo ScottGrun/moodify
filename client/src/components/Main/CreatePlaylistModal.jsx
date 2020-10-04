@@ -170,7 +170,7 @@ export default function CreatePlaylistModal(props) {
   const duration = getTotalDuration(filteredTracks);
 
   const savePlaylist = (songs) => {
-    const uris = songs.filter(song => matchFilter(song, playlistMinMax)).map(song => song.uri)
+    const uris = filterTracks(songs, playlistMinMax).map(song => song.uri)
     axios.post(`http://localhost:9000/playlists/create`, {
       accessToken,
       name,
@@ -250,7 +250,7 @@ export default function CreatePlaylistModal(props) {
             Description (optional)
             <textarea placeholder='A super awesome playlist.' value={description} onChange={e => setDescription(e.target.value)}/>
           </label>
-          <button className='save-playlist' onClick={() => savePlaylist(userTracks.songs)}>Save Playlist</button>
+          <button className='save-playlist' onClick={() => savePlaylist(userTracks)}>Save Playlist</button>
         </div>
       </div>
     </CreatePlaylistModalContainer>

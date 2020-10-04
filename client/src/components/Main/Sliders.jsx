@@ -189,7 +189,7 @@ export default function Sliders(props) {
           <Slider
             key={6}
             min={-60}
-            max={1}
+            max={0}
             value={loudness}
             onChangeCommitted={(event, val) => changeCommitedHandler(event, val, 'loudness')}
             marks={marks.loudness}
