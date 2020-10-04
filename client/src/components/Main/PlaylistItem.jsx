@@ -124,6 +124,7 @@ const StyledPlaylistItem = styled.div`
 
   /*  */
   &:hover {
+    background-color: #21232e;
     cursor: ${(props) => (props.previewUrl ? 'pointer' : 'default')};
   }
 

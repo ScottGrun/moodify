@@ -140,11 +140,11 @@ const CreatePlaylistButton = styled.button`
   border: solid 2px white;
   padding: 10px;
   cursor: pointer;
-  outline: none;
-
+  transition: all 0.2s ease-in-out;
+        border-radius: 3px;
   &:hover {
-    background-color: #2ed689;
-    color: white;
+    background-color: white;;
+    color: #191F35;
   }
 `;
 
