@@ -31,67 +31,68 @@ const formatTracks = (songList) => {
 //Get MinMaxAudio Features
 const getMinMaxes = (songs) => {
   if (!songs.length) return;
+  const { energy, danceability, valence, instrumentalness, loudness, tempo } = songs[0].audio;
+
   let playlistAudioFeaturesMinMax = {
-    energy: [songs[0].audio.energy, 0],
-    danceability: [songs[0].audio.danceability, 0],
-    valence: [songs[0].audio.valence, 0],
-    instrumentalness: [songs[0].audio.instrumentalness, 0],
-    loudness: [songs[0].audio.loudness, 0],
-    tempo: [songs[0].audio.tempo, 0],
+    energy: [energy, 0],
+    danceability: [danceability, 0],
+    valence: [valence, 0],
+    instrumentalness: [instrumentalness, 0],
+    loudness: [loudness, loudness],
+    tempo: [tempo, 0],
   };
 
   songs.forEach((song) => {
-    if (song.audio.energy > playlistAudioFeaturesMinMax.energy[1]) {
-      playlistAudioFeaturesMinMax.energy[1] = song.audio.energy;
-    } else if (song.audio.energy < playlistAudioFeaturesMinMax.energy[0]) {
-      playlistAudioFeaturesMinMax.energy[0] = song.audio.energy;
+    const { energy, danceability, valence, instrumentalness, loudness, tempo } = song.audio;
+
+    if (energy > playlistAudioFeaturesMinMax.energy[1]) {
+      playlistAudioFeaturesMinMax.energy[1] = energy;
+    } else if (energy < playlistAudioFeaturesMinMax.energy[0]) {
+      playlistAudioFeaturesMinMax.energy[0] = energy;
     }
 
-    if (song.audio.danceability > playlistAudioFeaturesMinMax.danceability[1]) {
-      playlistAudioFeaturesMinMax.danceability[1] = song.audio.danceability;
-    } else if (song.audio.danceability < playlistAudioFeaturesMinMax.danceability[0]) {
-      playlistAudioFeaturesMinMax.danceability[0] = song.audio.danceability;
+    if (danceability > playlistAudioFeaturesMinMax.danceability[1]) {
+      playlistAudioFeaturesMinMax.danceability[1] = danceability;
+    } else if (danceability < playlistAudioFeaturesMinMax.danceability[0]) {
+      playlistAudioFeaturesMinMax.danceability[0] = danceability;
     }
 
-    if (song.audio.valence > playlistAudioFeaturesMinMax.valence[1]) {
-      playlistAudioFeaturesMinMax.valence[1] = song.audio.valence;
-    } else if (song.audio.valence < playlistAudioFeaturesMinMax.valence[0]) {
-      playlistAudioFeaturesMinMax.valence[0] = song.audio.valence;
+    if (valence > playlistAudioFeaturesMinMax.valence[1]) {
+      playlistAudioFeaturesMinMax.valence[1] = valence;
+    } else if (valence < playlistAudioFeaturesMinMax.valence[0]) {
+      playlistAudioFeaturesMinMax.valence[0] = valence;
     }
 
-    if (song.audio.instrumentalness > playlistAudioFeaturesMinMax.instrumentalness[1]) {
-      playlistAudioFeaturesMinMax.instrumentalness[1] = song.audio.instrumentalness;
-    } else if (song.audio.instrumentalness < playlistAudioFeaturesMinMax.instrumentalness[0]) {
-      playlistAudioFeaturesMinMax.instrumentalness[0] = song.audio.instrumentalness;
+    if (instrumentalness > playlistAudioFeaturesMinMax.instrumentalness[1]) {
+      playlistAudioFeaturesMinMax.instrumentalness[1] = instrumentalness;
+    } else if (instrumentalness < playlistAudioFeaturesMinMax.instrumentalness[0]) {
+      playlistAudioFeaturesMinMax.instrumentalness[0] = instrumentalness;
     }
 
-    if (song.audio.loudness > playlistAudioFeaturesMinMax.loudness[1]) {
-      playlistAudioFeaturesMinMax.loudness[1] = song.audio.loudness;
-    } else if (song.audio.loudness < playlistAudioFeaturesMinMax.loudness[0]) {
-      playlistAudioFeaturesMinMax.loudness[0] = song.audio.loudness;
+    if (loudness > playlistAudioFeaturesMinMax.loudness[1]) {
+      playlistAudioFeaturesMinMax.loudness[1] = loudness;
+    } else if (loudness < playlistAudioFeaturesMinMax.loudness[0]) {
+      playlistAudioFeaturesMinMax.loudness[0] = loudness;
     }
 
-    if (song.audio.tempo > playlistAudioFeaturesMinMax.tempo[1]) {
-      playlistAudioFeaturesMinMax.tempo[1] = song.audio.tempo;
-    } else if (song.audio.tempo < playlistAudioFeaturesMinMax.tempo[0]) {
-      playlistAudioFeaturesMinMax.tempo[0] = song.audio.tempo;
+    if (tempo > playlistAudioFeaturesMinMax.tempo[1]) {
+      playlistAudioFeaturesMinMax.tempo[1] = tempo;
+    } else if (tempo < playlistAudioFeaturesMinMax.tempo[0]) {
+      playlistAudioFeaturesMinMax.tempo[0] = tempo;
     }
   });
 
   for (const key in playlistAudioFeaturesMinMax) {
-    if (key === 'loudness') {
-      playlistAudioFeaturesMinMax[key][1] = Math.trunc(
-        (60 + playlistAudioFeaturesMinMax[key][1]) / 60,
-      );
-    } else if (key !== 'tempo') {
-      playlistAudioFeaturesMinMax[key][1] = Math.trunc(
-        Math.round(playlistAudioFeaturesMinMax[key][1] * 100),
-      );
-      playlistAudioFeaturesMinMax[key][0] = Math.trunc(
-        Math.round(playlistAudioFeaturesMinMax[key][0] * 100),
-      );
+    if (key !== 'tempo' && key !== 'loudness') {
+      playlistAudioFeaturesMinMax[key][0] = Math.round(playlistAudioFeaturesMinMax[key][0] * 100);
+      playlistAudioFeaturesMinMax[key][1] = Math.round(playlistAudioFeaturesMinMax[key][1] * 100);
     }
   }
+  playlistAudioFeaturesMinMax.tempo[0] = Math.round(playlistAudioFeaturesMinMax.tempo[0]);
+  playlistAudioFeaturesMinMax.tempo[1] = Math.round(playlistAudioFeaturesMinMax.tempo[1]);
+  playlistAudioFeaturesMinMax.loudness[0] = Math.round(playlistAudioFeaturesMinMax.loudness[0]);
+  playlistAudioFeaturesMinMax.loudness[1] = Math.round(playlistAudioFeaturesMinMax.loudness[1]);
+
   return playlistAudioFeaturesMinMax;
 };
 
@@ -115,7 +116,7 @@ const getAverages = (songs) => {
 
   for (const key in playlistAudioFeaturesAverages) {
     if (key === 'loudness') {
-      playlistAudioFeaturesAverages[key] = playlistAudioFeaturesAverages[key] / songs.length;
+      playlistAudioFeaturesAverages[key] = Math.round(playlistAudioFeaturesAverages[key] / songs.length);
     } else {
       playlistAudioFeaturesAverages[key] = Math.round(
         (playlistAudioFeaturesAverages[key] / songs.length) * 100,
