@@ -151,10 +151,10 @@ router.post('/saved', async (req, res) => {
           }
         });
       })
-      .catch(err => res.sendStatus(res.response.status));
+      .catch(err => res.sendStatus(err.response.status));
     }
   })
-  .catch(err => res.sendStatus(res.response.status));
+  .catch(err => res.sendStatus(err.response.status));
 });
 
 module.exports = router;
