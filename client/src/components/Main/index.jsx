@@ -1,4 +1,5 @@
 import React, { useEffect, useContext, useState } from 'react';
+import { useCookies } from 'react-cookie';
 import axios from 'axios';
 import { StateContext } from '../../App';
 import { setSliderMarks } from '../../helpers/util';
@@ -174,6 +175,21 @@ const StyledSnackbar = styled(Snackbar)`
       font-size: 22px;
       margin-right: 14px;
     }
+
+    .login-again {
+      display: flex;
+      justify-content: flex-end;
+
+      button {
+        border: none;
+        outline: none;
+        border-radius: 4px;
+        margin-left: 10px;
+        padding: 4px;
+        background-color: #272c34;
+        color: white;
+      }
+    }
   }
 `;
 
@@ -182,9 +198,9 @@ function TransitionDown(props) {
 }
 
 const Main = (props) => {
+  const [cookies, setCookie, removeCookie] = useCookies(['cookie-name']);
   const [accessToken, setAccessToken] = useContext(StateContext).AccessToken;
   const [loading, setLoading] = useState(false);
-  
   const [userTracks, setTracks] = props.userTracks;
   const [chartValues, setChartValues] = props.chartValues;
   const [openNav, setOpenNav] = props.openNav;
@@ -234,6 +250,18 @@ const Main = (props) => {
     setSnackbar({ ...snackbar, open: false });
   };
 
+  const login = () => {
+    removeCookie('accessToken');
+    removeCookie('refreshToken');
+    removeCookie('userData');
+    setAccessToken(null);
+    axios.get(`http://localhost:9000/auth/login`)
+      .then(res => {
+        window.location = res.data;
+      })
+      .catch(err => console.log(err));
+  };
+
   return (
     <>
       <StyledSnackbar 
@@ -244,18 +272,24 @@ const Main = (props) => {
         }}
         open={snackbar.open}
         onClose={closeSnackbar}
-        // autoHideDuration={4000}
-        // message={snackbar.message}
+        autoHideDuration={5000}
         TransitionComponent={TransitionDown}
         variant={snackbar.variant}
       >
         <div className='snackbar'>
           {  
-            snackbar.message === 'success'
+            snackbar.variant === 'success'
             ? <ion-icon name="checkmark-circle-outline"></ion-icon>
             : <ion-icon name="alert-circle-outline"></ion-icon>
           }
-          <p>{snackbar.message}</p>
+          {
+            snackbar.message.includes('401')
+            ? <div className='login-again'>
+                <p>Your session ended</p>
+                <button onClick={login}>Login</button>
+              </div>
+            : <p>{snackbar.message}</p>
+          }
         </div>
       </StyledSnackbar>
 
