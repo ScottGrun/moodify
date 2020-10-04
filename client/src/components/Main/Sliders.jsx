@@ -90,7 +90,6 @@ export default function Sliders(props) {
   const changeCommitedHandler = (event, val, attr) => {
     setPlaylistMinMax((prev) => ({ ...prev, data: { ...prev.data, [attr]: val } }));
     setSongsInView(15);
-    console.log(songsInView);
   };
 
   return (

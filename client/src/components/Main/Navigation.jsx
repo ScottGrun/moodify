@@ -116,6 +116,7 @@ const NavigationContainer = styled.div`
 
 export default function Navigation(props) {
   const [accessToken, setAccessToken] = useContext(StateContext).AccessToken;
+  const [songsInView, setSongsInView] = useContext(StateContext).SongsInView;
   const [openNav, setOpenNav] = props.openNav;
   const [chartValues, setChartValues] = props.chartValues;
   const [userTracks, setTracks] = props.userTracks;
@@ -193,6 +194,8 @@ export default function Navigation(props) {
 
   const handlePlaylistClick = (playlistId, trackTotal) => {
     loadTracks(playlistId, trackTotal);
+    setSongsInView(15);
+    setTracks({ loading: true, songs: [] });
   };
 
   return (

@@ -7,6 +7,7 @@ const { getUserId } = require('../helpers/spotify');
 // create playlist
 router.post('/create', async (req, res) => {
   let { accessToken, name, description, uris, image } = req.body;
+  let playlistData;
   if (!uris.length) {
     return;
   };
@@ -20,7 +21,10 @@ router.post('/create', async (req, res) => {
     headers: { Authorization: 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
     data: { name, description }
   })
-  .then(playlist => playlist.data.id)
+  .then(playlist => {
+    playlistData = playlist.data;
+    return playlist.data.id;
+  })
   .catch(err => res.sendStatus(err.response.status));
   
   //add songs to playlist
@@ -51,7 +55,7 @@ router.post('/create', async (req, res) => {
     }).catch(err => res.sendStatus(err.response.status));
   }
 
-  res.send('New playlist created and songs added!');
+  res.send(playlistData);
 });
 
 // get ids of user's playlists

@@ -266,6 +266,7 @@ const Main = (props) => {
             openCreatePlaylistModal={props.openCreatePlaylistModal}
             userTracks={props.userTracks}
             snackbar={[snackbar, setSnackbar]}
+            getPlaylists={getPlaylists}
           />
 
           <div className="playlists-container">
