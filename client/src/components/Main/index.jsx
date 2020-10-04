@@ -209,7 +209,7 @@ const Main = (props) => {
   useEffect(() => {
     getSavedTracks();
     getPlaylists();
-  }, []);
+  },[]);
 
   const closeSnackbar = () => {
     setSnackbar({ ...snackbar, open: false, message: '' });
@@ -229,7 +229,6 @@ const Main = (props) => {
         message={snackbar.message}
         TransitionComponent={TransitionDown}
       >
-
       </StyledSnackbar>
 
       <HamburgerMenu onClick={() => setOpenNav(!openNav)}>

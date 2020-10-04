@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useRef, useCallback } from 'react';
 import { StateContext } from '../../App';
 import styled from 'styled-components';
 import PlaylistItem from './PlaylistItem';
@@ -65,19 +65,37 @@ const StyledPlaylistContainer = styled.div`
     left: 0;
     z-index: 100;
   }
+
+  .loading {
+    width: 100%;
+    height: 40px;
+    background-color: yellow;
+  }
 `;
 
 const PlaylistItemContainer = (props) => {
+  const [songsInView, setSongsInView] = useContext(StateContext).SongsInView;
   const [playlistMinMax, setPlaylistMinMax] = props.playlistMinMax;
   const [userTracks, setUserTracks] = props.userTracks;
   const [loading, setLoading] = props.loading;
 
-  let renderSongs = [];
-  if (playlistMinMax.data.tempo) {
-    const filteredTracks = filterTracks(userTracks, playlistMinMax);
+  const observer = useRef();
+  const lastSongElement = useCallback(node => {
+    observer.current = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting) {
+        setSongsInView(prev => prev + 15)
+      }
+    });
+    if (node) observer.current.observe(node);
+  },[]);
 
-    renderSongs = filteredTracks.slice(0,50).map((song, index) => (
-      <PlaylistItem
+  let renderSongs = [];
+  let filteredTracks = [];
+  if (playlistMinMax.data.tempo) {
+    filteredTracks = filterTracks(userTracks, playlistMinMax);
+
+    renderSongs = filteredTracks.slice(0, songsInView).map((song, index) => {
+      return <PlaylistItem
         idx={index}
         {...song}
         key={song.id}
@@ -85,11 +103,9 @@ const PlaylistItemContainer = (props) => {
         userTracks={props.userTracks}
         chartValues={props.chartValues}
         snackbar={props.snackbar}
-       />)
-    );
+      />
+    });
   }
-
-console.log(loading)
 
   return (
     <StyledPlaylistContainer>
@@ -106,6 +122,10 @@ console.log(loading)
       </StyledHeader>
       <div className="song-list">
         {renderSongs.length === 0 ? <Loading/> : renderSongs}
+        {
+          playlistMinMax.data.tempo 
+          && filteredTracks.length > songsInView 
+          && <div className='loading' ref={lastSongElement}>LOADING</div>}
       </div>
     </StyledPlaylistContainer>
   );

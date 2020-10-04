@@ -15,6 +15,7 @@ export default function App() {
   const [ openNav, setOpenNav ] = useState(false);
   const [ openCreatePlaylistModal, setOpenCreatePlaylistModal ] = useState(false);
   const [ playlistMinMax, setPlaylistMinMax ] = useState({data:{}, loaded: false});
+  const [ songsInView, setSongsInView ] = useState(15);
 
   if (cookies.accessToken && !accessToken) {
     setAccessToken(cookies.accessToken);
@@ -23,6 +24,7 @@ export default function App() {
   return (
     <StateContext.Provider value={ {
       AccessToken: [ accessToken, setAccessToken ],
+      SongsInView: [ songsInView, setSongsInView ],
     } }>
       { accessToken
         ? <Main 
