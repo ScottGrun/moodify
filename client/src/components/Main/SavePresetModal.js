@@ -50,6 +50,7 @@ const SavePresetModalContainer = styled.div`
       .preset-stats {
         font-size: 14px;
         color: #999999;
+        margin-left: 5px;
         
         p {
           margin-bottom: 10px;

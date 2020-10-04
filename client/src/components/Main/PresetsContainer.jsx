@@ -103,7 +103,6 @@ export default (props) => {
   const [presets, setPresets] = useState([]);
 
   const buildSwiperSlidesFromPresets = (presets, userLikesLookup) => {
-    console.log(presets);
     const slides = presets.map(preset => {
       return (
         <div className='preset-container'>

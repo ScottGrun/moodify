@@ -124,7 +124,7 @@ const PlaylistControls = styled.div`
   grid-area: playlist-controls;
 
   .presets-container {
-    margin-top: 30px;
+    margin-top: 20px;
     padding: 5px;
     .title {
       display: flex;
