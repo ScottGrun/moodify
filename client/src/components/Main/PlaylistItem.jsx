@@ -109,7 +109,8 @@ const StyledPlaylistItem = styled.div`
   position: relative;
   display: flex;
   align-items: center;
-  background-color: #3c4051;
+
+  background-color: ${(props) => (props.playing ? '#21232e' : '#3c4051')};
   height: 45px;
   width: 100%;
   border-radius: 5px;
@@ -121,6 +122,7 @@ const StyledPlaylistItem = styled.div`
   animation-delay: calc(${(props) => props.idx} * 5ms);
   animation-fill-mode: both;
   animation-timing-function: ease-in-out;
+  transition: background-color 200ms ease-in;
 
   /*  */
   &:hover {
@@ -230,27 +232,28 @@ const PlaylistItem = (props) => {
     event.stopPropagation();
     setPosition(initialPosition);
 
-    axios.post(`http://localhost:9000/tracks/recommendations`, {
-      accessToken,
-      recommendationSeeds: [{ track_id: trackId }],
-      playlistMinMax,
-    })
-    .then((res) => {
-      setTracks((prev) => {
-        const allSongs = {
-          songs: [...prev.songs, ...res.data.songs],
-        };
-        
-        return {
-          loading: true,
-          songs: [...prev.songs, ...res.data.songs],
-        };
+    axios
+      .post(`http://localhost:9000/tracks/recommendations`, {
+        accessToken,
+        recommendationSeeds: [{ track_id: trackId }],
+        playlistMinMax,
       })
-      setChartValues(res.data.averages);
-    })
-    .catch(res => {
-      setSnackbar({...snackbar, open: true, message: res.message, variant: 'error'});
-    });
+      .then((res) => {
+        setTracks((prev) => {
+          const allSongs = {
+            songs: [...prev.songs, ...res.data.songs],
+          };
+
+          return {
+            loading: true,
+            songs: [...prev.songs, ...res.data.songs],
+          };
+        });
+        setChartValues(res.data.averages);
+      })
+      .catch((res) => {
+        setSnackbar({ ...snackbar, open: true, message: res.message, variant: 'error' });
+      });
   };
 
   const removeSong = (event, trackId) => {
@@ -288,6 +291,7 @@ const PlaylistItem = (props) => {
       onContextMenu={handleClick}
       styled={{ cursor: 'context-menu' }}
       previewUrl={props.previewUrl}
+      playing={playing}
     >
       <Menu
         open={position.mouseY !== null}
