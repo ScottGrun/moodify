@@ -135,7 +135,7 @@ const PlaylistRecomendationContainer = (props) => {
       setRenderSongs(recommendedSongs);
     })
     .catch(res => {
-      setSnackbar({...snackbar, open: true, message: res.message});
+      setSnackbar({...snackbar, open: true, message: res.message, variant: 'error'});
     });
   };
 

@@ -142,7 +142,7 @@ export default function Navigation(props) {
         setSliderMarks(res.data.minMax, setMarks);
       })
       .catch(res => {
-        setSnackbar({...snackbar, open: true, message: res.message});
+        setSnackbar({...snackbar, open: true, message: res.message, variant: 'error'});
       });;
   };
 
@@ -162,7 +162,7 @@ export default function Navigation(props) {
         setSliderMarks(res.data.minMax, setMarks);
       })
       .catch(res => {
-        setSnackbar({...snackbar, open: true, message: res.message});
+        setSnackbar({...snackbar, open: true, message: res.message, variant: 'error'});
       });
   };
 
@@ -188,7 +188,7 @@ export default function Navigation(props) {
       setSliderMarks(res.data.minMax, setMarks);
     })
     .catch(res => {
-      setSnackbar({...snackbar, open: true, message: res.message});
+      setSnackbar({...snackbar, open: true, message: res.message, variant: 'error'});
     });
   };
 

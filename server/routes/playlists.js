@@ -8,9 +8,6 @@ const { getUserId } = require('../helpers/spotify');
 router.post('/create', async (req, res) => {
   let { accessToken, name, description, uris, image } = req.body;
   let playlistData;
-  if (!uris.length) {
-    return;
-  };
   
   const user_id = await getUserId(accessToken, res);
   

@@ -156,7 +156,25 @@ const ControlsContainer = styled.div`
 `;
 
 const StyledSnackbar = styled(Snackbar)`
+  .snackbar {
+    height: 48px;
+    min-width: 288px;
+    color: white;
+    font-size: 14px;
+    letter-spacing: 0.2px;
+    padding: 6px 24px;
+    line-height: 1.43;
+    border-radius: 4px;
+    box-shadow: 0px 3px 5px -1px rgba(0,0,0,0.2), 0px 6px 10px 0px rgba(0,0,0,0.14), 0px 1px 18px 0px rgba(0,0,0,0.12);
+    display: flex;
+    align-items: center;
+    background-color: ${props => props.variant === 'success' ? '#4caf50' : '#f44336'};
 
+    ion-icon {
+      font-size: 22px;
+      margin-right: 14px;
+    }
+  }
 `;
 
 function TransitionDown(props) {
@@ -177,6 +195,7 @@ const Main = (props) => {
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: '',
+    variant: '',
   });
 
   const getSavedTracks = () => {
@@ -202,7 +221,7 @@ const Main = (props) => {
       setPlaylists(res.data);
     })
     .catch(res => {
-      setSnackbar({...snackbar, open: true, message: res.message});
+      setSnackbar({...snackbar, open: true, message: res.message, variant: 'error'});
     });
   };
 
@@ -212,7 +231,7 @@ const Main = (props) => {
   },[]);
 
   const closeSnackbar = () => {
-    setSnackbar({ ...snackbar, open: false, message: '' });
+    setSnackbar({ ...snackbar, open: false });
   };
 
   return (
@@ -225,10 +244,19 @@ const Main = (props) => {
         }}
         open={snackbar.open}
         onClose={closeSnackbar}
-        autoHideDuration={4000}
-        message={snackbar.message}
+        // autoHideDuration={4000}
+        // message={snackbar.message}
         TransitionComponent={TransitionDown}
+        variant={snackbar.variant}
       >
+        <div className='snackbar'>
+          {  
+            snackbar.message === 'success'
+            ? <ion-icon name="checkmark-circle-outline"></ion-icon>
+            : <ion-icon name="alert-circle-outline"></ion-icon>
+          }
+          <p>{snackbar.message}</p>
+        </div>
       </StyledSnackbar>
 
       <HamburgerMenu onClick={() => setOpenNav(!openNav)}>

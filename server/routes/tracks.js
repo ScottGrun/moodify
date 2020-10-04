@@ -137,9 +137,8 @@ router.post('/saved', async (req, res) => {
           let finalTracks = addAudioFeaturesToTracks(formattedTracks, audioFeatures);
           allTracks[i] = [...finalTracks];
 
-          if (allTracks.reduce((total, tracks) => total + tracks.length, 0) === totalSongs) {
-            console.log(`Server sent ${allTracks.length} songs.`);
-
+          const allTracksLength = allTracks.reduce((total, tracks) => total + tracks.length, 0);
+          if (allTracksLength === totalSongs) {
             const result = [];
             allTracks.forEach((tracks) => result.push(...tracks));
 

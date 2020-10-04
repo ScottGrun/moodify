@@ -180,11 +180,11 @@ export default function CreatePlaylistModal(props) {
     })
     .then((res) => {
       setOpenCreatePlaylistModal(false);
-      setSnackbar({...snackbar, open: true, message: `${res.data.name} has been saved!`})
+      setSnackbar({...snackbar, open: true, message: `${res.data.name} has been saved!`, variant: 'success'})
       props.getPlaylists();
     })
     .catch(res => {
-      setSnackbar({...snackbar, open: true, message: res.message});
+      setSnackbar({...snackbar, open: true, message: res.message, varient: 'error'});
     });
   };
 
