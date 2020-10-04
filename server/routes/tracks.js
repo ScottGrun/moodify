@@ -45,7 +45,8 @@ router.post('/playlist', async (req, res) => {
             averages: getAverages(result),
           });
         }
-      });
+      })
+      .catch(err => res.sendStatus(err.response.status));
     })
     .catch(err => res.sendStatus(err.response.status));
   }
@@ -104,10 +105,10 @@ router.post('/featured', async (req, res) => {
           const allTracks = addAudioFeaturesToTracks(formattedTracks, trackAudioFeatures);
           playlistTracks.push(...allTracks);
 
-          if (playlistTracks.length === totalTracks) {
+          if (playlistTracks.length >= totalTracks) {
             featuredPlaylistsTracks.push(...playlistTracks);
             
-            if (featuredPlaylistsTracks.length === featuredSongsLength) {
+            if (featuredPlaylistsTracks.length >= featuredSongsLength) {
               const now = new Date().getMilliseconds();
               
               res.send({
@@ -183,7 +184,7 @@ router.post('/saved', async (req, res) => {
           allTracks[i] = [...finalTracks];
 
           const allTracksLength = allTracks.reduce((total, tracks) => total + tracks.length, 0);
-          if (allTracksLength === totalSongs) {
+          if (allTracksLength >= totalSongs) {
             const result = [];
             allTracks.forEach((tracks) => result.push(...tracks));
 
