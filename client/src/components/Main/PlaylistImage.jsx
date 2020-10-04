@@ -3,17 +3,18 @@ import { StateContext } from '../../App';
 import styled from 'styled-components';
 import { filterTracks } from '../../helpers/filter';
 import { getTotalDuration } from '../../helpers/calculations';
+import { useCookies } from 'react-cookie';
+
 
 const PlayListImageContainer = styled.div`
   width: 100%;
   height: 224px;
   position: relative;
   display: flex;
-  justify-content: center;
   align-items: center;
-  background-image: url('${props => props.playlistImage}');
+  background-image: url(${props => props.playlistImage  } );
   background-size: cover;
-  overflow: hidden;
+  background-position: center;
   border-radius: 10px;
   margin-bottom: 30px;
 
@@ -21,6 +22,11 @@ const PlayListImageContainer = styled.div`
     position: absolute;
     width: 100%;
     height: 100%;
+    background-color: #000000;
+    opacity: 0.7;
+    backdrop-filter: blur(150px);
+    border-radius: 10px;
+
   }
 
   .playlist-text {
@@ -60,22 +66,32 @@ const PlayListImageContainer = styled.div`
   }
 `;
 
+const AlbumArt = styled.img`
+  width:  200px;
+  height: 200px;
+  margin: 0 2rem;
+  z-index: 1;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+`
 export default function PlaylistImage(props) {
   const [userTracks, setTracks] = props.userTracks;
   const [playlistMinMax, setPlaylistMinMax] = props.playlistMinMax;
-
+  const [cookies, setCookie, removeCookie] = useCookies(['cookie-name']);
+  const {title, description, image} = props.selectedPlaylist;
   const filteredTracks = filterTracks(userTracks, playlistMinMax);
   const duration = getTotalDuration(filteredTracks);
   const randomImageFromSpotify = 'https://i.imgur.com/iuyq8dP.png'
-
+  const userData = cookies.userData;
+  console.log(image)
   return(
-    <PlayListImageContainer playlistImage={randomImageFromSpotify}> 
+    <PlayListImageContainer playlistImage={image ? image.url : userData.images[0].url}> 
       <div className='dark-overlay' />
+      <AlbumArt src={image ? image.url : userData.images[0].url}/>
       <div className='playlist-text'>
         <h2 className='playlist-name'>
-          Orangized Playlist
+          {title}
         </h2>
-        <p className='playlist-description'>A playlist based on the music in your saved tracks orangized by a high bpm with low energy filter.</p>
+        <p className='playlist-description'>{description ? description.replaceAll(/<[^>]*>/g, "") : 'A playlist of music that surely can only be labeled as the greatest mixtape of all time.'}</p>
       </div>
       <div className='playlist-info'>
         <p>Songs In Playlist — {filteredTracks && filteredTracks.length || 'NA'}</p>

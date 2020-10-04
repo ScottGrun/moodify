@@ -32,7 +32,6 @@ const NavigationContainer = styled.div`
     min-width: 217px;
     max-width: 217px;
     color: white;
-    padding: 20px 10px 20px 10px;
     z-index: 2;
 
     .section {
@@ -47,9 +46,9 @@ const NavigationContainer = styled.div`
 
       ul {
         li {
-          transition-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
-          transition: all .2s;
-          
+          transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+          transition: all 0.2s;
+
           padding: 10px 5px;
           list-style: none;
           font-size: 14px;
@@ -57,7 +56,7 @@ const NavigationContainer = styled.div`
           display: flex;
           cursor: pointer;
           user-select: none;
-          color: #C6C7CC;
+          color: #c6c7cc;
 
           img {
             margin-right: 25px;
@@ -123,7 +122,7 @@ export default function Navigation(props) {
   const [playlistMinMax, setPlaylistMinMax] = props.playlistMinMax;
   const [marks, setMarks] = props.marksState;
   const [snackbar, setSnackbar] = props.snackbar;
-
+  const setSelectedPlaylist = props.setSelectedPlaylist;
   const loadTracks = (playlist_id, totalTracks) => {
     setOpenNav(false);
     axios
@@ -142,9 +141,9 @@ export default function Navigation(props) {
         setSliderMarks(res.data.minMax, setMarks);
         setSongsInView(15);
       })
-      .catch(res => {
-        setSnackbar({...snackbar, open: true, message: res.message, variant: 'error'});
-      });;
+      .catch((res) => {
+        setSnackbar({ ...snackbar, open: true, message: res.message, variant: 'error' });
+      });
   };
 
   const loadFeaturedSongs = () => {
@@ -163,8 +162,8 @@ export default function Navigation(props) {
         setSliderMarks(res.data.minMax, setMarks);
         setSongsInView(15);
       })
-      .catch(res => {
-        setSnackbar({...snackbar, open: true, message: res.message, variant: 'error'});
+      .catch((res) => {
+        setSnackbar({ ...snackbar, open: true, message: res.message, variant: 'error' });
       });
   };
 
@@ -175,30 +174,42 @@ export default function Navigation(props) {
       artist_id: track.artist_id,
     }));
 
-    axios.post(`http://localhost:9000/tracks/recommendations`, {
-      accessToken,
-      recommendationSeeds,
-      playlistMinMax,
-    })
-    .then((res) => {
-      setTracks({
-        loading: true,
-        songs: res.data.songs,
+    axios
+      .post(`http://localhost:9000/tracks/recommendations`, {
+        accessToken,
+        recommendationSeeds,
+        playlistMinMax,
+      })
+      .then((res) => {
+        setTracks({
+          loading: true,
+          songs: res.data.songs,
+        });
+        setChartValues(res.data.averages);
+        setPlaylistMinMax({ data: res.data.minMax, loaded: true });
+        setSliderMarks(res.data.minMax, setMarks);
+        setSongsInView(15);
+      })
+      .catch((res) => {
+        setSnackbar({ ...snackbar, open: true, message: res.message, variant: 'error' });
       });
-      setChartValues(res.data.averages);
-      setPlaylistMinMax({ data: res.data.minMax, loaded: true });
-      setSliderMarks(res.data.minMax, setMarks);
-      setSongsInView(15);
-    })
-    .catch(res => {
-      setSnackbar({...snackbar, open: true, message: res.message, variant: 'error'});
-    });
   };
 
-  const handlePlaylistClick = (playlistId, trackTotal) => {
+  const handlePlaylistClick = (
+    playlistId,
+    trackTotal,
+    playlistName,
+    playlistDescription,
+    playlistImg,
+  ) => {
     loadTracks(playlistId, trackTotal);
     setSongsInView(15);
     setTracks({ loading: true, songs: [] });
+    setSelectedPlaylist({
+      title: playlistName,
+      description: playlistDescription,
+      image: playlistImg,
+    });
   };
 
   return (
@@ -226,7 +237,15 @@ export default function Navigation(props) {
                 return (
                   <li
                     key={playlist.id}
-                    onClick={() => handlePlaylistClick(playlist.id, playlist.tracks.total)}
+                    onClick={() =>
+                      handlePlaylistClick(
+                        playlist.id,
+                        playlist.tracks.total,
+                        playlist.name,
+                        playlist.description,
+                        playlist.images[0],
+                      )
+                    }
                   >
                     <img src={musicIcon} />
                     <p>
