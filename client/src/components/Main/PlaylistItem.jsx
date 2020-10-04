@@ -7,7 +7,7 @@ import PlayButton from '../../assets/icons/PlayButton.svg';
 import WaveFormSource from '../../assets/icons/audio.svg';
 import setCurrentSongPlaying from '../../helpers/songPreviewManager';
 import { filterTracks } from '../../helpers/filter';
-import { getAudioFeatures } from '../../helpers/calculations';
+import { getAudioFeatures, getAverages } from '../../helpers/calculations';
 
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -239,13 +239,13 @@ const PlaylistItem = (props) => {
         const allSongs = {
           songs: [...prev.songs, ...res.data.songs],
         };
+        setChartValues(getAverages(allSongs.songs));
         
         return {
           loading: true,
           songs: [...prev.songs, ...res.data.songs],
         };
       })
-      setChartValues(res.data.averages);
     })
     .catch(res => {
       setSnackbar({...snackbar, open: true, message: res.message, variant: 'error'});

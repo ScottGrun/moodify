@@ -201,7 +201,6 @@ export default function Navigation(props) {
   const handlePlaylistClick = (playlistId, trackTotal) => {
     loadTracks(playlistId, trackTotal);
     setSongsInView(15);
-    console.log(playlistId, trackTotal);
   };
 
   return (
