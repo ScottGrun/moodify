@@ -65,27 +65,37 @@ const CarouselContainer = styled.div`
 
   width: 100%;
   overflow: hidden;
-  /* rgba(103,58,183,1) */
   * {
     outline: none !important;
   }
 
   .rec-arrow {
     color: white;
-    background-color: #341a68;
-
+    background-color: #242e51;
+    
     &:hover {
-      background-color: rgba(103,58,183,1);
+      background-color: #2ed689;
     }
-
+    
     &:disabled:hover {
-      background-color: #341a68;
+      background-color: #242e51;
     }
 
     &:disabled {
       cursor: default;
       color: #777777;
     }
+  }
+
+  .rec-dot {
+    &:hover {
+      box-shadow: 0 0 1px 3px rgba(46, 214, 137, 1) 
+    }
+  }
+
+  .rec-dot_active {
+    background-color: rgba(46, 214, 137, 1);
+    box-shadow: none;
   }
 `;
 
@@ -95,6 +105,14 @@ const breakPoints = [
   {width: 300, itemsToShow: 3},
   {width: 350, itemsToShow: 4},
 ]
+
+export const displayedPresetsLabels = {
+  popular: 'Popular Presets',
+  yourpresets: 'Your Presets',
+  yourlikedpresets: 'Liked Presets'
+};
+
+export const displayedPresetsPaths = ["popular", "yourpresets", "yourlikedpresets"];
 
 export default (props) => {
   const [chartValues, setChartValues] = props.chartValues;
@@ -128,16 +146,22 @@ export default (props) => {
     return likedPresets;
   };
 
-  useEffect(() => {
+  const setActivePresets = (path) => {
     Promise.all([
-      axios.get(`http://localhost:9000/presets/popular`, { withCredentials: true }),
-      axios.get(`http://localhost:9000/presets/yourlikedpresets`, { withCredentials: true })
+      axios
+        .get(`http://localhost:9000/presets/${path}`, { withCredentials: true }),
+      axios
+        .get(`http://localhost:9000/presets/yourlikedpresets`, { withCredentials: true })
     ]).then((all) => {
       const userLikesLookup = buildLikesLookup(all[1].data);
       const swiperSlides = buildSwiperSlidesFromPresets(all[0].data, userLikesLookup);
       setState(prev => ({ ...prev, swiperSlides }));
     })
-  },[]);
+  };
+
+  useEffect(() => {
+    setActivePresets(props.displayedPresets);
+  },[props.displayedPresets]);
 
   return(
     <CarouselContainer>

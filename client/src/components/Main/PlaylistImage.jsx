@@ -82,11 +82,12 @@ export default function PlaylistImage(props) {
   const duration = getTotalDuration(filteredTracks);
   const randomImageFromSpotify = 'https://i.imgur.com/iuyq8dP.png'
   const userData = cookies.userData;
-  
+  const userImageUrl = userData && userData.images && userData.images.length > 0 ? userData.images[0].url : null;
+
   return(
-    <PlayListImageContainer playlistImage={image ? image.url : userData.images[0].url}> 
+    <PlayListImageContainer playlistImage={image ? image.url : userImageUrl}> 
       <div className='dark-overlay' />
-      <AlbumArt src={image ? image.url : userData.images[0].url}/>
+      <AlbumArt src={image ? image.url : userImageUrl}/>
       <div className='playlist-text'>
         <h2 className='playlist-name'>
           {title}

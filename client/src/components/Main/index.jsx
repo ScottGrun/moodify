@@ -15,7 +15,7 @@ import PlaylistItemContainer from './PlaylistItemContainer';
 
 import RadarChart from './RadarChart';
 import Sliders from './Sliders';
-import PresetsContainer from './PresetsContainer';
+import PresetsContainer, { displayedPresetsLabels, displayedPresetsPaths } from './PresetsContainer';
 import OpenMenu from './OpenMenu';
 import CreatePlaylistModal from './CreatePlaylistModal';
 import SavePresetModal from './SavePresetModal';
@@ -128,9 +128,72 @@ const PlaylistControls = styled.div`
     padding: 5px;
     .title {
       display: flex;
+      justify-content: space-between;
       align-items: center;
       color: white;
       margin-bottom: 10px;
+    }
+
+    .presets-dropdown {
+      border-radius: 5px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      background-color: #12172C;
+      width: 50%;
+      height: 40px;
+      padding: 5px;
+      z-index: 1001;
+      
+      &:hover {
+        cursor: pointer;
+      }
+
+      ion-icon {
+      position: absolute;
+      right: 10px;
+      color: white;
+      font-size: 20px;
+      }
+    }
+
+    .dropdown-container {
+      position: absolute;
+      left: 0;
+      top: 40px;
+      background-color: #12172C;
+      width: 100%;
+      transition: transform 0.2s ease-in-out;
+      transform: translateY(0px);
+      ${({ open }) => open ? `
+        display: block;
+      ` : `
+        display: none;
+      `}
+
+      ul {
+        color: #ccc;
+
+        li {
+          list-style: none;
+          padding: 10px 14px;
+          display: flex;
+          align-items: center;
+          user-select: none;
+          white-space: nowrap;
+
+          ion-icon {
+            font-size: 20px;
+            color: white;
+            margin-right: 10px;
+          }
+
+          &:hover {
+            background-color: #242e51;
+            cursor: pointer;
+          }
+        }
+      }
     }
   }
   @media (max-width: 800px) {
@@ -260,6 +323,11 @@ const Main = (props) => {
     message: 'empty',
     variant: '',
   });
+  const [open, setOpen] = useState(false);
+  const toggleDropdown = () => {
+    setOpen(prev => !open);
+  };
+  const [displayedPresets, setDisplayedPresets] = useState('popular');
 
   const getSavedTracks = () => {
     axios.post(`http://localhost:9000/tracks/saved`, {
@@ -331,6 +399,14 @@ const Main = (props) => {
       .catch(err => console.log(err));
   };
 
+  const presetDropdownItems = displayedPresetsPaths.map(path => {
+    return (
+      <li onClick={() => setDisplayedPresets(path)}>
+        {displayedPresetsLabels[path]}
+      </li>
+    );
+  });
+  
   return (
     <>
       <StyledSnackbar 
@@ -421,7 +497,7 @@ const Main = (props) => {
           />
          
         </MainContent>
-        <PlaylistControls>
+        <PlaylistControls open={open} >
           <RadarChart chartValues={props.chartValues} chartData={props.chartData} />
 
           <ControlsContainer>
@@ -436,9 +512,17 @@ const Main = (props) => {
             </CreatePlaylistButton>
           </ControlsContainer>
 
-          <div className="presets-container">
-            <div className='title'>
-              <h3>Presets</h3>
+          <div className="presets-container" >
+            <div className='title' >
+              <div className='presets-dropdown' onClick={toggleDropdown}>
+              <h3>{displayedPresetsLabels[displayedPresets]}</h3>
+              <ion-icon className='dropdown-icon' name="chevron-down-outline"></ion-icon>
+                <div className='dropdown-container'>
+                  <ul>
+                    {presetDropdownItems}
+                  </ul>
+                </div>
+              </div>
               <VerticalDivider/>
               <SavePresetButton
                 className="save-preset-btn" 
@@ -450,6 +534,7 @@ const Main = (props) => {
             <PresetsContainer 
               playlistMinMax={props.playlistMinMax}
               chartValues={props.chartValues}
+              displayedPresets={displayedPresets}
             /> 
           </div>
     

@@ -8,7 +8,7 @@ const SavePresetModalContainer = styled.div`
   width: 100%;
   max-width: 614px;
   height: 100%;
-  max-height: 500px;
+  max-height: 510px;
   position: absolute;
   border-radius: 4px;
   top: 50%;
