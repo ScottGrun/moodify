@@ -239,11 +239,10 @@ const PlaylistItem = (props) => {
         const allSongs = {
           songs: [...prev.songs, ...res.data.songs],
         };
-        const filteredTracks = filterTracks(allSongs, playlistMinMax);
-
+        
         return {
           loading: true,
-          songs: filteredTracks,
+          songs: [...prev.songs, ...res.data.songs],
         };
       })
       setChartValues(res.data.averages);
