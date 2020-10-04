@@ -157,11 +157,11 @@ const CreatePlaylistButton = styled.button`
   border: solid 2px white;
   padding: 10px;
   cursor: pointer;
-  outline: none;
-
+  transition: all 0.2s ease-in-out;
+        border-radius: 3px;
   &:hover {
-    background-color: #2ed689;
-    color: white;
+    background-color: white;;
+    color: #191F35;
   }
 `;
 
@@ -253,6 +253,7 @@ const Main = (props) => {
   const [playlistMinMax, setPlaylistMinMax] = props.playlistMinMax;
   const [playlists, setPlaylists] = useState([]);
   const [openSavePresetModal, setOpenSavePresetModal] = useState(false);
+  const [selectedPlaylist, setSelectedPlaylist] = useState({title:' Your Liked Songs', description: 'A collection of all the tracks you have ever liked on Spotify.', imgUrl: null})
   const [marks, setMarks] = useState({});
   const [snackbar, setSnackbar] = useState({
     open: false,
@@ -281,6 +282,7 @@ const Main = (props) => {
   const getPlaylists = () => {
     axios.post('http://localhost:9000/playlists/ids', { accessToken }).then((res) => {
       setPlaylists(res.data);
+      
     })
     .catch(res => {
       setSnackbar({...snackbar, open: true, message: res.message, variant: 'error'});
@@ -388,6 +390,7 @@ const Main = (props) => {
             userTracks={props.userTracks}
             chartValues={props.chartValues}
             snackbar={[snackbar, setSnackbar]}
+            setSelectedPlaylist={setSelectedPlaylist}
           />
         </Sidebar>
 
@@ -406,7 +409,7 @@ const Main = (props) => {
 
           <div className="playlists-container">
             <div className="playlist-image-container">
-              <PlaylistImage playlistMinMax={props.playlistMinMax} userTracks={props.userTracks} />
+              <PlaylistImage playlistMinMax={props.playlistMinMax} userTracks={props.userTracks} selectedPlaylist={selectedPlaylist} />
             </div>
           </div>
           <PlaylistItemContainer
@@ -416,13 +419,7 @@ const Main = (props) => {
             chartValues={props.chartValues}
             snackbar={[snackbar, setSnackbar]}
           />
-          {/* <PlaylistRecomendationContainer 
-          accessToken={accessToken}
-            playlistMinMax={props.playlistMinMax}
-            chartValues={props.chartValues}
-            userTracks={props.userTracks}
-            snackbar={[snackbar, setSnackbar]}
-          /> */}
+         
         </MainContent>
         <PlaylistControls>
           <RadarChart chartValues={props.chartValues} chartData={props.chartData} />

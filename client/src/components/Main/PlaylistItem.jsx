@@ -109,7 +109,8 @@ const StyledPlaylistItem = styled.div`
   position: relative;
   display: flex;
   align-items: center;
-  background-color: #3c4051;
+
+  background-color: ${(props) => (props.playing ? '#21232e' : '#3c4051')};
   height: 45px;
   width: 100%;
   border-radius: 5px;
@@ -121,9 +122,11 @@ const StyledPlaylistItem = styled.div`
   animation-delay: calc(${(props) => props.idx} * 5ms);
   animation-fill-mode: both;
   animation-timing-function: ease-in-out;
+  transition: background-color 200ms ease-in;
 
   /*  */
   &:hover {
+    background-color: #21232e;
     cursor: ${(props) => (props.previewUrl ? 'pointer' : 'default')};
   }
 
@@ -287,6 +290,7 @@ const PlaylistItem = (props) => {
       onContextMenu={handleClick}
       styled={{ cursor: 'context-menu' }}
       previewUrl={props.previewUrl}
+      playing={playing}
     >
       <Menu
         open={position.mouseY !== null}
