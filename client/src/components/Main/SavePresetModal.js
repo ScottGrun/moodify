@@ -178,12 +178,12 @@ export default function SavePresetModal(props) {
         </div>
         <div className='form'>
           <label>
-            Preset Name
-            <input placeholder={'Chill vibes.'} value={name} onChange={e => setName(e.target.value)}/>
+            Preset Name (max 25 characters)
+            <input placeholder={'Chill vibes.'} value={name} maxlength="25" onChange={e => setName(e.target.value)}/>
           </label>
           <label>
             Image URL
-            <input placeholder='Change default image.' value={imageUrl} onChange={e => setImageUrl(e.target.value)}/>
+            <input placeholder='Change default image.' value={null} onChange={e => setImageUrl(e.target.value)}/>
           </label>
           <button className='save-preset' onClick={savePreset}>Save Preset</button>
         </div>
