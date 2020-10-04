@@ -113,10 +113,14 @@ const Landing = () => {
     })
     .then(res => {
       const { access_token, refresh_token, user } = res.data;
+      const now = new Date();
+      let time = now.getTime();
+      time += 3600 * 1000;
+      now.setTime(time);
       
       if (!access_token.includes('error')) {
         removeCookie('code');
-        setCookie('accessToken', access_token);
+        setCookie('accessToken', access_token, {expires: now});
         setCookie('refreshToken', refresh_token);
         setCookie('userData', JSON.stringify(user));
         setAccessToken(access_token);
