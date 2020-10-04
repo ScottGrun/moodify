@@ -21,7 +21,6 @@ router.post('/playlist', async (req, res) => {
   const { accessToken, playlist_id, totalTracks } = req.body;
   const numOfRequests = Math.ceil(totalTracks / 50);
   let allTracks = new Array(numOfRequests).fill([]);
-
   for (let i = 0; i < numOfRequests; i++) {
     axios({
       method: 'get',
@@ -30,15 +29,16 @@ router.post('/playlist', async (req, res) => {
     })
     .then((rawTracks) => {
       let formattedTracks = formatTracks(rawTracks.data.items);
-      getAudioFeaturesOfTracks(formattedTracks, accessToken).then((audioFeatures) => {
+      getAudioFeaturesOfTracks(formattedTracks, accessToken)
+      .then(audioFeatures => {
         let finalTracks = addAudioFeaturesToTracks(formattedTracks, audioFeatures);
         allTracks[i] = [...finalTracks];
 
         const allTracksLength = allTracks.reduce((total, tracks) => total + tracks.length, 0);
-        if (allTracksLength === totalTracks) {
+        if (allTracksLength >= totalTracks) {
           const result = [];
-          allTracks.forEach((tracks) => result.push(...tracks));
-
+          allTracks.forEach(tracks => result.push(...tracks));
+          console.log(result.length);
           res.send({
             songs: result,
             minMax: getMinMaxes(result),

@@ -207,12 +207,15 @@ export default function Navigation(props) {
   ) => {
     loadTracks(playlistId, trackTotal);
     setSongsInView(15);
+<<<<<<< HEAD
     setTracks({ loading: true, songs: [] });
     setSelectedPlaylist({
       title: playlistName,
       description: playlistDescription,
       image: playlistImg,
     });
+=======
+>>>>>>> b90ef236e3410368e817fe103495aa7174321337
   };
 
   return (

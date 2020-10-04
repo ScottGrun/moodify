@@ -7,7 +7,7 @@ import PlayButton from '../../assets/icons/PlayButton.svg';
 import WaveFormSource from '../../assets/icons/audio.svg';
 import setCurrentSongPlaying from '../../helpers/songPreviewManager';
 import { filterTracks } from '../../helpers/filter';
-import { getAudioFeatures } from '../../helpers/calculations';
+import { getAudioFeatures, getAverages } from '../../helpers/calculations';
 
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -232,28 +232,27 @@ const PlaylistItem = (props) => {
     event.stopPropagation();
     setPosition(initialPosition);
 
-    axios
-      .post(`http://localhost:9000/tracks/recommendations`, {
-        accessToken,
-        recommendationSeeds: [{ track_id: trackId }],
-        playlistMinMax,
+    axios.post(`http://localhost:9000/tracks/recommendations`, {
+      accessToken,
+      recommendationSeeds: [{ track_id: trackId }],
+      playlistMinMax,
+    })
+    .then((res) => {
+      setTracks((prev) => {
+        const allSongs = {
+          songs: [...prev.songs, ...res.data.songs],
+        };
+        setChartValues(getAverages(allSongs.songs));
+        
+        return {
+          loading: true,
+          songs: [...prev.songs, ...res.data.songs],
+        };
       })
-      .then((res) => {
-        setTracks((prev) => {
-          const allSongs = {
-            songs: [...prev.songs, ...res.data.songs],
-          };
-
-          return {
-            loading: true,
-            songs: [...prev.songs, ...res.data.songs],
-          };
-        });
-        setChartValues(res.data.averages);
-      })
-      .catch((res) => {
-        setSnackbar({ ...snackbar, open: true, message: res.message, variant: 'error' });
-      });
+    })
+    .catch(res => {
+      setSnackbar({...snackbar, open: true, message: res.message, variant: 'error'});
+    });
   };
 
   const removeSong = (event, trackId) => {
