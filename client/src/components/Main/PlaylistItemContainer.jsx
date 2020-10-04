@@ -69,7 +69,10 @@ const StyledPlaylistContainer = styled.div`
   .loading {
     width: 100%;
     height: 40px;
-    background-color: yellow;
+    font-weight: 400px;
+    color: white;
+    text-align: center;
+    background-color: transparent;
   }
 `;
 
@@ -132,7 +135,7 @@ const PlaylistItemContainer = (props) => {
         {
           playlistMinMax.data.tempo 
           && filteredTracks.length > songsInView 
-          && <div className='loading' ref={lastSongElement}>LOADING</div>}
+          && <div className='loading' ref={lastSongElement}>Loading More Tracks...</div>}
       </div>
     </StyledPlaylistContainer>
   );

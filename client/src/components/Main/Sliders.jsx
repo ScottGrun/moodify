@@ -98,6 +98,7 @@ export default function Sliders(props) {
         <div className="slider-container">
           <p>BPM</p>
           <Slider
+            key={1}
             min={0}
             max={
               playlistMinMax.data.tempo && playlistMinMax.data.tempo[1] > 250
@@ -124,10 +125,13 @@ export default function Sliders(props) {
         <div className="slider-container">
           <p>instrumentalness</p>
           <Slider
+            key={2}
             min={0}
             max={100}
             value={instrumentalness}
-            onChangeCommitted={(event, val) => changeCommitedHandler(event, val, 'instrumentalness')}
+            onChangeCommitted={(event, val) =>
+              changeCommitedHandler(event, val, 'instrumentalness')
+            }
             marks={marks.instrumentalness}
             onChange={(event, val) => setInstrumentalness(val)}
             valueLabelDisplay="auto"
@@ -138,6 +142,7 @@ export default function Sliders(props) {
         <div className="slider-container">
           <p>Energy</p>
           <Slider
+            key={3}
             min={0}
             max={100}
             value={energy}
@@ -152,6 +157,7 @@ export default function Sliders(props) {
         <div className="slider-container">
           <p>Valence</p>
           <Slider
+            key={4}
             min={0}
             max={100}
             value={valence}
@@ -166,6 +172,7 @@ export default function Sliders(props) {
         <div className="slider-container">
           <p>Danceability</p>
           <Slider
+            key={5}
             min={0}
             max={100}
             value={danceability}
@@ -180,6 +187,7 @@ export default function Sliders(props) {
         <div className="slider-container">
           <p>Loudness</p>
           <Slider
+            key={6}
             min={-60}
             max={1}
             value={loudness}

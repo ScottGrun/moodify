@@ -118,7 +118,7 @@ const StyledPlaylistItem = styled.div`
 
   /* Animations here */
   animation: ${animateIn} 220ms;
-  animation-delay: calc(${(props) => (props.idx < 50 ? props.idx : 0)} * 65ms);
+  animation-delay: calc(${(props) => props.idx} * 5ms);
   animation-fill-mode: both;
   animation-timing-function: ease-in-out;
 
