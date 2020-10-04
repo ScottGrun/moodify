@@ -1,10 +1,24 @@
 import React, { useState, useContext } from 'react';
-import styled from 'styled-components';
+import styled, {keyframes} from 'styled-components';
 import { StateContext } from '../../App';
 import axios from 'axios';
 import { matchFilter } from '../../helpers/filter';
 import { filterTracks } from '../../helpers/filter';
 import { getTotalDuration } from '../../helpers/calculations';
+
+const slideDown = keyframes`
+
+from{
+  transform: translate(0, -40%);
+  opacity: 0;
+}
+
+to{
+  transform: translate(0, 40%);
+  opacity: 1;
+}
+
+`
 
 const CreatePlaylistModalContainer = styled.div`
   width: 100%;
@@ -13,10 +27,9 @@ const CreatePlaylistModalContainer = styled.div`
   max-height: 500px;
   position: absolute;
   border-radius: 5px;
-  top: 50%;
   left: 20%;
-  transform: translate(0, -50%);
   background-color: #28292D;
+  transform: translate(0, 40%);
   color: white;
   display: flex;
   align-items: center;
@@ -24,9 +37,12 @@ const CreatePlaylistModalContainer = styled.div`
   padding: 25px;
   box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
   display: none;
+  animation: ${slideDown} 500ms ease;
   z-index: 9999;
   ${({ open }) => open && `
+
     display: block;
+    
   `}
 
   h1 {
@@ -133,14 +149,16 @@ const CreatePlaylistModalContainer = styled.div`
         background-color: transparent;
         color: white;
         cursor: pointer;
-        transition: all 0.1s ease-in-out;
+        transition: all 0.2s ease-in-out;
+        border-radius: 3px;
 
         &:focus {
           outline: none;
         }
 
         &:hover {
-          background-color: #2ED689;
+          background-color: white;
+          color: #191F35;
         }
       }
     }

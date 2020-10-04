@@ -27,11 +27,11 @@ export default function RadarChart(props) {
       datasets: [
         {
           data: chartValues,
-          backgroundColor: 'rgba(50, 246, 152, 0.7)',
-          borderColor: 'rgb(50, 246, 152)',
-          borderWidth: 1,
+          backgroundColor: 'rgba(50, 246, 152, 0.5)',
+          borderColor: 'rgb(0, 226, 123)',
+          borderWidth: 3,
           pointBackgroundColor: 'rgb(50, 246, 152)',
-          pointBorderWidth: 1,
+          pointBorderWidth: 2,
           fontColor: '#fff',
         },
       ],
@@ -64,6 +64,7 @@ export default function RadarChart(props) {
       },
       pointLabels: {
         fontColor: 'white',
+       
       },
       gridLines: {
         color: 'white',
