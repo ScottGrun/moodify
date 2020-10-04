@@ -1,32 +1,27 @@
 
 //Get average of audio features for playlist
 export function getAverages(songs) {
-  let playlistAudioFeaturesAverages = {
-    energy: 0,
-    danceability: 0,
-    valence: 0,
-    instrumentalness: 0,
-    loudness: 0,
-  };
+  let energy = 0;
+  let danceability = 0;
+  let valence = 0;
+  let instrumentalness = 0;
+  let loudness = 0;
 
-  songs.forEach((song) => {
-    playlistAudioFeaturesAverages.energy += song.audio.energy;
-    playlistAudioFeaturesAverages.danceability += song.audio.danceability;
-    playlistAudioFeaturesAverages.valence += song.audio.valence;
-    playlistAudioFeaturesAverages.instrumentalness += song.audio.instrumentalness;
-    playlistAudioFeaturesAverages.loudness += song.audio.loudness + 60;
+  songs.forEach(song => {
+    energy += song.audio.energy;
+    danceability += song.audio.danceability;
+    valence += song.audio.valence;
+    instrumentalness += song.audio.instrumentalness;
+    loudness += song.audio.loudness + 60;
   });
 
-  for (const key in playlistAudioFeaturesAverages) {
-    if (key === 'loudness') {
-      playlistAudioFeaturesAverages[key] = Math.round(
-        playlistAudioFeaturesAverages[key] / songs.length);
-    } else {
-      playlistAudioFeaturesAverages[key] = Math.round(
-        (playlistAudioFeaturesAverages[key] / songs.length) * 100);
-    }
-  }
-  return Object.values(playlistAudioFeaturesAverages);
+  energy = Math.round((energy / songs.length) * 100);
+  danceability = Math.round((danceability / songs.length) * 100);
+  valence = Math.round((valence / songs.length) * 100);
+  instrumentalness = Math.round((instrumentalness / songs.length) * 100);
+  loudness = Math.round(loudness / songs.length);
+
+  return [energy, danceability, valence, instrumentalness, loudness];
 };
 
 // get total duration of songs
