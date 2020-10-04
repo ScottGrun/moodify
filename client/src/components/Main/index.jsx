@@ -210,7 +210,7 @@ const Main = (props) => {
   const [marks, setMarks] = useState({});
   const [snackbar, setSnackbar] = useState({
     open: false,
-    message: '',
+    message: 'empty',
     variant: '',
   });
 
@@ -229,7 +229,7 @@ const Main = (props) => {
     })
     .catch(res => {
       setSnackbar({...snackbar, open: true, message: res.message});
-    });;
+    });
   };
 
   const getPlaylists = () => {
@@ -241,7 +241,21 @@ const Main = (props) => {
     });
   };
 
+  const getSessionData = () => {
+    setTracks(JSON.parse(localStorage.getItem('userTracks')));
+    setChartValues(JSON.parse(localStorage.getItem('chartValues')));
+    setPlaylistMinMax(JSON.parse(localStorage.getItem('playlistMinMax')));
+    setPlaylists(JSON.parse(localStorage.getItem('playlists')));
+    setMarks(JSON.parse(localStorage.getItem('marks')));
+
+    localStorage.clear();
+  };
+
   useEffect(() => {
+    if (localStorage.getItem('userTracks')) {
+      getSessionData();
+      return;
+    }
     getSavedTracks();
     getPlaylists();
   },[]);
@@ -255,6 +269,13 @@ const Main = (props) => {
     removeCookie('refreshToken');
     removeCookie('userData');
     setAccessToken(null);
+
+    localStorage.setItem('userTracks', JSON.stringify(userTracks));
+    localStorage.setItem('chartValues', JSON.stringify(chartValues));
+    localStorage.setItem('playlistMinMax', JSON.stringify(playlistMinMax));
+    localStorage.setItem('playlists', JSON.stringify(playlists));
+    localStorage.setItem('marks', JSON.stringify(marks));
+
     axios.get(`http://localhost:9000/auth/login`)
       .then(res => {
         window.location = res.data;

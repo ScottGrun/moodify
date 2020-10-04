@@ -138,8 +138,9 @@ export default function Navigation(props) {
           songs: res.data.songs,
         });
         setChartValues(res.data.averages);
-        setSongsInView(15);
+        setPlaylistMinMax({ data: res.data.minMax, loaded: true });
         setSliderMarks(res.data.minMax, setMarks);
+        setSongsInView(15);
       })
       .catch(res => {
         setSnackbar({...snackbar, open: true, message: res.message, variant: 'error'});
@@ -158,7 +159,7 @@ export default function Navigation(props) {
           songs: res.data.songs,
         });
         setChartValues(res.data.averages);
-        // setPlaylistMinMax({ data: res.data.minMax, loaded: true });
+        setPlaylistMinMax({ data: res.data.minMax, loaded: true });
         setSliderMarks(res.data.minMax, setMarks);
         setSongsInView(15);
       })
@@ -185,7 +186,7 @@ export default function Navigation(props) {
         songs: res.data.songs,
       });
       setChartValues(res.data.averages);
-      // setPlaylistMinMax({ data: res.data.minMax, loaded: true });
+      setPlaylistMinMax({ data: res.data.minMax, loaded: true });
       setSliderMarks(res.data.minMax, setMarks);
       setSongsInView(15);
     })
