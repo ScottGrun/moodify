@@ -107,6 +107,13 @@ const PlaylistItemContainer = (props) => {
     });
   }
 
+  useEffect(() => {
+    const songs = document.getElementsByClassName('playlist-item')
+    if (songs.length > 0) {
+      songs[0].scrollIntoView({ behavior: 'smooth' });
+    };
+  },[playlistMinMax.data])
+
   return (
     <StyledPlaylistContainer>
       <StyledHeader>

@@ -61,6 +61,7 @@ const SlidersContainer = styled.div`
 `;
 
 export default function Sliders(props) {
+  const [songsInView, setSongsInView] = useContext(StateContext).SongsInView;
   const [playlistMinMax, setPlaylistMinMax] = props.playlistMinMax;
   const [chartValues, setChartValues] = props.chartValues;
   const [userTracks, setTracks] = props.userTracks;
@@ -88,6 +89,8 @@ export default function Sliders(props) {
 
   const changeCommitedHandler = (event, val, attr) => {
     setPlaylistMinMax((prev) => ({ ...prev, data: { ...prev.data, [attr]: val } }));
+    setSongsInView(15);
+    console.log(songsInView);
   };
 
   return (
