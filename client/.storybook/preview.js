@@ -31,7 +31,7 @@ const customViewports = {
   phone: {
     name: 'Phone',
     styles: {
-      width: '375px',
+      width: '450px',
       height: '667px'
     }
   }

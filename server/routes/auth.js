@@ -66,11 +66,13 @@ module.exports = (db) => {
 
         const user = await axios.get('https://api.spotify.com/v1/me', {
           headers: { Authorization: 'Bearer ' + access_token },
-        }).then(res => {
+        })
+        .then(res => {
           const user = res.data.display_name;
           addUser(db, user, refresh_token);
           return res.data;
-        });
+        })
+        .catch(res => console.log(res));;
         
         res.send({ access_token, refresh_token, user });
       } else {

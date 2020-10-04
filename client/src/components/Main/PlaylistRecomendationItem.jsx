@@ -7,10 +7,13 @@ import PlayButton from '../../assets/icons/PlayButton.svg';
 import WaveFormSource from '../../assets/icons/audio.svg';
 import setCurrentSongPlaying from '../../helpers/songPreviewManager';
 import { filterTracks } from '../../helpers/filter';
-import { getAudioFeatures, getAverages } from '../../helpers/calculations';
+import { getAudioFeatures } from '../../helpers/calculations';
 
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+
+//Images
+import addIcon from '../../assets/icons/add.svg';
 
 const StyledSongCoverContainer = styled.div`
   position: relative;
@@ -47,7 +50,6 @@ const SongName = styled.h4`
   line-height: 16px;
   color: white;
   margin: 0;
-
   color: ${(props) => (props.playing ? '#2ed589' : null)};
 `;
 
@@ -69,7 +71,7 @@ const AudioFeatures = styled.div`
   justify-content: space-around;
   color: white;
   font-family: Inter;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: normal;
 
   @media (max-width: 450px) {
@@ -77,12 +79,12 @@ const AudioFeatures = styled.div`
   }
 
   p {
-    width: 75px;
-
-    @media (max-width: 1125px) {
-      width: 50px;
-    }
+    width: 50px;
     text-align: center;
+  }
+
+  .add-icon {
+    margin-right: 5px;
   }
 `;
 
@@ -117,8 +119,8 @@ const StyledPlaylistItem = styled.div`
   position: relative;
 
   /* Animations here */
-  animation: ${animateIn} 220ms;
-  animation-delay: calc(${(props) => props.idx} * 5ms);
+  animation: ${animateIn} 300ms;
+  animation-delay: calc(${(props) => (props.idx < 50 ? props.idx : 0)} * 65ms);
   animation-fill-mode: both;
   animation-timing-function: ease-in-out;
 
@@ -239,13 +241,14 @@ const PlaylistItem = (props) => {
         const allSongs = {
           songs: [...prev.songs, ...res.data.songs],
         };
-        setChartValues(getAverages(allSongs.songs));
-        
+        const filteredTracks = filterTracks(allSongs, playlistMinMax);
+
         return {
           loading: true,
-          songs: [...prev.songs, ...res.data.songs],
+          songs: filteredTracks,
         };
-      })
+      });
+      setChartValues(res.data.averages);
     })
     .catch(res => {
       setSnackbar({...snackbar, open: true, message: res.message, variant: 'error'});
@@ -279,6 +282,9 @@ const PlaylistItem = (props) => {
     });
   };
 
+
+
+
   return (
     <StyledPlaylistItem
       idx={props.idx}
@@ -301,7 +307,7 @@ const PlaylistItem = (props) => {
       >
         <MenuItem onClick={(event) => addSimilarSongs(event, props.id)}>add similar songs</MenuItem>
         <MenuItem onClick={(event) => applySongFeatures(event, props.audio)}>
-          use as filter
+          use audio features
         </MenuItem>
         <MenuItem onClick={(event) => removeSong(event, props.id)}>remove song</MenuItem>
       </Menu>
@@ -316,6 +322,7 @@ const PlaylistItem = (props) => {
       </OverlayContainer>
       <SongMetaData>
         <SongName playing={playing}>
+          {' '}
           {props.name.length > 26 ? props.name.slice(0, 20) + '...' : props.name}
         </SongName>
         <ArtistName>{props.artist}</ArtistName>
@@ -327,6 +334,9 @@ const PlaylistItem = (props) => {
         <p>{Math.round(props.audio.valence * 100)}</p>
         <p>{Math.round(props.audio.instrumentalness * 100)}</p>
         <p>{Math.round(props.audio.loudness)}db</p>
+        <img className="add-icon" src={addIcon} onClick={()=> setTracks(prev => ({
+          ...prev, songs:[...prev.songs, {...props, uid: userTracks.songs[userTracks.songs.length - 1].uid + 1}]
+        }))}/>
       </AudioFeatures>
       <StyledProgressContainer playing={playing}>
         <div></div>

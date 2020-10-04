@@ -1,20 +1,16 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useRef, useCallback } from 'react';
 import { StateContext } from '../../App';
 import styled from 'styled-components';
 import PlaylistItem from './PlaylistItem';
 import { filterTracks } from '../../helpers/filter';
 
+//Spinners
+import Loading from './Loading';
+
 const StyledHeader = styled.div`
   display: flex;
   align-items: center;
   border-bottom: solid 1px white;
-`;
-
-const StyledPlaylistContainer = styled.div`
-  .song-list {
-    height: calc(100vh - 400px);
-    overflow-y: scroll;
-  }
 `;
 
 const ColumnHeaderContainer = styled.div`
@@ -27,7 +23,7 @@ const ColumnHeaderContainer = styled.div`
   font-size: 11px;
   font-weight: normal;
 
-  @media(max-width: 375px){
+  @media (max-width: 450px) {
     display: none;
   }
 
@@ -35,6 +31,10 @@ const ColumnHeaderContainer = styled.div`
     font-size: 14px;
     width: 75px;
     text-align: center;
+    
+    @media (max-width: 1125px) {
+      width: 50px;
+    }
   }
 `;
 
@@ -51,20 +51,71 @@ const SectionHeader = styled.h2`
   color: #ffffff;
 `;
 
+const StyledPlaylistContainer = styled.div`
+  position: relative;
+  width: 100%;
+  .song-list {
+    height: calc(100vh - 400px);
+    overflow-y: scroll;
+  }
+
+  .context-menu-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+  }
+
+  .loading {
+    width: 100%;
+    height: 40px;
+    font-weight: 400px;
+    color: white;
+    text-align: center;
+    background-color: transparent;
+  }
+`;
+
 const PlaylistItemContainer = (props) => {
-  const [playlistMinMax, setPlaylistMinMax] = useContext(StateContext).PlaylistMinMax;
-  const [userTracks, setUserTracks] = useContext(StateContext).UserTracks;
+  const [songsInView, setSongsInView] = useContext(StateContext).SongsInView;
+  const [playlistMinMax, setPlaylistMinMax] = props.playlistMinMax;
+  const [userTracks, setUserTracks] = props.userTracks;
+  const [loading, setLoading] = props.loading;
+
+  const observer = useRef();
+  const lastSongElement = useCallback(node => {
+    observer.current = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting) {
+        setSongsInView(prev => prev + 15)
+      }
+    });
+    if (node) observer.current.observe(node);
+  },[]);
 
   let renderSongs = [];
-  if (playlistMinMax.loaded && userTracks.loading) {
-    const filteredTracks = filterTracks(userTracks, playlistMinMax);
-    
-    renderSongs = filteredTracks
-      .map((song, index) => <PlaylistItem idx={index} 
+  let filteredTracks = [];
+  if (playlistMinMax.data.tempo) {
+    filteredTracks = filterTracks(userTracks, playlistMinMax);
+
+    renderSongs = filteredTracks.slice(0, songsInView).map((song, index) => {
+      return <PlaylistItem
+        idx={index}
         {...song}
-        key={song.id + index}
-       />);
+        key={song.id}
+        playlistMinMax={props.playlistMinMax}
+        userTracks={props.userTracks}
+        chartValues={props.chartValues}
+        snackbar={props.snackbar}
+      />
+    });
   }
+
+  useEffect(() => {
+    const songs = document.getElementsByClassName('playlist-item')
+    if (songs.length > 0) {
+      songs[0].scrollIntoView({ behavior: 'smooth' });
+    };
+  },[playlistMinMax.data])
 
   return (
     <StyledPlaylistContainer>
@@ -73,14 +124,18 @@ const PlaylistItemContainer = (props) => {
         <ColumnHeaderContainer>
           <p>BPM</p>
           <p>Energy</p>
-          <p>Danceability</p>
+          <p>Dance.</p>
           <p>Valence</p>
           <p>Instru.</p>
           <p>Loudness</p>
         </ColumnHeaderContainer>
       </StyledHeader>
       <div className="song-list">
-        {renderSongs.length === 0 ? <img src="https://i.imgur.com/xwQzRkv.gif" /> : renderSongs}
+        {renderSongs.length === 0 ? <Loading/> : renderSongs}
+        {
+          playlistMinMax.data.tempo 
+          && filteredTracks.length > songsInView 
+          && <div className='loading' ref={lastSongElement}>Loading More Tracks...</div>}
       </div>
     </StyledPlaylistContainer>
   );

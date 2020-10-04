@@ -47,8 +47,8 @@ const PresetItem = styled.div`
 
 export default function Preset(props) {
   
-  const [chartValues, setChartValues] = useContext(StateContext).ChartValues;
-  const [playlistMinMax, setPlaylistMinMax] = useContext(StateContext).PlaylistMinMax;
+  const [chartValues, setChartValues] = props.chartValues;
+  const [playlistMinMax, setPlaylistMinMax] = props.playlistMinMax;
   const [state, setState] = useState({
     liked: props.liked
   });
@@ -60,13 +60,11 @@ export default function Preset(props) {
 
   const handleHeartClick = () => {
     const presetID = props.id;
-    console.log(presetID);
-    axios
-      .post(`http://localhost:9000/presets/${presetID}/${state.liked ? "unlike" : "like"}`, null, { withCredentials: true })
-      .then((res) => {
-        console.log(res);
-        setState(prev => ({ ...prev, liked: !state.liked }))
-      });
+    axios.post(`http://localhost:9000/presets/${presetID}/${state.liked ? "unlike" : "like"}`, null, { withCredentials: true })
+    .then((res) => {
+      console.log(res);
+      setState(prev => ({ ...prev, liked: !state.liked }))
+    });
   };
 
   return(

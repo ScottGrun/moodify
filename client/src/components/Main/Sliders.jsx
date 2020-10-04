@@ -60,17 +60,18 @@ const SlidersContainer = styled.div`
   }
 `;
 
-export default function Sliders({ marksState }) {
-  const [playlistMinMax, setPlaylistMinMax] = useContext(StateContext).PlaylistMinMax;
-  const [chartValues, setChartValues] = useContext(StateContext).ChartValues;
-  const [userTracks, setTracks] = useContext(StateContext).UserTracks;
+export default function Sliders(props) {
+  const [songsInView, setSongsInView] = useContext(StateContext).SongsInView;
+  const [playlistMinMax, setPlaylistMinMax] = props.playlistMinMax;
+  const [chartValues, setChartValues] = props.chartValues;
+  const [userTracks, setTracks] = props.userTracks;
   const [tempo, setTempo] = useState([0, 0]);
   const [danceability, setDanceability] = useState([0, 0]);
   const [energy, setEnergy] = useState([0, 0]);
   const [instrumentalness, setInstrumentalness] = useState([0, 0]);
   const [loudness, setLoudness] = useState([0, 0]);
   const [valence, setValence] = useState([0, 0]);
-  const [marks, setMarks] = marksState;
+  const [marks, setMarks] = props.marksState;
 
   useEffect(() => {
     if (playlistMinMax.data.tempo) {
@@ -88,6 +89,7 @@ export default function Sliders({ marksState }) {
 
   const changeCommitedHandler = (event, val, attr) => {
     setPlaylistMinMax((prev) => ({ ...prev, data: { ...prev.data, [attr]: val } }));
+    setSongsInView(15);
   };
 
   return (
@@ -96,6 +98,7 @@ export default function Sliders({ marksState }) {
         <div className="slider-container">
           <p>BPM</p>
           <Slider
+            key={1}
             min={0}
             max={
               playlistMinMax.data.tempo && playlistMinMax.data.tempo[1] > 250
@@ -122,10 +125,13 @@ export default function Sliders({ marksState }) {
         <div className="slider-container">
           <p>instrumentalness</p>
           <Slider
+            key={2}
             min={0}
             max={100}
             value={instrumentalness}
-            onChangeCommitted={(event, val) => changeCommitedHandler(event, val, 'instrumentalness')}
+            onChangeCommitted={(event, val) =>
+              changeCommitedHandler(event, val, 'instrumentalness')
+            }
             marks={marks.instrumentalness}
             onChange={(event, val) => setInstrumentalness(val)}
             valueLabelDisplay="auto"
@@ -136,6 +142,7 @@ export default function Sliders({ marksState }) {
         <div className="slider-container">
           <p>Energy</p>
           <Slider
+            key={3}
             min={0}
             max={100}
             value={energy}
@@ -150,6 +157,7 @@ export default function Sliders({ marksState }) {
         <div className="slider-container">
           <p>Valence</p>
           <Slider
+            key={4}
             min={0}
             max={100}
             value={valence}
@@ -164,6 +172,7 @@ export default function Sliders({ marksState }) {
         <div className="slider-container">
           <p>Danceability</p>
           <Slider
+            key={5}
             min={0}
             max={100}
             value={danceability}
@@ -178,8 +187,9 @@ export default function Sliders({ marksState }) {
         <div className="slider-container">
           <p>Loudness</p>
           <Slider
+            key={6}
             min={-60}
-            max={1}
+            max={0}
             value={loudness}
             onChangeCommitted={(event, val) => changeCommitedHandler(event, val, 'loudness')}
             marks={marks.loudness}

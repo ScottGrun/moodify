@@ -148,11 +148,12 @@ const CreatePlaylistModalContainer = styled.div`
   }
 `;
 
-export default function CreatePlaylistModal() {
+export default function CreatePlaylistModal(props) {
   const [accessToken, setAccessToken] = useContext(StateContext).AccessToken;
-  const [openCreatePlaylistModal, setOpenCreatePlaylistModal] = useContext(StateContext).OpenCreatePlaylistModal;
-  const [playlistMinMax, setPlaylistMinMax] = useContext(StateContext).PlaylistMinMax;
-  const [userTracks, setUserTracks] = useContext(StateContext).UserTracks;
+  const [openCreatePlaylistModal, setOpenCreatePlaylistModal] = props.openCreatePlaylistModal;
+  const [playlistMinMax, setPlaylistMinMax] = props.playlistMinMax;
+  const [userTracks, setUserTracks] = props.userTracks;
+  const [snackbar, setSnackbar] = props.snackbar;
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [image, setImage] = useState({
@@ -169,7 +170,7 @@ export default function CreatePlaylistModal() {
   const duration = getTotalDuration(filteredTracks);
 
   const savePlaylist = (songs) => {
-    const uris = songs.filter(song => matchFilter(song, playlistMinMax)).map(song => song.uri)
+    const uris = filterTracks(songs, playlistMinMax).map(song => song.uri)
     axios.post(`http://localhost:9000/playlists/create`, {
       accessToken,
       name,
@@ -178,21 +179,25 @@ export default function CreatePlaylistModal() {
       image
     })
     .then((res) => {
-      console.log(res);
       setOpenCreatePlaylistModal(false);
+      setSnackbar({...snackbar, open: true, message: `${res.data.name} has been saved!`, variant: 'success'})
+      props.getPlaylists();
+    })
+    .catch(res => {
+      setSnackbar({...snackbar, open: true, message: res.message, varient: 'error'});
     });
   };
 
-  // const setImageToInitial = () => {
-  //   setImage({
-  //     lastModified: null,
-  //     lastModifiedDate: null,
-  //     name: null,
-  //     size: null,
-  //     type: 'image/jpeg',
-  //     webkitRelativePath: ''
-  //   });
-  // }
+  const setImageToInitial = () => {
+    setImage({
+      lastModified: null,
+      lastModifiedDate: null,
+      name: null,
+      size: null,
+      type: 'image/jpeg',
+      webkitRelativePath: ''
+    });
+  };
 
   const handleFileUpload = (e) => {
     const imageFile = e.target.files[0];
@@ -200,16 +205,16 @@ export default function CreatePlaylistModal() {
     const errors = [];
 
     if (!imageFile) {
-      setImage('');
+      setImageToInitial();
       return;
     }
     if (imageFile.size > 1024 * 256) {
       errors.push('max size - 256kb');
-      setImage('');
+      setImageToInitial();
     }
     if (imageFile.type !== 'image/jpeg') {
       errors.push('file type must be jpeg');
-      setImage('');
+      setImageToInitial();
     }
     setImageErrors(errors);
     if (errors.length) return;
@@ -245,7 +250,7 @@ export default function CreatePlaylistModal() {
             Description (optional)
             <textarea placeholder='A super awesome playlist.' value={description} onChange={e => setDescription(e.target.value)}/>
           </label>
-          <button className='save-playlist' onClick={() => savePlaylist(userTracks.songs)}>Save Playlist</button>
+          <button className='save-playlist' onClick={() => savePlaylist(userTracks)}>Save Playlist</button>
         </div>
       </div>
     </CreatePlaylistModalContainer>

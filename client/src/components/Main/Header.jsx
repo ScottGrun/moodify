@@ -19,8 +19,8 @@ const HeaderContainer = styled.div`
   }
 `;
 
-export default function(Header) {
-  const [ openNav, setOpenNav ] = useContext(StateContext).OpenNav;
+export default function Header(props) {
+  const [ openNav, setOpenNav ] = props.openNav;
 
   return(
     <HeaderContainer>

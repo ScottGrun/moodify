@@ -17,6 +17,7 @@ export default function App() {
   const [ playlistMinMax, setPlaylistMinMax ] = useState({data:{}, loaded: false});
   const [ filteredTracks, setFilteredTracks ] = useState([]);
   const [ openSavePresetModal, setOpenSavePresetModal ] = useState(false);
+  const [ songsInView, setSongsInView ] = useState(15);
 
   if (cookies.accessToken && !accessToken) {
     setAccessToken(cookies.accessToken);
@@ -25,16 +26,17 @@ export default function App() {
   return (
     <StateContext.Provider value={ {
       AccessToken: [ accessToken, setAccessToken ],
-      ChartData: [ chartData, setChartData ],
-      ChartValues: [ chartValues, setChartValues ],
-      UserTracks: [ userTracks, setUserTracks ],
-      OpenNav: [ openNav, setOpenNav ],
-      OpenCreatePlaylistModal: [ openCreatePlaylistModal, setOpenCreatePlaylistModal ],
-      OpenSavePresetModal: [ openSavePresetModal, setOpenSavePresetModal ],
-      PlaylistMinMax: [playlistMinMax, setPlaylistMinMax],
+      SongsInView: [ songsInView, setSongsInView ],
     } }>
       { accessToken
-        ? <Main />
+        ? <Main 
+            playlistMinMax={[ playlistMinMax, setPlaylistMinMax ]}
+            openCreatePlaylistModal={[ openCreatePlaylistModal, setOpenCreatePlaylistModal ]}
+            openNav={[ openNav, setOpenNav ]}
+            userTracks={[ userTracks, setUserTracks ]}
+            chartValues={[ chartValues, setChartValues ]}
+            chartData={[ chartData, setChartData ]}
+          />
         : <Landing />
       }
     </StateContext.Provider>

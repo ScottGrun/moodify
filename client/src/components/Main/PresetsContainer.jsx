@@ -37,12 +37,19 @@ const breakPoints = [
   {width: 300, itemsToShow: 3},
 ]
 
-export default () => {
+export default (props) => {
+  const [chartValues, setChartValues] = props.chartValues;
+  const [playlistMinMax, setPlaylistMinMax] = props.playlistMinMax;
   const [state, setState] = useState({swiperSlides: []});
 
   const buildSwiperSlidesFromPresets = (presets, userLikesLookup) => {
     const slides = presets.map(preset => {
-      return <Preset { ...preset } liked={userLikesLookup[preset.id]}/>
+      return <Preset 
+        { ...preset } 
+        liked={userLikesLookup[preset.id]}
+        chartValues={props.chartValues}
+        playlistMinMax={props.playlistMinMax}
+      />
     })
     return slides;
   };

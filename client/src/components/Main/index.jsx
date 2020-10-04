@@ -1,20 +1,25 @@
 import React, { useEffect, useContext, useState } from 'react';
+import { useCookies } from 'react-cookie';
 import axios from 'axios';
 import { StateContext } from '../../App';
 import { setSliderMarks } from '../../helpers/util';
 import styled from 'styled-components';
+import { Snackbar } from '@material-ui/core';
+import Slide from '@material-ui/core/Slide';
 
 // Components
 import Header from './Header';
 import Navigation from './Navigation.jsx';
 import PlaylistImage from './PlaylistImage';
 import PlaylistItemContainer from './PlaylistItemContainer';
+
 import RadarChart from './RadarChart';
 import Sliders from './Sliders';
 import PresetsContainer from './PresetsContainer';
 import OpenMenu from './OpenMenu';
 import CreatePlaylistModal from './CreatePlaylistModal';
 import SavePresetModal from './SavePresetModal';
+
 
 const HamburgerMenu = styled.div`
   height: 24px;
@@ -52,7 +57,7 @@ const Overlay = styled.div`
 `;
 
 const MainContainer = styled.div`
-  max-width: 1440px;
+  max-width: 1600px;
   margin: 24px auto 0 auto;
   position: relative;
   display: grid;
@@ -71,7 +76,7 @@ const MainContainer = styled.div`
       'main main main main main main main playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls';
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 800px) {
     margin: 16px;
     grid-template-areas:
       'header header header header header header header header header header header header'
@@ -79,13 +84,11 @@ const MainContainer = styled.div`
       'main main main main main main main main main main main main ';
   }
 
-  @media(max-width: 375px){
+  @media (max-width: 450px) {
     grid-template-areas:
-    'header header header header header header header header header header header header'
-    'playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls '
-    'main main main main main main main main main main main main ';
-
-
+      'header header header header header header header header header header header header'
+      'playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls '
+      'main main main main main main main main main main main main ';
   }
 `;
 
@@ -103,7 +106,9 @@ const Sidebar = styled.div`
     transform: translateX(282px);
     transition: all 0.5s ease-in-out;
     z-index: 1000;
-    ${({ open }) => open &&`
+    ${({ open }) =>
+      open &&
+      `
       transform: translateX(0);
     `}
   }
@@ -111,6 +116,8 @@ const Sidebar = styled.div`
 
 const MainContent = styled.div`
   grid-area: main;
+  display: flex;
+  flex-flow: column;
 `;
 
 const PlaylistControls = styled.div`
@@ -129,13 +136,12 @@ const PlaylistControls = styled.div`
       margin-bottom: 10px;
     }
   }
-
-  @media (max-width: 768px) {
+  @media (max-width: 800px) {
     display: flex;
     flex-flow: row;
   }
 
-  @media (max-width: 375px) {
+  @media (max-width: 450px) {
     display: flex;
     flex-flow: column;
   }
@@ -186,57 +192,174 @@ const SavePresetButton = styled.button`
 const ControlsContainer = styled.div`
   width: 100%;
 
-  @media (mix-max: 768px) {
+  @media (mix-max: 800px) {
     width: 50%;
   }
 `;
 
-const Main = () => {
+const StyledSnackbar = styled(Snackbar)`
+  .snackbar {
+    height: 48px;
+    min-width: 288px;
+    color: white;
+    font-size: 14px;
+    letter-spacing: 0.2px;
+    padding: 6px 24px;
+    line-height: 1.43;
+    border-radius: 4px;
+    box-shadow: 0px 3px 5px -1px rgba(0,0,0,0.2), 0px 6px 10px 0px rgba(0,0,0,0.14), 0px 1px 18px 0px rgba(0,0,0,0.12);
+    display: flex;
+    align-items: center;
+    background-color: ${props => props.variant === 'success' ? '#4caf50' : '#f44336'};
+
+    ion-icon {
+      font-size: 22px;
+      margin-right: 14px;
+    }
+
+    .login-again {
+      display: flex;
+      justify-content: flex-end;
+
+      button {
+        border: none;
+        outline: none;
+        border-radius: 4px;
+        margin-left: 10px;
+        padding: 4px;
+        background-color: #272c34;
+        color: white;
+      }
+    }
+  }
+`;
+
+function TransitionDown(props) {
+  return <Slide {...props} direction="down" />;
+}
+
+const Main = (props) => {
+  const [cookies, setCookie, removeCookie] = useCookies(['cookie-name']);
   const [accessToken, setAccessToken] = useContext(StateContext).AccessToken;
-  const [userTracks, setTracks] = useContext(StateContext).UserTracks;
-  const [chartValues, setChartValues] = useContext(StateContext).ChartValues;
-  const [openNav, setOpenNav] = useContext(StateContext).OpenNav;
-  const [openCreatePlaylistModal, setOpenCreatePlaylistModal] = useContext(
-    StateContext,
-  ).OpenCreatePlaylistModal;
-  const [playlistMinMax, setPlaylistMinMax] = useContext(StateContext).PlaylistMinMax;
+  const [loading, setLoading] = useState(false);
+  const [userTracks, setTracks] = props.userTracks;
+  const [chartValues, setChartValues] = props.chartValues;
+  const [openNav, setOpenNav] = props.openNav;
+  const [openCreatePlaylistModal, setOpenCreatePlaylistModal] = props.openCreatePlaylistModal;
+  const [playlistMinMax, setPlaylistMinMax] = props.playlistMinMax;
   const [playlists, setPlaylists] = useState([]);
-  const [openSavePresetModal, setOpenSavePresetModal] = useContext(StateContext).OpenSavePresetModal;
+  const [openSavePresetModal, setOpenSavePresetModal] = useState(false);
   const [marks, setMarks] = useState({});
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: 'empty',
+    variant: '',
+  });
 
   const getSavedTracks = () => {
-    axios
-      .post(`http://localhost:9000/tracks/saved`, {
-        accessToken,
-      })
-      .then((res) => {
-        setTracks({
-          loading: true,
-          songs: res.data.songs,
-        });
-        setChartValues(res.data.averages);
-        setPlaylistMinMax({ data: res.data.minMax, loaded: true });
-        setSliderMarks(res.data.minMax, setMarks);
-      });
-  };
-
-  const getPlaylists = () => {
-    axios.post('http://localhost:9000/playlists/ids', { accessToken })
+    axios.post(`http://localhost:9000/tracks/saved`, {
+      accessToken,
+    })
     .then((res) => {
-      setPlaylists(res.data);
+      setTracks({
+        loading: true,
+        songs: res.data.songs,
+      });
+      setChartValues(res.data.averages);
+      setPlaylistMinMax({ data: res.data.minMax, loaded: true });
+      setSliderMarks(res.data.minMax, setMarks);
+    })
+    .catch(res => {
+      setSnackbar({...snackbar, open: true, message: res.message});
     });
   };
 
+  const getPlaylists = () => {
+    axios.post('http://localhost:9000/playlists/ids', { accessToken }).then((res) => {
+      setPlaylists(res.data);
+    })
+    .catch(res => {
+      setSnackbar({...snackbar, open: true, message: res.message, variant: 'error'});
+    });
+  };
+
+  const getSessionData = () => {
+    setTracks(JSON.parse(localStorage.getItem('userTracks')));
+    setChartValues(JSON.parse(localStorage.getItem('chartValues')));
+    setPlaylistMinMax(JSON.parse(localStorage.getItem('playlistMinMax')));
+    setPlaylists(JSON.parse(localStorage.getItem('playlists')));
+    setMarks(JSON.parse(localStorage.getItem('marks')));
+
+    localStorage.clear();
+  };
+
   useEffect(() => {
-    getSavedTracks();
-    getPlaylists();
-  }, []);
+    if (localStorage.getItem('userTracks')) {
+      getSessionData();
+    } else {
+      getSavedTracks();
+      getPlaylists();
+    }
+  },[]);
+
+  const closeSnackbar = () => {
+    setSnackbar({ ...snackbar, open: false });
+  };
+
+  const login = () => {
+    removeCookie('accessToken');
+    removeCookie('refreshToken');
+    removeCookie('userData');
+    setAccessToken(null);
+
+    localStorage.setItem('userTracks', JSON.stringify(userTracks));
+    localStorage.setItem('chartValues', JSON.stringify(chartValues));
+    localStorage.setItem('playlistMinMax', JSON.stringify(playlistMinMax));
+    localStorage.setItem('playlists', JSON.stringify(playlists));
+    localStorage.setItem('marks', JSON.stringify(marks));
+
+    axios.get(`http://localhost:9000/auth/login`)
+      .then(res => {
+        window.location = res.data;
+      })
+      .catch(err => console.log(err));
+  };
 
   return (
     <>
+      <StyledSnackbar 
+        key={ 'top' + 'center' }
+        anchorOrigin={{ 
+          vertical: 'top', 
+          horizontal: 'center' 
+        }}
+        open={snackbar.open}
+        onClose={closeSnackbar}
+        autoHideDuration={5000}
+        TransitionComponent={TransitionDown}
+        variant={snackbar.variant}
+      >
+        <div className='snackbar'>
+          {  
+            snackbar.variant === 'success'
+            ? <ion-icon name="checkmark-circle-outline"></ion-icon>
+            : <ion-icon name="alert-circle-outline"></ion-icon>
+          }
+          {
+            snackbar.message.includes('401')
+            ? <div className='login-again'>
+                <p>Your session ended</p>
+                <button onClick={login}>Login</button>
+              </div>
+            : <p>{snackbar.message}</p>
+          }
+        </div>
+      </StyledSnackbar>
+
       <HamburgerMenu onClick={() => setOpenNav(!openNav)}>
-        <OpenMenu />
+        <OpenMenu openNav={props.openNav} />
       </HamburgerMenu>
+
       <Overlay
         openCYP={openCreatePlaylistModal || openNav}
         openPreset={openSavePresetModal}
@@ -249,33 +372,65 @@ const Main = () => {
 
       <MainContainer openNav={openNav}>
         <HeaderContainer>
-          <Header />
+          <Header openNav={props.openNav} />
         </HeaderContainer>
 
         <Sidebar open={openNav}>
-          <Navigation playlists={playlists} marksState={[marks, setMarks]}/>
+          <Navigation
+            playlists={playlists}
+            marksState={[marks, setMarks]}
+            playlistMinMax={props.playlistMinMax}
+            openNav={props.openNav}
+            userTracks={props.userTracks}
+            chartValues={props.chartValues}
+            snackbar={[snackbar, setSnackbar]}
+          />
         </Sidebar>
 
         <MainContent>
-          <CreatePlaylistModal />
-          <SavePresetModal />
+          <SavePresetModal 
+            openSavePresetModal={[openSavePresetModal, setOpenSavePresetModal]}
+            playlistMinMax={props.playlistMinMax}  
+          />
+          <CreatePlaylistModal
+            playlistMinMax={props.playlistMinMax}
+            openCreatePlaylistModal={props.openCreatePlaylistModal}
+            userTracks={props.userTracks}
+            snackbar={[snackbar, setSnackbar]}
+            getPlaylists={getPlaylists}
+          />
 
           <div className="playlists-container">
             <div className="playlist-image-container">
-              <PlaylistImage />
+              <PlaylistImage playlistMinMax={props.playlistMinMax} userTracks={props.userTracks} />
             </div>
           </div>
-
-        <PlaylistItemContainer />
+          <PlaylistItemContainer
+            loading={[loading, setLoading]}
+            playlistMinMax={props.playlistMinMax}
+            userTracks={props.userTracks}
+            chartValues={props.chartValues}
+            snackbar={[snackbar, setSnackbar]}
+          />
+          {/* <PlaylistRecomendationContainer 
+          accessToken={accessToken}
+            playlistMinMax={props.playlistMinMax}
+            chartValues={props.chartValues}
+            userTracks={props.userTracks}
+            snackbar={[snackbar, setSnackbar]}
+          /> */}
         </MainContent>
         <PlaylistControls>
-            <RadarChart />
+          <RadarChart chartValues={props.chartValues} chartData={props.chartData} />
 
           <ControlsContainer>
-            <Sliders marksState={[marks, setMarks]}/>
-            <CreatePlaylistButton
-              onClick={() => setOpenCreatePlaylistModal(true)}
-            >
+            <Sliders
+              marksState={[marks, setMarks]}
+              playlistMinMax={props.playlistMinMax}
+              userTracks={props.userTracks}
+              chartValues={props.chartValues}
+            />
+            <CreatePlaylistButton onClick={() => setOpenCreatePlaylistModal(true)}>
               Create Playlist
             </CreatePlaylistButton>
           </ControlsContainer>
@@ -290,7 +445,10 @@ const Main = () => {
                 Save Preset
               </SavePresetButton>
             </div>
-            <PresetsContainer /> 
+            <PresetsContainer 
+              playlistMinMax={props.playlistMinMax}
+              chartValues={props.chartValues}
+            /> 
           </div>
     
         </PlaylistControls>

@@ -122,22 +122,15 @@ const SavePresetModalContainer = styled.div`
   }
 `;
 
-export default function SavePresetModal() {
+export default function SavePresetModal(props) {
   const [ cookies, setCookie, removeCookie ] = useCookies(['cookie-name']);
-  const [openSavePresetModal, setOpenSavePresetModal] = useContext(StateContext).OpenSavePresetModal;
+  const [openSavePresetModal, setOpenSavePresetModal] = props.openSavePresetModal;
   const [name, setName] = useState('');
   const [imageUrl, setImageUrl] = useState('');
-  const [playlistMinMax, setPlaylistMinMax] = useContext(StateContext).PlaylistMinMax;
+  const [playlistMinMax, setPlaylistMinMax] = props.playlistMinMax;
   
   const savePreset = () => {
     const user_id = cookies.userData.display_name;
-    // console.log(user_id, name, imageUrl, playlistMinMax.data);
-    // console.log(playlistMinMax.data.tempo);
-    // console.log(playlistMinMax.data.instrumentalness);
-    // console.log(playlistMinMax.data.energy);
-    // console.log(playlistMinMax.data.valence);
-    // console.log(playlistMinMax.data.danceability);
-    // console.log(playlistMinMax.data.loudness);
     axios
       .post(`http://localhost:9000/presets`, {
         name,

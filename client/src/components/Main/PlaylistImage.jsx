@@ -55,22 +55,21 @@ const PlayListImageContainer = styled.div`
     }
   }
 
-  @media(max-width: 768px) {
+  @media(max-width: 800px) {
     display: none;
   }
 `;
 
-export default function PlaylistImage() {
-  const [userTracks, setTracks] = useContext(StateContext).UserTracks;
-  const [playlistMinMax, setPlaylistMinMax] = useContext(StateContext).PlaylistMinMax;
+export default function PlaylistImage(props) {
+  const [userTracks, setTracks] = props.userTracks;
+  const [playlistMinMax, setPlaylistMinMax] = props.playlistMinMax;
 
   const filteredTracks = filterTracks(userTracks, playlistMinMax);
   const duration = getTotalDuration(filteredTracks);
-
   const randomImageFromSpotify = 'https://i.imgur.com/iuyq8dP.png'
 
   return(
-    <PlayListImageContainer playlistImage={randomImageFromSpotify}>
+    <PlayListImageContainer playlistImage={randomImageFromSpotify}> 
       <div className='dark-overlay' />
       <div className='playlist-text'>
         <h2 className='playlist-name'>
