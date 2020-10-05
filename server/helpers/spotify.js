@@ -46,7 +46,6 @@ const getTracksFromPlaylist = async (playlist_id, totalTracks, accessToken, res)
     })
     .catch(err => res.sendStatus(err.response.status));
 
-    console.log('here', playlistItems.data);
     tracksReceived += 100;
     playlistTracks.push(...playlistItems.data.items);
   }

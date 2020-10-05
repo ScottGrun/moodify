@@ -198,9 +198,11 @@ const Landing = () => {
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
-    window.addEventListener('resize', handleResize);
-
     return () => window.removeEventListener('scroll', handleScroll);
+  },[]);
+
+  useEffect(() => {
+    window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   },[]);
 
@@ -208,7 +210,6 @@ const Landing = () => {
     <LandingPageContainer>
       <section className='section1'>
         <img className='background-image' src={'https://images.unsplash.com/photo-1554941829-202a0b2403b8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80'} />
-        <div className='background-blur'/>
         <div className='content-container'>
           <img className='logo' src={logo} />
           <div className='cta-container'>

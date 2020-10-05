@@ -201,7 +201,9 @@ export default function CreatePlaylistModal(props) {
       props.getPlaylists();
     })
     .catch(res => {
-      setSnackbar({...snackbar, open: true, message: res.message, varient: 'error'});
+      setOpenCreatePlaylistModal(false);
+      const message = res.message.includes('414') ? "Sorry, you can't save that many songs at once." : res.message;
+      setSnackbar({...snackbar, open: true, message, variant: 'error'});
     });
   };
 

@@ -123,7 +123,7 @@ export default function Sliders(props) {
           />
         </div>
         <div className="slider-container">
-          <p>instrumentalness</p>
+          <p>Instrumentalness</p>
           <Slider
             key={2}
             min={0}
