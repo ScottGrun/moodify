@@ -1,8 +1,22 @@
 import React, { useState, useContext, useEffect } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { StateContext } from '../../App';
 import axios from 'axios';
 import { useCookies } from 'react-cookie';
+
+const slideDown = keyframes`
+
+  from{
+    transform: translate(0, -40%);
+    opacity: 0;
+  }
+
+  to{
+    transform: translate(0, 40%);
+    opacity: 1;
+  }
+
+`
 
 const SavePresetModalContainer = styled.div`
   width: 100%;
@@ -11,9 +25,8 @@ const SavePresetModalContainer = styled.div`
   max-height: 410px;
   position: absolute;
   border-radius: 4px;
-  top: 50%;
   left: 20%;
-  transform: translate(0, -50%);
+  transform: translate(0, 40%);
   background-color: #28292D;
   color: white;
   display: flex;
@@ -22,6 +35,7 @@ const SavePresetModalContainer = styled.div`
   padding: 25px;
   box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
   display: none;
+  animation: ${slideDown} 500ms ease;
   z-index: 9999;
   ${({ open }) => open && `
     display: block;
@@ -127,6 +141,7 @@ const SavePresetModalContainer = styled.div`
 export default function SavePresetModal(props) {
   const [ cookies, setCookie, removeCookie ] = useCookies(['cookie-name']);
   const [openSavePresetModal, setOpenSavePresetModal] = props.openSavePresetModal;
+  const [snackbar, setSnackbar] = props.snackbar;
   const [name, setName] = useState('');
   const [imageUrl, setImageUrl] = useState('');
   const [playlistMinMax, setPlaylistMinMax] = props.playlistMinMax;
@@ -142,10 +157,13 @@ export default function SavePresetModal(props) {
       })
       .then((res) => {
         setImageUrl(randomImageUrl());
-        console.log(res);
+        setOpenSavePresetModal(false);
+        setSnackbar({ ...snackbar, open: true, message: `${res.data.name} has been saved!`, variant: 'success' })
+        // console.log(res);
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((res) => {
+        setSnackbar({ ...snackbar, open: true, message: res.message, variant: 'error'});
+        // console.log(err);
       });
   };
 

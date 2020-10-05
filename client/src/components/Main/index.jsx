@@ -473,6 +473,7 @@ const Main = (props) => {
         <MainContent>
           <SavePresetModal 
             openSavePresetModal={[openSavePresetModal, setOpenSavePresetModal]}
+            snackbar={[snackbar, setSnackbar]}
             playlistMinMax={props.playlistMinMax}  
           />
           <CreatePlaylistModal
