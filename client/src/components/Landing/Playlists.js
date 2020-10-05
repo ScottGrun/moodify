@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import playlistsFull from './assets/playlistsFull.png';
-import radarChart from './assets/radarChart.png';
+import playlistsFull from './assets/playlists-cut.png';
+import radarChart from './assets/radar-chart.png';
 
 const PlaylistContainer = styled.div`
   display: flex;
