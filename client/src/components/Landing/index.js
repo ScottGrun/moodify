@@ -49,6 +49,7 @@ const LandingPageContainer = styled.div`
         width: 100%;
         display: flex;
         align-items: center;
+        justify-content: center;
 
         .text {
           width: 50%;
@@ -58,7 +59,7 @@ const LandingPageContainer = styled.div`
           align-items: center;
 
           .text-container {
-            max-width: 560px;
+            max-width: 540px;
             display: flex;
             flex-direction: column;
             color: white;
@@ -218,9 +219,9 @@ const Landing = () => {
           </div>
         </div>
       </section>
-      <AlbumCovers />
+      {/* <AlbumCovers />
       <Sliders />
-      <Playlists />
+      <Playlists /> */}
     </LandingPageContainer>
   );
 

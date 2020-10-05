@@ -23,7 +23,7 @@ const ColumnHeaderContainer = styled.div`
   font-size: 11px;
   font-weight: normal;
 
-  p {
+  .feature-name {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -50,7 +50,7 @@ const ColumnHeaderContainer = styled.div`
     display: none;
   }
 
-  p {
+  .feature-name {
     font-size: 14px;
     width: 75px;
     text-align: center;
@@ -168,48 +168,48 @@ const PlaylistItemContainer = (props) => {
       <StyledHeader>
         <SectionHeader>Your Songs</SectionHeader>
         <ColumnHeaderContainer>
-          <p onClick={() => sortByFeature('tempo')}>
+          <div className='feature-name' onClick={() => sortByFeature('tempo')}>
             BPM
             <div className='chevrons'>
               <img src={chevron} />
               <img src={chevron} style={{ transform: 'rotate(180deg)' }}/>
             </div>
-          </p>
-          <p onClick={() => sortByFeature('energy')}>
+          </div>
+          <div className='feature-name' onClick={() => sortByFeature('energy')}>
             Energy
             <div className='chevrons'>
               <img src={chevron} />
               <img src={chevron} style={{ transform: 'rotate(180deg)' }}/>
             </div>
-          </p>
-          <p onClick={() => sortByFeature('danceability')}>
+          </div>
+          <div className='feature-name' onClick={() => sortByFeature('danceability')}>
             Dance
             <div className='chevrons'>
               <img src={chevron} />
               <img src={chevron} style={{ transform: 'rotate(180deg)' }}/>
             </div>
-          </p>
-          <p onClick={() => sortByFeature('valence')}>
+          </div>
+          <div className='feature-name' onClick={() => sortByFeature('valence')}>
             Valence
             <div className='chevrons'>
               <img src={chevron} />
               <img src={chevron} style={{ transform: 'rotate(180deg)' }}/>
             </div>
-          </p>
-          <p onClick={() => sortByFeature('instrumentalness')}>
+          </div>
+          <div className='feature-name' onClick={() => sortByFeature('instrumentalness')}>
             Instru
             <div className='chevrons'>
               <img src={chevron} />
               <img src={chevron} style={{ transform: 'rotate(180deg)' }}/>
             </div>
-          </p>
-          <p onClick={() => sortByFeature('loudness')}>
+          </div>
+          <div className='feature-name' onClick={() => sortByFeature('loudness')}>
             Loudness
             <div className='chevrons'>
               <img src={chevron} />
               <img src={chevron} style={{ transform: 'rotate(180deg)' }}/>
             </div>
-          </p>
+          </div>
         </ColumnHeaderContainer>
       </StyledHeader>
       <div className="song-list">
