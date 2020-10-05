@@ -6,11 +6,9 @@ import { GlobalStyle } from './styles';
 require('dotenv').config();
 
 ReactDOM.render(
-  <React.StrictMode>
-    <CookiesProvider>
-        <GlobalStyle />
-        <App />
-    </CookiesProvider>
-  </React.StrictMode>,
+  <CookiesProvider>
+      <GlobalStyle />
+      <App />
+  </CookiesProvider>,
   document.getElementById('root')
 );

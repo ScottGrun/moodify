@@ -37,10 +37,10 @@ const HamburgerMenu = styled.div`
 `;
 
 const Overlay = styled.div`
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
-  height: 100%;
+  height: 100vh;
   width: 100%;
   background-color: rgba(0, 0, 0, 0.4);
   display: none;
@@ -126,6 +126,7 @@ const PlaylistControls = styled.div`
 
   .presets-container {
     padding: 5px;
+
     .title {
       display: flex;
       /* justify-content: space-between; */
@@ -203,8 +204,33 @@ const PlaylistControls = styled.div`
     }
   }
   @media (max-width: 800px) {
-    display: flex;
-    flex-flow: row;
+    display: grid;
+    width: 100%;
+    gap: 16px;
+    grid-template-columns: 23% 23% 23% 23%;
+    grid-template-rows: 25% 25% 25% 25%;
+    margin-right: 20px;
+
+    .radar-chart-container {
+      grid-column-start: 1;
+      grid-column-end: 3;
+      grid-row-start: 1;
+      grid-row-end: 3;
+    }
+
+    .presets-container {
+      grid-column-start: 1;
+      grid-column-end: 3;
+      grid-row-start: 3;
+      grid-row-end: 5;
+    }
+
+    .sliders-container {
+      grid-column-start: 3;
+      grid-column-end: 5;
+      grid-row-start: 1;
+      grid-row-end: 5;
+    }
   }
 
   @media (max-width: 450px) {
@@ -505,19 +531,23 @@ const Main = (props) => {
          
         </MainContent>
         <PlaylistControls open={open} >
-          <RadarChart chartValues={props.chartValues} chartData={props.chartData} />
+          <div className='radar-chart-container'>
+            <RadarChart chartValues={props.chartValues} chartData={props.chartData} />
+          </div>
 
-          <ControlsContainer>
-            <Sliders
-              marksState={[marks, setMarks]}
-              playlistMinMax={props.playlistMinMax}
-              userTracks={props.userTracks}
-              chartValues={props.chartValues}
-            />
-            <CreatePlaylistButton onClick={() => setOpenCreatePlaylistModal(true)}>
-              Create Playlist
-            </CreatePlaylistButton>
-          </ControlsContainer>
+          <div className='sliders-container'>
+            <ControlsContainer>
+              <Sliders
+                marksState={[marks, setMarks]}
+                playlistMinMax={props.playlistMinMax}
+                userTracks={props.userTracks}
+                chartValues={props.chartValues}
+              />
+              <CreatePlaylistButton onClick={() => setOpenCreatePlaylistModal(true)}>
+                Create Playlist
+              </CreatePlaylistButton>
+            </ControlsContainer>
+          </div>
 
           <div className="presets-container" >
             <div className='title' >
