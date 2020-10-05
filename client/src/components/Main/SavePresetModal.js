@@ -21,8 +21,6 @@ const slideDown = keyframes`
 const SavePresetModalContainer = styled.div`
   width: 100%;
   max-width: 614px;
-  height: 100%;
-  max-height: 410px;
   position: absolute;
   border-radius: 4px;
   left: 20%;

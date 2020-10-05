@@ -7,7 +7,7 @@ const PlaylistContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  max-width: 1200px;
+  max-width: 1000px;
   width: calc(100% - 40px);
   height: 80vh;
   color: white;
@@ -24,7 +24,7 @@ const PlaylistContainer = styled.div`
       max-width: 442px;
 
       img {
-        margin-bottom: 30px;
+        margin-top: 100px;
         width: 100%;
       }
 
@@ -58,8 +58,8 @@ export default () => {
     <PlaylistContainer>
       <div className='content-container'>
         <div className='text-container'>
-          <img src={playlistsFull} />
           <p>to create the perfect playlist for any mood.</p>
+          <img src={playlistsFull} />
         </div>
         <div className='playlists'>
           <img src={radarChart} />

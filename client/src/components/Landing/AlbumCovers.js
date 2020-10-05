@@ -14,7 +14,7 @@ const StyledAlbumCovers = styled.div`
 
   .content-container {
     width: 100%;
-    max-width: 1200px;
+    max-width: 900px;
     width: calc(100% - 40px);
     display: flex;
     justify-content: space-between;

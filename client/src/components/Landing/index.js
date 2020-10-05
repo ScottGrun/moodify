@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { useCookies } from 'react-cookie';
 import { StateContext } from '../../App';
 import logo from '../../assets/logo.svg';
+import pattern from './assets/pattern.png';
 import AlbumCovers from './AlbumCovers';
 import Sliders from './Sliders';
 import Playlists from './Playlists';
@@ -37,101 +38,94 @@ const LandingPageContainer = styled.div`
     justify-content: center;
     overflow: hidden;
 
-    .background-image {
-      filter: blur(8px);
-      position: absolute;
-      top: 0;
-      left: 0;
-      height: 100%;
-      width: 100%;
-      filter: blur(8px) brightness(1.5);
-    }
-
     .content-container {
-      position: relative;
-      display: flex;
-      justify-content: space-between;
-      padding: 0 30px;
       width: 100%;
-      max-width: 1440px;
       height: 100%;
+      display: flex;
+      justify-content: center;
 
-      .logo {
-        position: absolute;
-        width: 200px;
-        height: 100px;
-        left: 30px;
-      }
-
-      .cta-container {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
+      .content {
+        height: 100%;
         width: 100%;
+        display: flex;
+        align-items: center;
 
-        .cta {
-          max-width: 432px;
+        .text {
+          width: 50%;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
 
-          h1 {
+          .text-container {
+            max-width: 560px;
+            display: flex;
+            flex-direction: column;
             color: white;
-            font-size: 64px;
-          }
 
-          button {
-            width: 200px;
-            height: 45px;
-            font-size: 18px;
-            color: white;
-            background-color: #17C274;
-            border-radius: 4px;
-            outline: none;
-            border: none;
-            margin-top: 20px;
-
-            :hover {
+            h1 {
+              font-size: 72px;
+              letter-spacing: 3px;
+              width: 100%;
+              max-width: 517px;
+              margin-bottom: 50px;
+            }
+            p {
+              font-size: 24px;
+              letter-spacing: 1px;
+              margin-bottom: 50px;
+              max-width: 560px;
+            }
+            button {
+              color: black;
+              background-color: white;
+              width: 254px;
+              height: 47px;
+              border-radius: 4px;
+              font-size: 18px;
+              letter-spacing: 0;
+              outline: none;
+              border: none;
+              font-weight: 600;
               cursor: pointer;
+            }
+          } 
+        }
+
+        .vinyl-record {
+          width: 50%;
+          height: 100%;
+          background-image: url('https://i.imgur.com/FYPO0R0.png');
+          background-size: cover;
+          background-position: left;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          img {
+            width: 100%;
+            max-width: 580px;
+            border-radius: 50%;
+            animation: rotation 3s infinite linear;
+
+            &:hover {
+              animation-play-state: paused;
             }
           }
         }
       }
-
-      .vinyl-record {
-        width: 50%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        position: relative;
-
-        img {
-          width: 600px;
-          height: 600px;
-          transform-origin: center;
-          animation: rotation 3s infinite linear;
-
-          &:hover {
-            animation-play-state: paused;
-          }
-        }
-      }
     }
-  }
 
-  @media(max-width: 1100px) {
-    .section1 {
-
-      .content-container {
-
-        .cta-container {
-          .cta {
-          }
-        }
-
-        .vinyl-record {
-
-        }
-      }
-    }
+    /* <div className='content-container'>
+      <div className='text'>
+        <h1>Create The Perfect Mood</h1>
+        <p>Use Custom Filtering Based On Spotiy's Audio Features Data To Create The Perfect Playlist For Any Mood.</p>
+        <button>Login With Spotify</button>
+      </div>
+      <div className='vinyl-record'>
+        <img src={vinylRecord}/>
+      </div>
+    </div> */
   }
 `;
 
@@ -209,29 +203,18 @@ const Landing = () => {
   return(
     <LandingPageContainer>
       <section className='section1'>
-        <img className='background-image' src={'https://images.unsplash.com/photo-1554941829-202a0b2403b8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80'} />
         <div className='content-container'>
-          <img className='logo' src={logo} />
-          <div className='cta-container'>
-            <div className='cta'>
-              <h1>Create your perfect mood with Moodify.</h1>
-              <button onClick={login}>Login With Spotify</button>
+          <div className='content'>
+            <div className='text'>
+              <div className='text-container'>
+                <h1>Create The Perfect Mood</h1>
+                <p>Use Custom Filtering Based On Spotiy's Audio Features Data To Create The Perfect Playlist For Any Mood.</p>
+                <button onClick={login}>Login With Spotify</button>
+              </div>
             </div>
-          </div>
-          <div 
-            className='vinyl-record'
-              style={{ 
-                // transform: 
-                  // `translateY(${ ((0 - offsetY) * 0.008) ** 3 }px)` 
-              }}>
-            <img 
-              src={vinylRecord} 
-              style={{
-                transform: `
-                  rotateZ(${ offsetY * -1 }deg)
-                `,
-              }}
-            />
+            <div className='vinyl-record'>
+              <img src={vinylRecord}/>
+            </div>
           </div>
         </div>
       </section>
