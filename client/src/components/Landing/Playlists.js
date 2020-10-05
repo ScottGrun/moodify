@@ -34,7 +34,7 @@ const PlaylistContainer = styled.div`
         margin-bottom: 10px;
       }
       p {
-        font-size: 18px;
+        font-size: 36px;
         letter-spacing: 1px;
       }
     }
@@ -59,8 +59,7 @@ export default () => {
       <div className='content-container'>
         <div className='text-container'>
           <img src={playlistsFull} />
-          <h1>MASTER YOUR MUSIC</h1>
-          <p>use custom filtering based on spotify's audio features data to create the perfect playlsit for any mood</p>
+          <p>to create the perfect playlist for any mood.</p>
         </div>
         <div className='playlists'>
           <img src={radarChart} />
