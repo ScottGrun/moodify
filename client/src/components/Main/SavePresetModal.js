@@ -8,7 +8,7 @@ const SavePresetModalContainer = styled.div`
   width: 100%;
   max-width: 614px;
   height: 100%;
-  max-height: 510px;
+  max-height: 410px;
   position: absolute;
   border-radius: 4px;
   top: 50%;
@@ -105,6 +105,7 @@ const SavePresetModalContainer = styled.div`
         letter-spacing: 0.2px;
         border: 2px solid white;
         border-radius: 2px;
+        margin-top: 30px;
         background-color: transparent;
         color: white;
         cursor: pointer;
@@ -172,19 +173,15 @@ export default function SavePresetModal(props) {
       <div className='content-container'>
         <div className='image-container'>
           <img src={imageUrl} alt="preset-default"/>
-          <div className='preset-stats'>
-            {presetStats()}
-          </div>
         </div>
         <div className='form'>
           <label>
             Preset Name (max 25 characters)
             <input placeholder={'Chill vibes.'} value={name} maxLength="25" onChange={e => setName(e.target.value)}/>
           </label>
-          <label>
-            Image URL
-            <input placeholder='Change default image.' onChange={e => setImageUrl(e.target.value)}/>
-          </label>
+          <div className='preset-stats'>
+            {presetStats()}
+          </div>
           <button className='save-preset' onClick={savePreset}>Save Preset</button>
         </div>
       </div>
