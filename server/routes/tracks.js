@@ -1,4 +1,8 @@
-require('dotenv').config();
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config();
+} else {
+    require('dotenv').config({ path: '/home/moodify/public_html/moodify/shared/.env' });
+}
 
 const express = require('express');
 const axios = require('axios');

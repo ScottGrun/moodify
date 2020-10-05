@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
+import { serverRoot } from '../../env';
 import Preset from './Preset';
 // import Swiper React components
 import SwiperCore, { Navigation, Pagination } from 'swiper';
@@ -56,7 +57,7 @@ export default function Presets() {
 
   const getUserLikedPresets = () => {
     return axios
-      .get(`http://localhost:9000/presets/yourlikedpresets`, { withCredentials: true });
+      .get(`${serverRoot}/presets/yourlikedpresets`, { withCredentials: true });
   };
 
   const buildSwiperSlidesFromPresets = (presets, userLikesLookup) => {
@@ -82,7 +83,7 @@ export default function Presets() {
   const setActivePresets = (path) => {
     Promise.all([
       axios
-        .get(`http://localhost:9000/presets/${path}`, { withCredentials: true }),
+        .get(`${serverRoot}/presets/${path}`, { withCredentials: true }),
       getUserLikedPresets(),
     ]).then((all) => {
       const userLikesLookup = buildLikesLookup(all[1].data);

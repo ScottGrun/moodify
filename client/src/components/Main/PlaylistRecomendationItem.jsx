@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { StateContext } from '../../App';
 import axios from 'axios';
+import { serverRoot } from '../../env';
 
 import styled, { keyframes } from 'styled-components';
 import PlayButton from '../../assets/icons/PlayButton.svg';
@@ -231,7 +232,7 @@ const PlaylistItem = (props) => {
     event.stopPropagation();
     setPosition(initialPosition);
 
-    axios.post(`http://localhost:9000/tracks/recommendations`, {
+    axios.post(`${serverRoot}/tracks/recommendations`, {
       accessToken,
       recommendationSeeds: [{ track_id: trackId }],
       playlistMinMax,

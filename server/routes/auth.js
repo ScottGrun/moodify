@@ -1,14 +1,20 @@
-require('dotenv').config();
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config();
+} else {
+    require('dotenv').config({ path: '/home/moodify/public_html/moodify/shared/.env' });
+}
+
 const express = require('express');
 const router = express.Router();
 const querystring = require('querystring');
 const axios = require('axios');
 const request = require('request');
 const { addUser } = require("../helpers/userHelper");
+const { clientRoot } = require("../env");
 
 const client_id = process.env.CLIENT_ID;
 const client_secret = process.env.CLIENT_SECRET;
-const redirect_uri = `http://localhost:3000/`;
+const redirect_uri = `${clientRoot}/`;
 const stateKey = 'spotify_auth_state';
 
 const generateRandomString = function (length) {

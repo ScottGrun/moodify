@@ -1,5 +1,10 @@
 const pg = require('pg');
-require('dotenv').config();
+
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config();
+} else {
+    require('dotenv').config({ path: '/home/moodify/public_html/moodify/shared/.env' });
+}
 
 const connectionString = `postgres://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}?sslmode=disable`;
 

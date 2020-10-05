@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import axios from 'axios';
 import styled from "styled-components";
 import { StateContext } from '../../App';
+import { serverRoot } from '../../env';
 
 // like heart icons
 import heartoutline from '../../assets/icons/heartoutline.svg';
@@ -71,7 +72,7 @@ export default function Preset(props) {
 
   const handleHeartClick = () => {
     const presetID = props.id;
-    axios.post(`http://localhost:9000/presets/${presetID}/${state.liked ? "unlike" : "like"}`, null, { withCredentials: true })
+    axios.post(`${serverRoot}/presets/${presetID}/${state.liked ? "unlike" : "like"}`, null, { withCredentials: true })
     .then((res) => {
       console.log(res);
       setState(prev => ({ ...prev, liked: !state.liked }))

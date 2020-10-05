@@ -5,6 +5,7 @@ import axios from 'axios';
 import { matchFilter } from '../../helpers/filter';
 import { filterTracks } from '../../helpers/filter';
 import { getTotalDuration } from '../../helpers/calculations';
+import { serverRoot } from '../../env';
 
 const slideDown = keyframes`
 
@@ -189,7 +190,7 @@ export default function CreatePlaylistModal(props) {
 
   const savePlaylist = (songs) => {
     const uris = filterTracks(songs, playlistMinMax).map(song => song.uri)
-    axios.post(`http://localhost:9000/playlists/create`, {
+    axios.post(`${serverRoot}/playlists/create`, {
       accessToken,
       name,
       description,

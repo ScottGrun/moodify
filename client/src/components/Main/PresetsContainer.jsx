@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Carousel from 'react-elastic-carousel';
 import Preset from './Preset';
 import axios from 'axios';
+import { serverRoot } from '../../env';
 
 const CarouselContainer = styled.div`
 * {
@@ -149,9 +150,9 @@ export default (props) => {
   const setActivePresets = (path) => {
     Promise.all([
       axios
-        .get(`http://localhost:9000/presets/${path}`, { withCredentials: true }),
+        .get(`${serverRoot}/presets/${path}`, { withCredentials: true }),
       axios
-        .get(`http://localhost:9000/presets/yourlikedpresets`, { withCredentials: true })
+        .get(`${serverRoot}/presets/yourlikedpresets`, { withCredentials: true })
     ]).then((all) => {
       const userLikesLookup = buildLikesLookup(all[1].data);
       const swiperSlides = buildSwiperSlidesFromPresets(all[0].data, userLikesLookup);
