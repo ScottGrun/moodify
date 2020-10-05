@@ -110,7 +110,7 @@ const StyledPlaylistContainer = styled.div`
 
 const PlaylistItemContainer = (props) => {
   const [songsInView, setSongsInView] = useContext(StateContext).SongsInView;
-  const [playlistMinMax, setPlaylistMinMax] = props.playlistMinMax;
+  const [playlistMinMax] = props.playlistMinMax;
   const [userTracks, setUserTracks] = props.userTracks;
   const [loading, setLoading] = props.loading;
   const [sortBy, setSortBy] = useState("");

@@ -231,6 +231,7 @@ const PlaylistItem = (props) => {
   const addSimilarSongs = (event, trackId) => {
     event.stopPropagation();
     setPosition(initialPosition);
+    const totalSongs = filterTracks(userTracks, playlistMinMax).length;
 
     axios.post(`http://localhost:9000/tracks/recommendations`, {
       accessToken,
@@ -242,8 +243,13 @@ const PlaylistItem = (props) => {
         const allSongs = {
           songs: [...prev.songs, ...res.data.songs],
         };
+
+        const newTracks = filterTracks(allSongs, playlistMinMax);
+        if (newTracks.length === totalSongs) {
+          setSnackbar({...snackbar, open: true, message: 'Sorry, could not find any similar songs'});
+        }
         setChartValues(getAverages(allSongs.songs));
-        
+
         return {
           loading: true,
           songs: [...prev.songs, ...res.data.songs],
