@@ -54,7 +54,7 @@ const PresetItemWrapper = styled.div`
   color: white;
   align-items: center;
 
-  .p{
+  .p {
     align-self: center;
   }
 `
@@ -84,12 +84,12 @@ export default function Preset(props) {
         style={{ backgroundImage: `url(${props.image_url})` }} 
         onClick={handleClick}
         alt="preset">
-        <div className="heart">
-          <img src={state.liked ? heartfilled : heartoutline} onClick={handleHeartClick} alt="heart"/> 
-        </div>
     <p>{props.name}</p>
    
      </PresetItemWrapper>
+    <div className="heart">
+      <img src={state.liked ? heartfilled : heartoutline} onClick={handleHeartClick} alt="heart"/> 
+    </div>
     </PresetItem>
   );
 };
