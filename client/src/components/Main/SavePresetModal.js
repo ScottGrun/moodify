@@ -128,7 +128,8 @@ const SavePresetModalContainer = styled.div`
         }
 
         &:hover {
-          background-color: #2ED689;
+          background-color: white;
+          color: #191F35;
         }
       }
     }
