@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect, useRef, useCallback } from 'react';
 import { StateContext } from '../../App';
 import styled from 'styled-components';
+import chevron from '../../assets/chevron.svg';
 import PlaylistItem from './PlaylistItem';
 import { filterTracks } from '../../helpers/filter';
 
@@ -14,14 +15,36 @@ const StyledHeader = styled.div`
 `;
 
 const ColumnHeaderContainer = styled.div`
-  width: 100%;
+  width: calc(100% - 10px);
   display: flex;
   align-items: center;
   justify-content: space-around;
   color: white;
-  font-family: Inter;
   font-size: 11px;
   font-weight: normal;
+
+  p {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    .chevrons {
+      display:flex;
+      flex-direction: column;
+      align-items: space-between;
+      justify-content: space-between;
+      margin-left: 5px;
+      height: 14px;
+
+      img {
+        width: 7px;
+      }
+    }
+  }
 
   @media (max-width: 450px) {
     display: none;
@@ -34,6 +57,9 @@ const ColumnHeaderContainer = styled.div`
     
     @media (max-width: 1125px) {
       width: 50px;
+      .chevrons {
+        display: none;
+      }
     }
   }
 `;
@@ -81,6 +107,7 @@ const PlaylistItemContainer = (props) => {
   const [playlistMinMax, setPlaylistMinMax] = props.playlistMinMax;
   const [userTracks, setUserTracks] = props.userTracks;
   const [loading, setLoading] = props.loading;
+  const [sortBy, setSortBy] = useState('');
 
   const observer = useRef();
   const lastSongElement = useCallback(node => {
@@ -97,7 +124,7 @@ const PlaylistItemContainer = (props) => {
   if (playlistMinMax.data.tempo) {
     filteredTracks = filterTracks(userTracks, playlistMinMax);
 
-    renderSongs = filteredTracks.slice(0, songsInView).map((song, index) => {
+    const songs = filteredTracks.slice(0, songsInView).map((song, index) => {
       return <PlaylistItem
         idx={index}
         {...song}
@@ -108,6 +135,25 @@ const PlaylistItemContainer = (props) => {
         snackbar={props.snackbar}
       />
     });
+
+    renderSongs = songs;
+  }
+
+  const sortByFeature = (feature) => {
+    let sortedTracks;
+
+    if (sortBy === feature) {
+      sortedTracks = userTracks.songs.sort((a, b) => {
+        return b.audio[feature] - a.audio[feature];
+      })
+    } else {
+      sortedTracks = userTracks.songs.sort((a, b) => {
+        return a.audio[feature] - b.audio[feature];
+      })
+    }
+
+    setUserTracks({ ...userTracks, songs: [...sortedTracks] });
+    setSortBy(feature);
   }
 
   useEffect(() => {
@@ -120,14 +166,50 @@ const PlaylistItemContainer = (props) => {
   return (
     <StyledPlaylistContainer>
       <StyledHeader>
-        <SectionHeader>Yours Songs</SectionHeader>
+        <SectionHeader>Your Songs</SectionHeader>
         <ColumnHeaderContainer>
-          <p>BPM</p>
-          <p>Energy</p>
-          <p>Dance.</p>
-          <p>Valence</p>
-          <p>Instru.</p>
-          <p>Loudness</p>
+          <p onClick={() => sortByFeature('tempo')}>
+            BPM
+            <div className='chevrons'>
+              <img src={chevron} />
+              <img src={chevron} style={{ transform: 'rotate(180deg)' }}/>
+            </div>
+          </p>
+          <p onClick={() => sortByFeature('energy')}>
+            Energy
+            <div className='chevrons'>
+              <img src={chevron} />
+              <img src={chevron} style={{ transform: 'rotate(180deg)' }}/>
+            </div>
+          </p>
+          <p onClick={() => sortByFeature('danceability')}>
+            Dance
+            <div className='chevrons'>
+              <img src={chevron} />
+              <img src={chevron} style={{ transform: 'rotate(180deg)' }}/>
+            </div>
+          </p>
+          <p onClick={() => sortByFeature('valence')}>
+            Valence
+            <div className='chevrons'>
+              <img src={chevron} />
+              <img src={chevron} style={{ transform: 'rotate(180deg)' }}/>
+            </div>
+          </p>
+          <p onClick={() => sortByFeature('instrumentalness')}>
+            Instru
+            <div className='chevrons'>
+              <img src={chevron} />
+              <img src={chevron} style={{ transform: 'rotate(180deg)' }}/>
+            </div>
+          </p>
+          <p onClick={() => sortByFeature('loudness')}>
+            Loudness
+            <div className='chevrons'>
+              <img src={chevron} />
+              <img src={chevron} style={{ transform: 'rotate(180deg)' }}/>
+            </div>
+          </p>
         </ColumnHeaderContainer>
       </StyledHeader>
       <div className="song-list">

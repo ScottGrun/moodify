@@ -16,13 +16,9 @@ import albums from '../../assets/icons/test.svg';
 const NavigationContainer = styled.div`
   width: 100%;
   height: calc(100vh - 100px);
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
   border-radius: 4px;
-
-  .scroll {
-    height: 100%;
-    overflow-y: auto;
-  }
 
   .my-playlists {
     margin-top: 20px;

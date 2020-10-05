@@ -42,7 +42,7 @@ router.post('/playlist', async (req, res) => {
         if (allTracksLength >= totalTracks) {
           const result = [];
           allTracks.forEach(tracks => result.push(...tracks));
-          console.log(result.length);
+          
           res.send({
             songs: result,
             minMax: getMinMaxes(result),

@@ -22,8 +22,6 @@ const slideDown = keyframes`
 const SavePresetModalContainer = styled.div`
   width: 100%;
   max-width: 614px;
-  height: 100%;
-  max-height: 410px;
   position: absolute;
   border-radius: 4px;
   left: 20%;
@@ -131,7 +129,8 @@ const SavePresetModalContainer = styled.div`
         }
 
         &:hover {
-          background-color: #2ED689;
+          background-color: white;
+          color: #191F35;
         }
       }
     }
@@ -181,7 +180,7 @@ export default function SavePresetModal(props) {
 
   const presetStats = () => {
     if (Object.keys(playlistMinMax.data).length > 0) {
-      return (Object.keys(playlistMinMax.data).map(key => <p key={key}>{key}: {playlistMinMax.data[key][0]} - {playlistMinMax.data[key][1]}</p>)
+      return (Object.keys(playlistMinMax.data).map(key => <p key={key}>{key}: {playlistMinMax.data[key][0]} — {playlistMinMax.data[key][1]}</p>)
       );
     }
   };

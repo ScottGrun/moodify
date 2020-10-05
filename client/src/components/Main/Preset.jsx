@@ -32,7 +32,7 @@ const PresetItem = styled.div`
     position: absolute;
     right: 0;
     bottom: 0;
-    z-index: 1000;
+    z-index: 99;
     background-color: none;
     padding: 5px;
   }
@@ -74,7 +74,7 @@ export default function Preset(props) {
     const presetID = props.id;
     axios.post(`${serverRoot}/presets/${presetID}/${state.liked ? "unlike" : "like"}`, null, { withCredentials: true })
     .then((res) => {
-      console.log(res);
+      // console.log(res);
       setState(prev => ({ ...prev, liked: !state.liked }))
     });
   };

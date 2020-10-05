@@ -13,6 +13,9 @@ const { getUserId } = require('../helpers/spotify');
 router.post('/create', async (req, res) => {
   let { accessToken, name, description, uris, image } = req.body;
   let playlistData;
+  if (uris.length >= 200) return res.status(414).send({
+    message: 'Uri too long, status 414'
+  })
   
   const user_id = await getUserId(accessToken, res);
   
@@ -46,13 +49,10 @@ router.post('/create', async (req, res) => {
   
   // add playlist image
   if (image.size !== null) {
-    axios({
+    await axios({
       method: 'put',
       url: `https://api.spotify.com/v1/playlists/${playlist_id}/images`,
-      headers: { 
-        Authorization: 'Bearer ' + accessToken, 
-        'Content-Type': 'image/jpeg' 
-      },
+      headers: { Authorization: 'Bearer ' + accessToken, 'Content-Type': 'image/jpeg' },
       data: image.slice(23),
     }).catch(err => res.sendStatus(err.response.status));
   }
