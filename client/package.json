@@ -24,7 +24,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "start:prod": "NODE_ENV=production npm start",
+    "start:prod": "NODE_ENV=production react-scripts start",
     "build": "react-scripts build",
     "build:prod": "NODE_ENV=production react-scripts build",
     "test": "react-scripts test",
