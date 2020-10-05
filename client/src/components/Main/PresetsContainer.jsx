@@ -164,6 +164,7 @@ export default (props) => {
   },[props.displayedPresets]);
 
   return(
+    state.swiperSlides && 
     <CarouselContainer>
       <Carousel 
         breakPoints={breakPoints}
