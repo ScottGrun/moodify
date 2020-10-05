@@ -28,6 +28,7 @@ const getUserPresets = function(db, userID) {
   SELECT *
   FROM presets
   WHERE user_id = $1
+  ORDER BY created_at DESC
   `, [userID])
     .then(res => {
       return res.rows;
