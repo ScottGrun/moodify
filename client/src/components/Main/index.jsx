@@ -6,6 +6,7 @@ import { setSliderMarks } from '../../helpers/util';
 import styled from 'styled-components';
 import { Snackbar } from '@material-ui/core';
 import Slide from '@material-ui/core/Slide';
+import { v4 as uuidv4 } from 'uuid';
 
 // Components
 import Header from './Header';
@@ -406,7 +407,7 @@ const Main = (props) => {
 
   const presetDropdownItems = displayedPresetsPaths.map(path => {
     return (
-      <li onClick={() => setDisplayedPresets(path)}>
+      <li onClick={() => setDisplayedPresets(path)} key={uuidv4()}>
         {displayedPresetsLabels[path]}
       </li>
     );
