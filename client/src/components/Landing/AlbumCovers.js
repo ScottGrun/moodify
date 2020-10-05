@@ -2,18 +2,20 @@ import React from 'react';
 import styled from 'styled-components';
 import songAlbums from './assets/song-albums.png';
 
-const StyledCatchPhrase = styled.div`
+const StyledAlbumCovers = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  max-width: 1200px;
-  width: calc(100% - 40px);
+  width: 100%;
   height: 80vh;
   color: white;
-  margin-top: 50px;
+  background-color: #191F35;
+  z-index: 0;
 
   .content-container {
     width: 100%;
+    max-width: 1200px;
+    width: calc(100% - 40px);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -22,13 +24,8 @@ const StyledCatchPhrase = styled.div`
       width: 48%;
       max-width: 442px;
 
-      h1 {
-        font-size: 36px;
-        letter-spacing: 2.4px;
-        margin-bottom: 10px;
-      }
       p {
-        font-size: 18px;
+        font-size: 36px;
         letter-spacing: 1px;
       }
     }
@@ -43,18 +40,17 @@ const StyledCatchPhrase = styled.div`
   }
 `;
 
-export default () => {
+export default function AlbumCovers() {
   return(
-    <StyledCatchPhrase>
+    <StyledAlbumCovers>
       <div className='content-container'>
         <div className='text-container'>
-          <h1>MASTER YOUR MUSIC</h1>
-          <p>use custom filtering based on spotify's audio features data to create the perfect playlsit for any mood</p>
+          <p>Filter through your music library...</p>
         </div>
         <div className='album-images'>
           <img src={songAlbums} />
         </div>
       </div>
-    </StyledCatchPhrase>
+    </StyledAlbumCovers>
   )
 };

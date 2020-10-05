@@ -13,25 +13,40 @@ import { clientRoot, serverRoot } from '../../env';
 import vinylRecord from './assets/vinyl-record.png';
 
 const LandingPageContainer = styled.div`
+  @keyframes rotation {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(359deg);
+    }
+  }
+
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #101422;
   overflow: hidden;
 
   .section1 {
     width: 100%;
     height: 100vh;
-    padding-bottom: 50px;
-    background-image: url('https://images.unsplash.com/photo-1523821741446-edb2b68bb7a0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80');
-    background-size: cover;
-    background-position: center;
     position: relative;
     display: flex;
     justify-content: center;
+    overflow: hidden;
+
+    .background-image {
+      filter: blur(8px);
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      filter: blur(8px) brightness(1.5);
+    }
 
     .content-container {
       position: relative;
@@ -40,13 +55,13 @@ const LandingPageContainer = styled.div`
       padding: 0 30px;
       width: 100%;
       max-width: 1440px;
+      height: 100%;
 
       .logo {
         position: absolute;
         width: 200px;
         height: 100px;
         left: 30px;
-        z-index: 100;
       }
 
       .cta-container {
@@ -55,7 +70,6 @@ const LandingPageContainer = styled.div`
         justify-content: center;
         align-items: center;
         width: 100%;
-        z-index: 100;
 
         .cta {
           max-width: 432px;
@@ -84,12 +98,38 @@ const LandingPageContainer = styled.div`
       }
 
       .vinyl-record {
+        width: 50%;
+        height: 100%;
         display: flex;
         align-items: center;
+        position: relative;
 
         img {
           width: 600px;
           height: 600px;
+          transform-origin: center;
+          animation: rotation 3s infinite linear;
+
+          &:hover {
+            animation-play-state: paused;
+          }
+        }
+      }
+    }
+  }
+
+  @media(max-width: 1100px) {
+    .section1 {
+
+      .content-container {
+
+        .cta-container {
+          .cta {
+          }
+        }
+
+        .vinyl-record {
+
         }
       }
     }
@@ -149,22 +189,27 @@ const Landing = () => {
     }
   },[]);
 
-  // const [rotation, setRotation] = useState(0);
-  // const [offsetY, setOffsetY] = useState(0);
-  // const handleResize = () => setRotation(window.innerWidth)
-  // const handleScroll = () => setOffsetY(window.pageYOffset);
+  const [rotation, setRotation] = useState(0);
+  const [offsetY, setOffsetY] = useState(0);
+  const handleResize = () => setRotation(window.innerWidth)
+  const handleScroll = () => {
+    console.log(window.pageYOffset);
+    setOffsetY(window.pageYOffset)
+  };
 
-  // useEffect(() => {
-  //   window.addEventListener('scroll', handleScroll);
-  //   window.addEventListener('resize', handleResize);
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('resize', handleResize);
 
-  //   return () => window.removeEventListener('scroll', handleScroll);
-  //   return () => window.removeEventListener('resize', handleResize);
-  // },[]);
+    return () => window.removeEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('resize', handleResize);
+  },[]);
 
   return(
     <LandingPageContainer>
       <section className='section1'>
+        <img className='background-image' src={'https://images.unsplash.com/photo-1554941829-202a0b2403b8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80'} />
+        <div className='background-blur'/>
         <div className='content-container'>
           <img className='logo' src={logo} />
           <div className='cta-container'>
@@ -174,9 +219,19 @@ const Landing = () => {
             </div>
           </div>
           <div 
-            className='vinyl-record'>
-            {/* // style={{ transform: `rotateZ(${ rotation * 0.1 + offsetY * 0.05 }deg)` }}> */}
-            <img src={vinylRecord} />
+            className='vinyl-record'
+              style={{ 
+                // transform: 
+                  // `translateY(${ ((0 - offsetY) * 0.008) ** 3 }px)` 
+              }}>
+            <img 
+              src={vinylRecord} 
+              style={{
+                transform: `
+                  rotateZ(${ offsetY * -1 }deg)
+                `,
+              }}
+            />
           </div>
         </div>
       </section>

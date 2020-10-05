@@ -18,7 +18,6 @@ to{
   transform: translate(0, 40%);
   opacity: 1;
 }
-
 `
 
 const CreatePlaylistModalContainer = styled.div`

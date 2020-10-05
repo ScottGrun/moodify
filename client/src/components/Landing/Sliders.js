@@ -21,13 +21,8 @@ const SlidersContainer = styled.div`
       width: 48%;
       max-width: 442px;
 
-      h1 {
-        font-size: 36px;
-        letter-spacing: 2.4px;
-        margin-bottom: 10px;
-      }
       p {
-        font-size: 18px;
+        font-size: 36px;
         letter-spacing: 1px;
       }
     }
@@ -51,8 +46,7 @@ export default () => {
           <img src={sliders} />
         </div>
         <div className='text-container'>
-          <h1>TOTAL CONTROL</h1>
-          <p>use custom filtering based on spotify's audio features data to create the perfect playlsit for any mood</p>
+          <p>using precise custom filtering based on Spotify's audio feature data...</p>
         </div>
       </div>
     </SlidersContainer>
