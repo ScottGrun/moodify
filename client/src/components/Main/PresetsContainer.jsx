@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Carousel from 'react-elastic-carousel';
 import Preset from './Preset';
 import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
 
 const CarouselContainer = styled.div`
   .preset-container {
@@ -118,7 +119,7 @@ export default (props) => {
   const buildSwiperSlidesFromPresets = (presets, userLikesLookup) => {
     const slides = presets.map(preset => {
       return (
-        <div className='preset-container'>
+        <div className='preset-container' key={uuidv4()}>
           <Preset 
             { ...preset } 
             key={preset.id}
@@ -161,7 +162,7 @@ export default (props) => {
   return(
     state.swiperSlides && 
     <CarouselContainer>
-      <Carousel 
+      <Carousel
         breakPoints={breakPoints}
         enableSwipe={true}
         enableMouseSwipe={true}
