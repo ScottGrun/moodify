@@ -209,7 +209,7 @@ const Landing = () => {
             <div className='text'>
               <div className='text-container'>
                 <h1>Create The Perfect Mood</h1>
-                <p>Use Custom Filtering Based On Spotiy's Audio Features Data To Create The Perfect Playlist For Any Mood.</p>
+                <p>Use custom filtering based on Spotify's audio features data to create the perfect playlist for any mood.</p>
                 <button onClick={login}>Login With Spotify</button>
               </div>
             </div>
