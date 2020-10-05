@@ -124,7 +124,7 @@ export default function Profile() {
   };
 
   const userData = cookies.userData;
-  const userImageUrl = userData && userData.images && userData.images.length > 0 && userData.images[0].url;
+  const userImageUrl = userData && userData.images && userData.images.length > 0 ? userData.images[0].url : null;
   
   return(
     <ProfileContainer open={open} >
