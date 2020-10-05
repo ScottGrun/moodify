@@ -128,7 +128,7 @@ const PlaylistControls = styled.div`
     padding: 5px;
     .title {
       display: flex;
-      justify-content: space-between;
+      /* justify-content: space-between; */
       align-items: center;
       color: white;
       margin-bottom: 10px;
@@ -140,7 +140,7 @@ const PlaylistControls = styled.div`
       display: flex;
       align-items: center;
       background-color: #12172C;
-      width: 50%;
+      width: 38%;
       height: 40px;
       padding: 5px;
       z-index: 1001;

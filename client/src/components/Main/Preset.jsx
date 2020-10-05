@@ -86,9 +86,9 @@ export default function Preset(props) {
         alt="preset">
     <p>{props.name}</p>
    
-     </PresetItemWrapper>
+    </PresetItemWrapper>
     <div className="heart">
-      <img src={state.liked ? heartfilled : heartoutline} onClick={handleHeartClick} alt="heart"/> 
+      <img src={state.liked ? heartfilled : heartoutline } onClick={handleHeartClick} alt="heart"/> 
     </div>
     </PresetItem>
   );
