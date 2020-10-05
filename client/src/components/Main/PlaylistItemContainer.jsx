@@ -120,7 +120,7 @@ const PlaylistItemContainer = (props) => {
   return (
     <StyledPlaylistContainer>
       <StyledHeader>
-        <SectionHeader>Yours Songs</SectionHeader>
+        <SectionHeader>Your Songs</SectionHeader>
         <ColumnHeaderContainer>
           <p>BPM</p>
           <p>Energy</p>
