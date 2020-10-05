@@ -165,7 +165,7 @@ const Landing = () => {
         setCookie('refreshToken', refresh_token);
         setCookie('userData', JSON.stringify(user));
         setAccessToken(access_token);
-        window.location = '${clientRoot}';
+        window.location = clientRoot;
       }
     })
     .catch(err => console.log(err));

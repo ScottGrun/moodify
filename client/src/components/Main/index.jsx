@@ -349,7 +349,7 @@ const Main = (props) => {
   };
 
   const getPlaylists = () => {
-    axios.post('${serverRoot}/playlists/ids', { accessToken }).then((res) => {
+    axios.post(`${serverRoot}/playlists/ids`, { accessToken }).then((res) => {
       setPlaylists(res.data);
       
     })
