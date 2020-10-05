@@ -157,7 +157,7 @@ export default (props) => {
 
   useEffect(() => {
     setActivePresets(props.displayedPresets);
-  },[props.displayedPresets]);
+  },[props.displayedPresets, props.refreshPresetsToggle]);
 
   return(
     state.swiperSlides && 
