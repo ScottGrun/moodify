@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { StateContext } from '../../App';
 import { filterTracks } from '../../helpers/filter';
 import { setSliderMarks } from '../../helpers/util';
+import { serverRoot } from '../../env';
 // components
 import Profile from './Profile';
 
@@ -123,7 +124,7 @@ export default function Navigation(props) {
     setOpenNav(false);
     setTracks({ loading: true, songs: [] });
     axios
-      .post(`http://localhost:9000/tracks/playlist`, {
+      .post(`${serverRoot}/tracks/playlist`, {
         accessToken,
         playlist_id,
         totalTracks,
@@ -147,7 +148,7 @@ export default function Navigation(props) {
     setOpenNav(false);
     setTracks({ loading: true, songs: [] });
     axios
-      .post(`http://localhost:9000/tracks/featured`, {
+      .post(`${serverRoot}/tracks/featured`, {
         accessToken,
       })
       .then((res) => {
@@ -174,7 +175,7 @@ export default function Navigation(props) {
     setTracks({ loading: true, songs: [] });
 
     axios
-      .post(`http://localhost:9000/tracks/recommendations`, {
+      .post(`${serverRoot}/tracks/recommendations`, {
         accessToken,
         recommendationSeeds,
         playlistMinMax,

@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import PlaylistRecomendationItem from './PlaylistRecomendationItem';
 import { filterTracks } from '../../helpers/filter';
 import axios from 'axios';
+import { serverRoot } from '../../env';
 
 // Images
 import AddAllIcon from '../../assets/icons/add-all.svg';
@@ -111,7 +112,7 @@ const PlaylistRecomendationContainer = (props) => {
       }
     });
 
-    axios.post(`http://localhost:9000/tracks/recommendations`, {
+    axios.post(`${serverRoot}/tracks/recommendations`, {
       accessToken,
       recommendationSeeds,
       playlistMinMax,

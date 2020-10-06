@@ -8,6 +8,7 @@ import pattern from './assets/pattern.png';
 import AlbumCovers from './AlbumCovers';
 import Sliders from './Sliders';
 import Playlists from './Playlists';
+import { clientRoot, serverRoot } from '../../env';
 
 // images
 import vinylRecord from './assets/vinyl-record.png';
@@ -124,7 +125,7 @@ const Landing = () => {
   const [ accessToken, setAccessToken ] = useContext(StateContext).AccessToken;
 
   const login = () => {
-    axios.get(`http://localhost:9000/auth/login`)
+    axios.get(`${serverRoot}/auth/login`)
       .then(res => {
         window.location = res.data;
       })
@@ -132,7 +133,7 @@ const Landing = () => {
   };
 
   const getAccessToken = (code) => {
-    axios.post(`http://localhost:9000/auth/token`, {
+    axios.post(`${serverRoot}/auth/token`, {
       code
     })
     .then(res => {
@@ -148,7 +149,7 @@ const Landing = () => {
         setCookie('RefreshToken', refresh_token);
         setCookie('MoodifyUserData', JSON.stringify(user));
         setAccessToken(access_token);
-        window.location = 'http://localhost:3000';
+        window.location = clientRoot;
       }
     })
     .catch(err => console.log(err));

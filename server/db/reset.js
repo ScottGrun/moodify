@@ -1,5 +1,9 @@
 // load .env data into process.env
-require('dotenv').config();
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config();
+} else {
+    require('dotenv').config({ path: '/home/moodify/public_html/moodify/shared/.env' });
+}
 
 // other dependencies
 const fs = require('fs');

@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { useCookies } from 'react-cookie';
 import { StateContext } from '../../App';
 import styled from 'styled-components';
+import { clientRoot } from '../../env';
 
 const ProfileContainer = styled.div`
   overflow: hidden;
@@ -120,7 +121,7 @@ export default function Profile() {
     removeCookie('MoodifyRefreshToken');
     removeCookie('MoodifyUserData');
     setAccessToken(null);
-    window.location = 'http://localhost:3000';
+    window.location = clientRoot;
   };
 
   const userData = cookies.MoodifyUserData;
