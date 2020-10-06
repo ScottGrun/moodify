@@ -11,14 +11,14 @@ module.exports = (db) => {
   });
   
   router.get('/yourpresets', (req, res) => {
-    const user = JSON.parse(req.cookies.userData).display_name;
+    const user = JSON.parse(req.cookies.MoodifyUserData).display_name;
     getUserPresets(db, user)
       .then(userPresets => res.send(userPresets))
       .catch(err => console.log(err));
   });
   
   router.get('/yourlikedpresets', (req, res) => {
-    const user = JSON.parse(req.cookies.userData).display_name;
+    const user = JSON.parse(req.cookies.MoodifyUserData).display_name;
     getUserLikedPresets(db, user)
       .then(userLikedPresets => res.send(userLikedPresets))
       .catch(err => console.log(err));
@@ -32,7 +32,7 @@ module.exports = (db) => {
   });
 
   router.post('/:id/like', (req, res) => {
-    const user = JSON.parse(req.cookies.userData).display_name;
+    const user = JSON.parse(req.cookies.MoodifyUserData).display_name;
     const presetID = req.params.id;
 
     likePreset(db, presetID, user)
@@ -41,7 +41,7 @@ module.exports = (db) => {
   });
 
   router.post('/:id/unlike', (req, res) => {
-    const user = JSON.parse(req.cookies.userData).display_name;
+    const user = JSON.parse(req.cookies.MoodifyUserData).display_name;
     const presetID = req.params.id;
 
     unlikePreset(db, presetID, user)
