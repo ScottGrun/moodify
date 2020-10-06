@@ -221,10 +221,10 @@ export default function Navigation(props) {
               <img src={trending} />
               <p>Featured Songs</p>
             </li>
-            <li onClick={loadRecommendedSongs}>
+            {/* <li onClick={loadRecommendedSongs}>
               <img src={albums} />
               <p>Recommended</p>
-            </li>
+            </li> */}
           </ul>
         </div>
         <h3 className="title">My Playlists</h3>

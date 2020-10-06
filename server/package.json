@@ -13,15 +13,13 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.20.0",
-    "bcrypt": "^5.0.0",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "pg": "^8.3.3",
     "pg-native": "^3.0.0",
     "querystring": "^0.2.0",
-    "request": "^2.88.2",
-    "spotify-web-api-node": "^4.0.0"
+    "request": "^2.88.2"
   },
   "devDependencies": {
     "dotenv": "^8.2.0",

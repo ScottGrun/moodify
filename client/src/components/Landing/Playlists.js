@@ -53,7 +53,6 @@ const PlaylistContainer = styled.div`
 `;
 
 export default () => {
-
   return (
     <PlaylistContainer>
       <div className='content-container'>
