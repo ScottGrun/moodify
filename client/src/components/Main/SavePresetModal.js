@@ -3,6 +3,7 @@ import styled, { keyframes } from 'styled-components';
 import { StateContext } from '../../App';
 import axios from 'axios';
 import { useCookies } from 'react-cookie';
+import { clientRoot, serverRoot } from '../../env';
 
 const slideDown = keyframes`
   from{
@@ -148,7 +149,7 @@ export default function SavePresetModal(props) {
   const savePreset = () => {
     const user_id = cookies.userData.display_name;
     axios
-      .post(`http://localhost:9000/presets`, {
+      .post(`${serverRoot}/presets`, {
         name,
         audio_features: playlistMinMax.data,
         image_url: imageUrl,
@@ -170,7 +171,7 @@ export default function SavePresetModal(props) {
 
   const randomImageUrl = () => {
     const randomNumber = Math.ceil(Math.random() * 15);
-    const imageUrl = `http://localhost:3000/preset-image-library/preset-image${randomNumber}.svg`;
+    const imageUrl = `${clientRoot}/preset-image-library/preset-image${randomNumber}.svg`;
     // console.log(imageUrl)
     return imageUrl;
   };

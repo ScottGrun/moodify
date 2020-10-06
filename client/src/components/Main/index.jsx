@@ -1,6 +1,7 @@
 import React, { useEffect, useContext, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import axios from 'axios';
+import { serverRoot } from '../../env';
 import { StateContext } from '../../App';
 import { setSliderMarks } from '../../helpers/util';
 import styled from 'styled-components';
@@ -367,7 +368,7 @@ const Main = (props) => {
   };
 
   const getSavedTracks = () => {
-    axios.post(`http://localhost:9000/tracks/saved`, {
+    axios.post(`${serverRoot}/tracks/saved`, {
       accessToken,
     })
     .then((res) => {
@@ -385,7 +386,7 @@ const Main = (props) => {
   };
 
   const getPlaylists = () => {
-    axios.post('http://localhost:9000/playlists/ids', { accessToken }).then((res) => {
+    axios.post(`${serverRoot}/playlists/ids`, { accessToken }).then((res) => {
       setPlaylists(res.data);
       
     })
@@ -429,7 +430,7 @@ const Main = (props) => {
     localStorage.setItem('playlists', JSON.stringify(playlists));
     localStorage.setItem('marks', JSON.stringify(marks));
 
-    axios.get(`http://localhost:9000/auth/login`)
+    axios.get(`${serverRoot}/auth/login`)
       .then(res => {
         window.location = res.data;
       })
