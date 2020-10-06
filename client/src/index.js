@@ -11,11 +11,9 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 ReactDOM.render(
-  <React.StrictMode>
-    <CookiesProvider>
-        <GlobalStyle />
-        <App />
-    </CookiesProvider>
-  </React.StrictMode>,
+  <CookiesProvider>
+      <GlobalStyle />
+      <App />
+  </CookiesProvider>,
   document.getElementById('root')
 );

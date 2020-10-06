@@ -7,6 +7,7 @@ import { setSliderMarks } from '../../helpers/util';
 import styled from 'styled-components';
 import { Snackbar } from '@material-ui/core';
 import Slide from '@material-ui/core/Slide';
+import { v4 as uuidv4 } from 'uuid';
 
 // Components
 import Header from './Header';
@@ -37,10 +38,10 @@ const HamburgerMenu = styled.div`
 `;
 
 const Overlay = styled.div`
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
-  height: 100%;
+  height: 100vh;
   width: 100%;
   background-color: rgba(0, 0, 0, 0.4);
   display: none;
@@ -126,6 +127,7 @@ const PlaylistControls = styled.div`
 
   .presets-container {
     padding: 5px;
+
     .title {
       display: flex;
       /* justify-content: space-between; */
@@ -203,8 +205,33 @@ const PlaylistControls = styled.div`
     }
   }
   @media (max-width: 800px) {
-    display: flex;
-    flex-flow: row;
+    display: grid;
+    width: 100%;
+    gap: 16px;
+    grid-template-columns: 23% 23% 23% 23%;
+    grid-template-rows: 25% 25% 25% 25%;
+    margin-right: 20px;
+
+    .radar-chart-container {
+      grid-column-start: 1;
+      grid-column-end: 3;
+      grid-row-start: 1;
+      grid-row-end: 3;
+    }
+
+    .presets-container {
+      grid-column-start: 1;
+      grid-column-end: 3;
+      grid-row-start: 3;
+      grid-row-end: 5;
+    }
+
+    .sliders-container {
+      grid-column-start: 3;
+      grid-column-end: 5;
+      grid-row-start: 1;
+      grid-row-end: 5;
+    }
   }
 
   @media (max-width: 450px) {
@@ -334,6 +361,11 @@ const Main = (props) => {
     setOpen(prev => !open);
   };
   const [displayedPresets, setDisplayedPresets] = useState('popular');
+  const [refreshPresetsToggle, setRefreshPresetsToggle] = useState(false);
+
+  const refreshPresets = () => {
+    setRefreshPresetsToggle(!refreshPresetsToggle);
+  };
 
   const getSavedTracks = () => {
     axios.post(`${serverRoot}/tracks/saved`, {
@@ -407,7 +439,7 @@ const Main = (props) => {
 
   const presetDropdownItems = displayedPresetsPaths.map(path => {
     return (
-      <li onClick={() => setDisplayedPresets(path)}>
+      <li onClick={() => setDisplayedPresets(path)} key={uuidv4()}>
         {displayedPresetsLabels[path]}
       </li>
     );
@@ -480,7 +512,10 @@ const Main = (props) => {
           <SavePresetModal 
             openSavePresetModal={[openSavePresetModal, setOpenSavePresetModal]}
             snackbar={[snackbar, setSnackbar]}
-            playlistMinMax={props.playlistMinMax}  
+            playlistMinMax={props.playlistMinMax}
+            setDisplayedPresets={setDisplayedPresets}
+            displayedPresets={displayedPresets}
+            refreshPresets={refreshPresets} 
           />
           <CreatePlaylistModal
             playlistMinMax={props.playlistMinMax}
@@ -505,19 +540,23 @@ const Main = (props) => {
          
         </MainContent>
         <PlaylistControls open={open} >
-          <RadarChart chartValues={props.chartValues} chartData={props.chartData} />
+          <div className='radar-chart-container'>
+            <RadarChart chartValues={props.chartValues} chartData={props.chartData} />
+          </div>
 
-          <ControlsContainer>
-            <Sliders
-              marksState={[marks, setMarks]}
-              playlistMinMax={props.playlistMinMax}
-              userTracks={props.userTracks}
-              chartValues={props.chartValues}
-            />
-            <CreatePlaylistButton onClick={() => setOpenCreatePlaylistModal(true)}>
-              Create Playlist
-            </CreatePlaylistButton>
-          </ControlsContainer>
+          <div className='sliders-container'>
+            <ControlsContainer>
+              <Sliders
+                marksState={[marks, setMarks]}
+                playlistMinMax={props.playlistMinMax}
+                userTracks={props.userTracks}
+                chartValues={props.chartValues}
+              />
+              <CreatePlaylistButton onClick={() => setOpenCreatePlaylistModal(true)}>
+                Create Playlist
+              </CreatePlaylistButton>
+            </ControlsContainer>
+          </div>
 
           <div className="presets-container" >
             <div className='title' >
@@ -542,6 +581,7 @@ const Main = (props) => {
               playlistMinMax={props.playlistMinMax}
               chartValues={props.chartValues}
               displayedPresets={displayedPresets}
+              refreshPresetsToggle={refreshPresetsToggle}
             /> 
           </div>
     

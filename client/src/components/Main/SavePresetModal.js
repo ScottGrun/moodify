@@ -6,26 +6,25 @@ import { useCookies } from 'react-cookie';
 import { clientRoot, serverRoot } from '../../env';
 
 const slideDown = keyframes`
-
   from{
-    transform: translate(0, -40%);
+    transform: translate(-50%, -60%);
     opacity: 0;
   }
 
   to{
-    transform: translate(0, 40%);
+    transform: translate(-50%, -50%);
     opacity: 1;
   }
-
 `
 
 const SavePresetModalContainer = styled.div`
-  width: 100%;
+  width: calc(100% - 20px);
   max-width: 614px;
-  position: absolute;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   border-radius: 4px;
-  left: 20%;
-  transform: translate(0, 40%);
   background-color: #28292D;
   color: white;
   display: flex;
@@ -35,7 +34,7 @@ const SavePresetModalContainer = styled.div`
   box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
   display: none;
   animation: ${slideDown} 500ms ease;
-  z-index: 9999;
+  z-index: 999999999999999999999999;
   ${({ open }) => open && `
     display: block;
   `}
@@ -49,6 +48,7 @@ const SavePresetModalContainer = styled.div`
 
   .content-container {
     display: flex;
+    flex-wrap: wrap;
 
     .image-container {
       margin-right: 25px;
@@ -158,7 +158,9 @@ export default function SavePresetModal(props) {
       .then((res) => {
         setImageUrl(randomImageUrl());
         setOpenSavePresetModal(false);
-        setSnackbar({ ...snackbar, open: true, message: `${res.data.name} has been saved!`, variant: 'success' })
+        setName('');
+        setSnackbar({ ...snackbar, open: true, message: `${res.data.name} has been saved!`, variant: 'success' });
+        props.displayedPresets === 'yourpresets' ? props.refreshPresets() : props.setDisplayedPresets('yourpresets');
         // console.log(res);
       })
       .catch((res) => {

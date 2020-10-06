@@ -8,28 +8,26 @@ import { getTotalDuration } from '../../helpers/calculations';
 import { serverRoot } from '../../env';
 
 const slideDown = keyframes`
+  from{
+    transform: translate(-50%, -60%);
+    opacity: 0;
+  }
 
-from{
-  transform: translate(0, -40%);
-  opacity: 0;
-}
-
-to{
-  transform: translate(0, 40%);
-  opacity: 1;
-}
+  to{
+    transform: translate(-50%, -50%);
+    opacity: 1;
+  }
 `
 
 const CreatePlaylistModalContainer = styled.div`
-  width: 100%;
+  width: calc(100% - 20px);
   max-width: 614px;
-  height: 100%;
-  max-height: 500px;
-  position: absolute;
+  position: fixed;
   border-radius: 5px;
-  left: 20%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   background-color: #28292D;
-  transform: translate(0, 40%);
   color: white;
   display: flex;
   align-items: center;
@@ -38,11 +36,9 @@ const CreatePlaylistModalContainer = styled.div`
   box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
   display: none;
   animation: ${slideDown} 500ms ease;
-  z-index: 9999;
+  z-index: 99999999999999999999;
   ${({ open }) => open && `
-
     display: block;
-    
   `}
 
   h1 {
@@ -54,6 +50,7 @@ const CreatePlaylistModalContainer = styled.div`
 
   .content-container {
     display: flex;
+    flex-wrap: wrap;
 
     .image-container {
       margin-right: 25px;
