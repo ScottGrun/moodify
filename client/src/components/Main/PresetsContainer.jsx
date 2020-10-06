@@ -6,6 +6,9 @@ import axios from 'axios';
 import { serverRoot } from '../../env';
 import { v4 as uuidv4 } from 'uuid';
 
+// React-GA for Google Analytics
+import ReactGA from 'react-ga';
+
 const CarouselContainer = styled.div`
   .preset-container {
     width: 100px;
@@ -144,6 +147,10 @@ export default (props) => {
   };
 
   const setActivePresets = (path) => {
+    ReactGA.event({
+      category: `Preset dropdown changed to ${path}`,
+      action: `User changed the preset dropdown to view ${path}`,
+    });
     Promise.all([
       axios
         .get(`${serverRoot}/presets/${path}`, { withCredentials: true }),

@@ -5,6 +5,9 @@ import axios from 'axios';
 import { useCookies } from 'react-cookie';
 import { clientRoot, serverRoot } from '../../env';
 
+// React-GA for Google Analytics
+import ReactGA from 'react-ga';
+
 const slideDown = keyframes`
   from{
     transform: translate(-50%, -60%);
@@ -155,6 +158,10 @@ export default function SavePresetModal(props) {
   
   const savePreset = () => {
     const user_id = cookies.MoodifyUserData.display_name;
+    ReactGA.event({
+      category: "Save Preset",
+      action: "User clicked the save preset button.",
+    });
     axios
       .post(`${serverRoot}/presets`, {
         name,

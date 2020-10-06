@@ -7,6 +7,9 @@ import { getAverages } from "../../helpers/calculations";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css"; // optional
 
+// React-GA for Google Analytics
+import ReactGA from 'react-ga';
+
 //images
 import InfoIcon from "../../assets/icons/info-icon.svg";
 
@@ -100,6 +103,10 @@ export default function Sliders(props) {
   }, [playlistMinMax.data]);
 
   const changeCommitedHandler = (event, val, attr) => {
+    ReactGA.event({
+      category: `${attr} slider changed`,
+      action: `User changed the value of the ${attr} slider.`,
+    });
     setPlaylistMinMax((prev) => ({
       ...prev,
       data: { ...prev.data, [attr]: val },

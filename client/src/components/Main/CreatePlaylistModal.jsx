@@ -7,6 +7,9 @@ import { filterTracks } from '../../helpers/filter';
 import { getTotalDuration } from '../../helpers/calculations';
 import { serverRoot } from '../../env';
 
+// React-GA for Google Analytics
+import ReactGA from 'react-ga';
+
 const slideDown = keyframes`
   from{
     transform: translate(-50%, -60%);
@@ -194,6 +197,10 @@ export default function CreatePlaylistModal(props) {
 
   const savePlaylist = (songs) => {
     const uris = filterTracks(songs, playlistMinMax).map(song => song.uri)
+    ReactGA.event({
+      category: "Create Playlist",
+      action: "User clicked the create playlist button.",
+    });
     axios.post(`${serverRoot}/playlists/create`, {
       accessToken,
       name,

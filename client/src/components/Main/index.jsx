@@ -368,13 +368,6 @@ const Main = (props) => {
   };
 
   const getSavedTracks = () => {
-    setTracks(prev => {
-      return {
-        ...prev,
-        songs: []
-      }
-    })
-
     axios.post(`${serverRoot}/tracks/saved`, {
       accessToken,
     })
@@ -512,7 +505,6 @@ const Main = (props) => {
             chartValues={props.chartValues}
             snackbar={[snackbar, setSnackbar]}
             setSelectedPlaylist={setSelectedPlaylist}
-            getSavedTracks={getSavedTracks}
           />
         </Sidebar>
 

@@ -10,6 +10,9 @@ import Sliders from './Sliders';
 import Playlists from './Playlists';
 import { clientRoot, serverRoot } from '../../env';
 
+// React-GA for Google Analytics
+import ReactGA from 'react-ga';
+
 // images
 import vinylRecord from './assets/vinyl-record.png';
 
@@ -125,6 +128,10 @@ const Landing = () => {
   const [ accessToken, setAccessToken ] = useContext(StateContext).AccessToken;
 
   const login = () => {
+    ReactGA.event({
+      category: "Login With Spotify",
+      action: "User clicked the login with Spotify button.",
+    });
     axios.get(`${serverRoot}/auth/login`)
       .then(res => {
         window.location = res.data;

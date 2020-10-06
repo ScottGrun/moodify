@@ -13,6 +13,9 @@ import { getAudioFeatures, getAverages } from '../../helpers/calculations';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
+// React-GA for Google Analytics
+import ReactGA from 'react-ga';
+
 const StyledSongCoverContainer = styled.div`
   position: relative;
   height: 100%;
@@ -231,6 +234,10 @@ const PlaylistItem = (props) => {
 
   const addSimilarSongs = (event, trackId) => {
     event.stopPropagation();
+    ReactGA.event({
+      category: "Add Similar Songs",
+      action: "User clicked add similar songs.",
+    });
     setPosition(initialPosition);
     const totalSongs = filterTracks(userTracks, playlistMinMax).length;
 
@@ -264,6 +271,10 @@ const PlaylistItem = (props) => {
 
   const removeSong = (event, trackId) => {
     event.stopPropagation();
+    ReactGA.event({
+      category: "Remove Song",
+      action: "User clicked remove song.",
+    });
     setPosition(initialPosition);
     setTracks((prev) => {
       const newSongs = filterTracks(prev, playlistMinMax, trackId);
@@ -277,6 +288,10 @@ const PlaylistItem = (props) => {
 
   const applySongFeatures = (event, audioFeatures) => {
     event.stopPropagation();
+    ReactGA.event({
+      category: "Use As Filter",
+      action: "User clicked use as filter.",
+    });
     setPosition(initialPosition);
 
     const { danceability, energy, instrumentalness, loudness, tempo, valence } = audioFeatures;
