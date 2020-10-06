@@ -1,20 +1,20 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { StateContext } from '../../App';
-import axios from 'axios';
-import { serverRoot } from '../../env';
+import React, { useContext, useState, useEffect } from "react";
+import { StateContext } from "../../App";
+import axios from "axios";
+import { serverRoot } from "../../env";
 
-import styled, { keyframes } from 'styled-components';
-import PlayButton from '../../assets/icons/PlayButton.svg';
-import WaveFormSource from '../../assets/icons/audio.svg';
-import setCurrentSongPlaying from '../../helpers/songPreviewManager';
-import { filterTracks } from '../../helpers/filter';
-import { getAudioFeatures, getAverages } from '../../helpers/calculations';
+import styled, { keyframes } from "styled-components";
+import PlayButton from "../../assets/icons/PlayButton.svg";
+import WaveFormSource from "../../assets/icons/audio.svg";
+import setCurrentSongPlaying from "../../helpers/songPreviewManager";
+import { filterTracks } from "../../helpers/filter";
+import { getAudioFeatures, getAverages } from "../../helpers/calculations";
 
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 
 // React-GA for Google Analytics
-import ReactGA from 'react-ga';
+import ReactGA from "react-ga";
 
 const StyledSongCoverContainer = styled.div`
   position: relative;
@@ -33,7 +33,7 @@ const OverlayContainer = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  display: ${(props) => (props.playing ? 'flex' : 'none')};
+  display: ${(props) => (props.playing ? "flex" : "none")};
   justify-content: center;
   background-color: rgba(46, 213, 137, 0.32);
   height: 45px;
@@ -43,7 +43,7 @@ const OverlayContainer = styled.div`
 `;
 
 const SongName = styled.h4`
-  font-family: 'Inter';
+  font-family: "Inter";
   display: block;
   width: 100%;
   font-weight: 500;
@@ -52,7 +52,7 @@ const SongName = styled.h4`
   color: white;
   margin: 0;
 
-  color: ${(props) => (props.playing ? '#2ed589' : null)};
+  color: ${(props) => (props.playing ? "#2ed589" : null)};
 `;
 
 const ArtistName = styled.p`
@@ -114,7 +114,7 @@ const StyledPlaylistItem = styled.div`
   display: flex;
   align-items: center;
 
-  background-color: ${(props) => (props.playing ? '#21232e' : '#3c4051')};
+  background-color: ${(props) => (props.playing ? "#21232e" : "#3c4051")};
   height: 45px;
   width: 100%;
   border-radius: 5px;
@@ -131,7 +131,7 @@ const StyledPlaylistItem = styled.div`
   /*  */
   &:hover {
     background-color: #21232e;
-    cursor: ${(props) => (props.previewUrl ? 'pointer' : 'default')};
+    cursor: ${(props) => (props.previewUrl ? "pointer" : "default")};
   }
 
   &:hover ${SongName} {
@@ -139,7 +139,7 @@ const StyledPlaylistItem = styled.div`
   }
 
   &:hover ${OverlayContainer} {
-    display: ${(props) => (props.previewUrl ? 'flex' : 'none')};
+    display: ${(props) => (props.previewUrl ? "flex" : "none")};
   }
 `;
 
@@ -208,9 +208,11 @@ const PlaylistItem = (props) => {
       const newSong = new Audio(props.previewUrl);
       setCurrentSong(newSong);
 
-      setCurrentSongPlaying(props.previewUrl, () => {
+      setCurrentSongPlaying(props.id, () => {
         newSong.pause();
         setCurrentSong(null);
+        newSong.setAttribute("src", props.previewUrl);
+
         setPlaying(false);
       });
 
@@ -241,32 +243,42 @@ const PlaylistItem = (props) => {
     setPosition(initialPosition);
     const totalSongs = filterTracks(userTracks, playlistMinMax).length;
 
-    axios.post(`${serverRoot}/tracks/recommendations`, {
-      accessToken,
-      recommendationSeeds: [{ track_id: trackId }],
-      playlistMinMax,
-    })
-    .then((res) => {
-      setTracks((prev) => {
-        const allSongs = {
-          songs: [...prev.songs, ...res.data.songs],
-        };
-
-        const newTracks = filterTracks(allSongs, playlistMinMax);
-        if (newTracks.length === totalSongs) {
-          setSnackbar({...snackbar, open: true, message: 'Sorry, could not find any similar songs'});
-        }
-        setChartValues(getAverages(allSongs.songs));
-
-        return {
-          loading: true,
-          songs: [...prev.songs, ...res.data.songs],
-        };
+    axios
+      .post(`${serverRoot}/tracks/recommendations`, {
+        accessToken,
+        recommendationSeeds: [{ track_id: trackId }],
+        playlistMinMax,
       })
-    })
-    .catch(res => {
-      setSnackbar({...snackbar, open: true, message: res.message, variant: 'error'});
-    });
+      .then((res) => {
+        setTracks((prev) => {
+          const allSongs = {
+            songs: [...prev.songs, ...res.data.songs],
+          };
+
+          const newTracks = filterTracks(allSongs, playlistMinMax);
+          if (newTracks.length === totalSongs) {
+            setSnackbar({
+              ...snackbar,
+              open: true,
+              message: "Sorry, could not find any similar songs",
+            });
+          }
+          setChartValues(getAverages(allSongs.songs));
+
+          return {
+            loading: true,
+            songs: [...prev.songs, ...res.data.songs],
+          };
+        });
+      })
+      .catch((res) => {
+        setSnackbar({
+          ...snackbar,
+          open: true,
+          message: res.message,
+          variant: "error",
+        });
+      });
   };
 
   const removeSong = (event, trackId) => {
@@ -294,7 +306,14 @@ const PlaylistItem = (props) => {
     });
     setPosition(initialPosition);
 
-    const { danceability, energy, instrumentalness, loudness, tempo, valence } = audioFeatures;
+    const {
+      danceability,
+      energy,
+      instrumentalness,
+      loudness,
+      tempo,
+      valence,
+    } = audioFeatures;
     const newFeatures = getAudioFeatures(audioFeatures);
     setPlaylistMinMax((prev) => {
       return {
@@ -310,7 +329,7 @@ const PlaylistItem = (props) => {
       className="playlist-item"
       onClick={playPreview}
       onContextMenu={handleClick}
-      styled={{ cursor: 'context-menu' }}
+      styled={{ cursor: "context-menu" }}
       previewUrl={props.previewUrl}
       playing={playing}
     >
@@ -325,11 +344,15 @@ const PlaylistItem = (props) => {
             : undefined
         }
       >
-        <MenuItem onClick={(event) => addSimilarSongs(event, props.id)}>add similar songs</MenuItem>
+        <MenuItem onClick={(event) => addSimilarSongs(event, props.id)}>
+          add similar songs
+        </MenuItem>
         <MenuItem onClick={(event) => applySongFeatures(event, props.audio)}>
           use as filter
         </MenuItem>
-        <MenuItem onClick={(event) => removeSong(event, props.id)}>remove song</MenuItem>
+        <MenuItem onClick={(event) => removeSong(event, props.id)}>
+          remove song
+        </MenuItem>
       </Menu>
 
       <StyledSongCoverContainer>
@@ -342,7 +365,9 @@ const PlaylistItem = (props) => {
       </OverlayContainer>
       <SongMetaData>
         <SongName playing={playing}>
-          {props.name.length > 26 ? props.name.slice(0, 20) + '...' : props.name}
+          {props.name.length > 26
+            ? props.name.slice(0, 20) + "..."
+            : props.name}
         </SongName>
         <ArtistName>{props.artist}</ArtistName>
       </SongMetaData>
