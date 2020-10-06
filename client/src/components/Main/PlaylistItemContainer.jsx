@@ -81,6 +81,14 @@ const ColumnHeaderContainer = styled.div`
   }
 `;
 
+const EmptyStateMessage = styled.h6`
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  text-align: center;
+  margin-top: 14rem;
+`;
+
 const SectionHeader = styled.h2`
   width: 345px;
   font-family: Inter;
@@ -131,7 +139,7 @@ const PlaylistItemContainer = (props) => {
     valence: null,
     instrumentalness: null,
     loudness: null,
-  })
+  });
 
   const observer = useRef();
   const lastSongElement = useCallback((node) => {
@@ -168,7 +176,7 @@ const PlaylistItemContainer = (props) => {
   const sortByFeature = (feature) => {
     let sortedTracks;
 
-    if (sortBy[feature] === 'inc' || !sortBy[feature]) {
+    if (sortBy[feature] === "inc" || !sortBy[feature]) {
       sortedTracks = userTracks.songs.sort((a, b) => {
         return a.audio[feature] - b.audio[feature];
       });
@@ -179,8 +187,8 @@ const PlaylistItemContainer = (props) => {
         valence: null,
         instrumentalness: null,
         loudness: null,
-        [feature]: 'dec'
-      })
+        [feature]: "dec",
+      });
     } else {
       sortedTracks = userTracks.songs.sort((a, b) => {
         return b.audio[feature] - a.audio[feature];
@@ -192,8 +200,8 @@ const PlaylistItemContainer = (props) => {
         valence: null,
         instrumentalness: null,
         loudness: null,
-        [feature]: 'inc'
-      })
+        [feature]: "inc",
+      });
     }
 
     setUserTracks({ ...userTracks, songs: [...sortedTracks] });
@@ -214,25 +222,39 @@ const PlaylistItemContainer = (props) => {
           <div className="feature-name" onClick={() => sortByFeature("tempo")}>
             BPM
             <div className="chevrons">
-              {
-                sortBy.tempo === null
-                ? <><img src={chevron} /><img src={chevron} style={{ transform: "rotate(180deg)" }} /></>
-                : sortBy.tempo === 'dec'
-                ? <img className='single-dec' src={chevron} style={{ transform: "rotate(180deg)" }} />
-                : <img className='single-inc' src={chevron} />
-              }
+              {sortBy.tempo === null ? (
+                <>
+                  <img src={chevron} />
+                  <img src={chevron} style={{ transform: "rotate(180deg)" }} />
+                </>
+              ) : sortBy.tempo === "dec" ? (
+                <img
+                  className="single-dec"
+                  src={chevron}
+                  style={{ transform: "rotate(180deg)" }}
+                />
+              ) : (
+                <img className="single-inc" src={chevron} />
+              )}
             </div>
           </div>
           <div className="feature-name" onClick={() => sortByFeature("energy")}>
             Energy
             <div className="chevrons">
-              {
-                sortBy.energy === null
-                ? <><img src={chevron} /><img src={chevron} style={{ transform: "rotate(180deg)" }} /></>
-                : sortBy.energy === 'dec'
-                ? <img className='single-dec' src={chevron} style={{ transform: "rotate(180deg)" }} />
-                : <img className='single-inc' src={chevron} />
-              }
+              {sortBy.energy === null ? (
+                <>
+                  <img src={chevron} />
+                  <img src={chevron} style={{ transform: "rotate(180deg)" }} />
+                </>
+              ) : sortBy.energy === "dec" ? (
+                <img
+                  className="single-dec"
+                  src={chevron}
+                  style={{ transform: "rotate(180deg)" }}
+                />
+              ) : (
+                <img className="single-inc" src={chevron} />
+              )}
             </div>
           </div>
           <div
@@ -241,13 +263,20 @@ const PlaylistItemContainer = (props) => {
           >
             Dance
             <div className="chevrons">
-              {
-                sortBy.danceability === null
-                ? <><img src={chevron} /><img src={chevron} style={{ transform: "rotate(180deg)" }} /></>
-                : sortBy.danceability === 'dec'
-                ? <img className='single-dec' src={chevron} style={{ transform: "rotate(180deg)" }} />
-                : <img className='single-inc' src={chevron} />
-              }
+              {sortBy.danceability === null ? (
+                <>
+                  <img src={chevron} />
+                  <img src={chevron} style={{ transform: "rotate(180deg)" }} />
+                </>
+              ) : sortBy.danceability === "dec" ? (
+                <img
+                  className="single-dec"
+                  src={chevron}
+                  style={{ transform: "rotate(180deg)" }}
+                />
+              ) : (
+                <img className="single-inc" src={chevron} />
+              )}
             </div>
           </div>
           <div
@@ -256,13 +285,20 @@ const PlaylistItemContainer = (props) => {
           >
             Valence
             <div className="chevrons">
-              {
-                sortBy.valence === null
-                ? <><img src={chevron} /><img src={chevron} style={{ transform: "rotate(180deg)" }} /></>
-                : sortBy.valence === 'dec'
-                ? <img className='single-dec' src={chevron} style={{ transform: "rotate(180deg)" }} />
-                : <img className='single-inc' src={chevron} />
-              }
+              {sortBy.valence === null ? (
+                <>
+                  <img src={chevron} />
+                  <img src={chevron} style={{ transform: "rotate(180deg)" }} />
+                </>
+              ) : sortBy.valence === "dec" ? (
+                <img
+                  className="single-dec"
+                  src={chevron}
+                  style={{ transform: "rotate(180deg)" }}
+                />
+              ) : (
+                <img className="single-inc" src={chevron} />
+              )}
             </div>
           </div>
           <div
@@ -271,13 +307,20 @@ const PlaylistItemContainer = (props) => {
           >
             Instru
             <div className="chevrons">
-              {
-                sortBy.instrumentalness === null
-                ? <><img src={chevron} /><img src={chevron} style={{ transform: "rotate(180deg)" }} /></>
-                : sortBy.instrumentalness === 'dec'
-                ? <img className='single-dec' src={chevron} style={{ transform: "rotate(180deg)" }} />
-                : <img className='single-inc' src={chevron} />
-              }
+              {sortBy.instrumentalness === null ? (
+                <>
+                  <img src={chevron} />
+                  <img src={chevron} style={{ transform: "rotate(180deg)" }} />
+                </>
+              ) : sortBy.instrumentalness === "dec" ? (
+                <img
+                  className="single-dec"
+                  src={chevron}
+                  style={{ transform: "rotate(180deg)" }}
+                />
+              ) : (
+                <img className="single-inc" src={chevron} />
+              )}
             </div>
           </div>
           <div
@@ -286,19 +329,34 @@ const PlaylistItemContainer = (props) => {
           >
             Loudness
             <div className="chevrons">
-              {
-                sortBy.loudness === null
-                ? <><img src={chevron} /><img src={chevron} style={{ transform: "rotate(180deg)" }} /></>
-                : sortBy.loudness === 'dec'
-                ? <img className='single-dec' src={chevron} style={{ transform: "rotate(180deg)" }} />
-                : <img className='single-inc' src={chevron} />
-              }
+              {sortBy.loudness === null ? (
+                <>
+                  <img src={chevron} />
+                  <img src={chevron} style={{ transform: "rotate(180deg)" }} />
+                </>
+              ) : sortBy.loudness === "dec" ? (
+                <img
+                  className="single-dec"
+                  src={chevron}
+                  style={{ transform: "rotate(180deg)" }}
+                />
+              ) : (
+                <img className="single-inc" src={chevron} />
+              )}
             </div>
           </div>
         </ColumnHeaderContainer>
       </StyledHeader>
       <div className="song-list">
-        {renderSongs.length === 0 ? <Loading /> : renderSongs}
+        {userTracks.loading === true ? <Loading /> : renderSongs}
+        {renderSongs.length === 0 && userTracks.loading === false ? (
+          <EmptyStateMessage>
+            {" "}
+            Sorry ! We found no tracks match that filter.{" "}
+          </EmptyStateMessage>
+        ) : (
+          renderSongs
+        )}
         {playlistMinMax.data.tempo && filteredTracks.length > songsInView && (
           <div className="loading" ref={lastSongElement}>
             Loading More Tracks...
