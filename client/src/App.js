@@ -19,8 +19,8 @@ export default function App() {
   const [ openSavePresetModal, setOpenSavePresetModal ] = useState(false);
   const [ songsInView, setSongsInView ] = useState(15);
 
-  if (cookies.accessToken && !accessToken) {
-    setAccessToken(cookies.accessToken);
+  if (cookies.MoodifyAccessToken && !accessToken) {
+    setAccessToken(cookies.MoodifyAccessToken);
   }
 
   return (

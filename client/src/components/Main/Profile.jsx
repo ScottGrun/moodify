@@ -116,14 +116,14 @@ export default function Profile() {
   };
 
   const logout = () => {
-    removeCookie('accessToken');
-    removeCookie('refreshToken');
-    removeCookie('userData');
+    removeCookie('MoodifyAccessToken');
+    removeCookie('MoodifyRefreshToken');
+    removeCookie('MoodifyUserData');
     setAccessToken(null);
     window.location = 'http://localhost:3000';
   };
 
-  const userData = cookies.userData;
+  const userData = cookies.MoodifyUserData;
   const userImageUrl = userData && userData.images && userData.images.length > 0 ? userData.images[0].url : null;
   
   return(

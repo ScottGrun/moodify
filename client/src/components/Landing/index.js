@@ -116,17 +116,6 @@ const LandingPageContainer = styled.div`
         }
       }
     }
-
-    /* <div className='content-container'>
-      <div className='text'>
-        <h1>Create The Perfect Mood</h1>
-        <p>Use Custom Filtering Based On Spotiy's Audio Features Data To Create The Perfect Playlist For Any Mood.</p>
-        <button>Login With Spotify</button>
-      </div>
-      <div className='vinyl-record'>
-        <img src={vinylRecord}/>
-      </div>
-    </div> */
   }
 `;
 
@@ -154,10 +143,10 @@ const Landing = () => {
       now.setTime(time);
       
       if (!access_token.includes('error')) {
-        removeCookie('code');
-        setCookie('accessToken', access_token, {expires: now});
-        setCookie('refreshToken', refresh_token);
-        setCookie('userData', JSON.stringify(user));
+        removeCookie('MoodifyCode');
+        setCookie('MoodifyAccessToken', access_token, {expires: now});
+        setCookie('RefreshToken', refresh_token);
+        setCookie('MoodifyUserData', JSON.stringify(user));
         setAccessToken(access_token);
         window.location = 'http://localhost:3000';
       }
@@ -169,17 +158,17 @@ const Landing = () => {
     const url = window.location.search;
     const getQuery = url.split('?')[1];
 
-    if (getQuery && getQuery.includes('code') && !cookies.code) {
+    if (getQuery && getQuery.includes('code') && !cookies.MoodifyCode) {
       const params = getQuery.split('&');
       const code = params[0].substring(5);
-      setCookie('code', code);
+      setCookie('MoodifyCode', code);
       window.location.reload();
     }
   },[]);
 
   useEffect(() => {
-    if (cookies.code && !cookies.accessToken) {
-      getAccessToken(cookies.code);
+    if (cookies.MoodifyCode && !cookies.MoodifyAccessToken) {
+      getAccessToken(cookies.MoodifyCode);
     }
   },[]);
 
@@ -187,7 +176,6 @@ const Landing = () => {
   const [offsetY, setOffsetY] = useState(0);
   const handleResize = () => setRotation(window.innerWidth)
   const handleScroll = () => {
-    console.log(window.pageYOffset);
     setOffsetY(window.pageYOffset)
   };
 

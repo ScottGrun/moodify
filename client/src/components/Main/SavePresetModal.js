@@ -47,7 +47,10 @@ const SavePresetModalContainer = styled.div`
 
   .content-container {
     display: flex;
-    flex-wrap: wrap;
+
+    @media (max-width: 600px) {
+      flex-wrap: wrap;
+    }
 
     .image-container {
       margin-right: 25px;
@@ -57,6 +60,11 @@ const SavePresetModalContainer = styled.div`
         width: 212px;
         height: 212px;
         margin-bottom: 10px;
+
+        @media (max-width: 600px) {
+          width: 100px;
+          height: 100px;
+        }
       }
 
       .preset-stats {
@@ -133,7 +141,6 @@ const SavePresetModalContainer = styled.div`
         }
       }
     }
-
   }
 `;
 
@@ -146,7 +153,7 @@ export default function SavePresetModal(props) {
   const [playlistMinMax, setPlaylistMinMax] = props.playlistMinMax;
   
   const savePreset = () => {
-    const user_id = cookies.userData.display_name;
+    const user_id = cookies.MoodifyUserData.display_name;
     axios
       .post(`http://localhost:9000/presets`, {
         name,

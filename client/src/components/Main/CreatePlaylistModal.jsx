@@ -35,7 +35,7 @@ const CreatePlaylistModalContainer = styled.div`
   box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
   display: none;
   animation: ${slideDown} 500ms ease;
-  z-index: 99999999999999999999;
+  z-index: 99999999999;
   ${({ open }) => open && `
     display: block;
   `}
@@ -49,7 +49,10 @@ const CreatePlaylistModalContainer = styled.div`
 
   .content-container {
     display: flex;
-    flex-wrap: wrap;
+
+    @media (max-width: 600px) {
+      flex-wrap: wrap;
+    }
 
     .image-container {
       margin-right: 25px;
@@ -58,6 +61,11 @@ const CreatePlaylistModalContainer = styled.div`
         width: 212px;
         height: 212px;
         margin-bottom: 10px;
+
+        @media (max-width: 600px) {
+          width: 100px;
+          height: 100px;
+        }
       }
 
       .playlist-stats {
