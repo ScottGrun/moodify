@@ -1,17 +1,17 @@
-import React, { useState, useContext } from 'react';
-import axios from 'axios';
-import styled from 'styled-components';
-import { StateContext } from '../../App';
-import { filterTracks } from '../../helpers/filter';
-import { setSliderMarks } from '../../helpers/util';
-import { serverRoot } from '../../env';
+import React, { useState, useContext } from "react";
+import axios from "axios";
+import styled from "styled-components";
+import { StateContext } from "../../App";
+import { filterTracks } from "../../helpers/filter";
+import { setSliderMarks } from "../../helpers/util";
+import { serverRoot } from "../../env";
 // components
-import Profile from './Profile';
+import Profile from "./Profile";
 
 // images
-import musicIcon from '../../assets/music-icon.svg';
-import trending from '../../assets/icons/trending.svg';
-import albums from '../../assets/icons/test.svg';
+import musicIcon from "../../assets/music-icon.svg";
+import trending from "../../assets/icons/trending.svg";
+import albums from "../../assets/icons/test.svg";
 
 const NavigationContainer = styled.div`
   width: 100%;
@@ -131,7 +131,7 @@ export default function Navigation(props) {
       })
       .then((res) => {
         setTracks({
-          loading: true,
+          loading: false,
           songs: res.data.songs,
         });
         setChartValues(res.data.averages);
@@ -140,7 +140,12 @@ export default function Navigation(props) {
         setSongsInView(15);
       })
       .catch((res) => {
-        setSnackbar({ ...snackbar, open: true, message: res.message, variant: 'error' });
+        setSnackbar({
+          ...snackbar,
+          open: true,
+          message: res.message,
+          variant: "error",
+        });
       });
   };
 
@@ -153,7 +158,7 @@ export default function Navigation(props) {
       })
       .then((res) => {
         setTracks({
-          loading: true,
+          loading: false,
           songs: res.data.songs,
         });
         setChartValues(res.data.averages);
@@ -162,16 +167,23 @@ export default function Navigation(props) {
         setSongsInView(15);
       })
       .catch((res) => {
-        setSnackbar({ ...snackbar, open: true, message: res.message, variant: 'error' });
+        setSnackbar({
+          ...snackbar,
+          open: true,
+          message: res.message,
+          variant: "error",
+        });
       });
   };
 
   const loadRecommendedSongs = () => {
     setOpenNav(false);
-    let recommendationSeeds = filterTracks(userTracks, playlistMinMax).map((track) => ({
-      track_id: track.id,
-      artist_id: track.artist_id,
-    }));
+    let recommendationSeeds = filterTracks(userTracks, playlistMinMax).map(
+      (track) => ({
+        track_id: track.id,
+        artist_id: track.artist_id,
+      })
+    );
     setTracks({ loading: true, songs: [] });
 
     axios
@@ -191,7 +203,12 @@ export default function Navigation(props) {
         setSongsInView(15);
       })
       .catch((res) => {
-        setSnackbar({ ...snackbar, open: true, message: res.message, variant: 'error' });
+        setSnackbar({
+          ...snackbar,
+          open: true,
+          message: res.message,
+          variant: "error",
+        });
       });
   };
 
@@ -200,7 +217,7 @@ export default function Navigation(props) {
     trackTotal,
     playlistName,
     playlistDescription,
-    playlistImg,
+    playlistImg
   ) => {
     loadTracks(playlistId, trackTotal);
     setSongsInView(15);
@@ -243,14 +260,14 @@ export default function Navigation(props) {
                         playlist.tracks.total,
                         playlist.name,
                         playlist.description,
-                        playlist.images[0],
+                        playlist.images[0]
                       )
                     }
                   >
                     <img src={musicIcon} />
                     <p>
                       {playlist.name.length > 17
-                        ? playlist.name.slice(0, 17) + '...'
+                        ? playlist.name.slice(0, 17) + "..."
                         : playlist.name}
                     </p>
                   </li>

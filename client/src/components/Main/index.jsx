@@ -1,27 +1,29 @@
-import React, { useEffect, useContext, useState } from 'react';
-import { useCookies } from 'react-cookie';
-import axios from 'axios';
-import { serverRoot } from '../../env';
-import { StateContext } from '../../App';
-import { setSliderMarks } from '../../helpers/util';
-import styled from 'styled-components';
-import { Snackbar } from '@material-ui/core';
-import Slide from '@material-ui/core/Slide';
-import { v4 as uuidv4 } from 'uuid';
+import React, { useEffect, useContext, useState } from "react";
+import { useCookies } from "react-cookie";
+import axios from "axios";
+import { serverRoot } from "../../env";
+import { StateContext } from "../../App";
+import { setSliderMarks } from "../../helpers/util";
+import styled from "styled-components";
+import { Snackbar } from "@material-ui/core";
+import Slide from "@material-ui/core/Slide";
+import { v4 as uuidv4 } from "uuid";
 
 // Components
-import Header from './Header';
-import Navigation from './Navigation.jsx';
-import PlaylistImage from './PlaylistImage';
-import PlaylistItemContainer from './PlaylistItemContainer';
+import Header from "./Header";
+import Navigation from "./Navigation.jsx";
+import PlaylistImage from "./PlaylistImage";
+import PlaylistItemContainer from "./PlaylistItemContainer";
 
-import RadarChart from './RadarChart';
-import Sliders from './Sliders';
-import PresetsContainer, { displayedPresetsLabels, displayedPresetsPaths } from './PresetsContainer';
-import OpenMenu from './OpenMenu';
-import CreatePlaylistModal from './CreatePlaylistModal';
-import SavePresetModal from './SavePresetModal';
-
+import RadarChart from "./RadarChart";
+import Sliders from "./Sliders";
+import PresetsContainer, {
+  displayedPresetsLabels,
+  displayedPresetsPaths,
+} from "./PresetsContainer";
+import OpenMenu from "./OpenMenu";
+import CreatePlaylistModal from "./CreatePlaylistModal";
+import SavePresetModal from "./SavePresetModal";
 
 const HamburgerMenu = styled.div`
   height: 24px;
@@ -68,29 +70,29 @@ const MainContainer = styled.div`
   grid-template-rows: 40px 1fr;
   gap: 24px 24px;
   grid-template-areas:
-    'header header header header header header header header header header header header'
-    'sidebar sidebar main main main main main main playlist-controls playlist-controls playlist-controls playlist-controls';
+    "header header header header header header header header header header header header"
+    "sidebar sidebar main main main main main main playlist-controls playlist-controls playlist-controls playlist-controls";
 
   @media (max-width: 1280px) {
     margin: 24px;
     grid-template-areas:
-      'header header header header header header header header header header header header'
-      'main main main main main main main playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls';
+      "header header header header header header header header header header header header"
+      "main main main main main main main playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls";
   }
 
   @media (max-width: 800px) {
     margin: 16px;
     grid-template-areas:
-      'header header header header header header header header header header header header'
-      'playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls'
-      'main main main main main main main main main main main main ';
+      "header header header header header header header header header header header header"
+      "playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls"
+      "main main main main main main main main main main main main ";
   }
 
   @media (max-width: 450px) {
     grid-template-areas:
-      'header header header header header header header header header header header header'
-      'playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls '
-      'main main main main main main main main main main main main ';
+      "header header header header header header header header header header header header"
+      "playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls playlist-controls "
+      "main main main main main main main main main main main main ";
   }
 `;
 
@@ -141,23 +143,23 @@ const PlaylistControls = styled.div`
       position: relative;
       display: flex;
       align-items: center;
-      background-color: #12172C;
+      background-color: #12172c;
       width: 38%;
       height: 40px;
       padding: 5px;
       z-index: 100;
       min-width: 192px;
       user-select: none;
-      
+
       &:hover {
         cursor: pointer;
       }
 
       ion-icon {
-      position: absolute;
-      right: 10px;
-      color: white;
-      font-size: 20px;
+        position: absolute;
+        right: 10px;
+        color: white;
+        font-size: 20px;
       }
 
       .save-preset-btn {
@@ -169,13 +171,16 @@ const PlaylistControls = styled.div`
       position: absolute;
       left: 0;
       top: 40px;
-      background-color: #12172C;
+      background-color: #12172c;
       width: 100%;
       transition: transform 0.2s ease-in-out;
       transform: translateY(0px);
-      ${({ open }) => open ? `
+      ${({ open }) =>
+        open
+          ? `
         display: block;
-      ` : `
+      `
+          : `
         display: none;
       `}
 
@@ -254,10 +259,10 @@ const CreatePlaylistButton = styled.button`
   padding: 10px;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
-        border-radius: 3px;
+  border-radius: 3px;
   &:hover {
-    background-color: white;;
-    color: #191F35;
+    background-color: white;
+    color: #191f35;
   }
 `;
 
@@ -266,11 +271,10 @@ const VerticalDivider = styled.div`
   width: 2px;
   background-color: white;
   display: block;
-  margin: 0 .75rem;
-`
+  margin: 0 0.75rem;
+`;
 
 const SavePresetButton = styled.button`
-  
   background-color: transparent;
   color: #757986;
   font-weight: bold;
@@ -288,7 +292,7 @@ const SavePresetButton = styled.button`
     outline: none;
   }
 `;
-    
+
 const ControlsContainer = styled.div`
   width: 100%;
 
@@ -307,10 +311,12 @@ const StyledSnackbar = styled(Snackbar)`
     padding: 6px 24px;
     line-height: 1.43;
     border-radius: 4px;
-    box-shadow: 0px 3px 5px -1px rgba(0,0,0,0.2), 0px 6px 10px 0px rgba(0,0,0,0.14), 0px 1px 18px 0px rgba(0,0,0,0.12);
+    box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2),
+      0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
     display: flex;
     align-items: center;
-    background-color: ${props => props.variant === 'success' ? '#4caf50' : '#f44336'};
+    background-color: ${(props) =>
+      props.variant === "success" ? "#4caf50" : "#f44336"};
 
     ion-icon {
       font-size: 22px;
@@ -339,28 +345,36 @@ function TransitionDown(props) {
 }
 
 const Main = (props) => {
-  const [cookies, setCookie, removeCookie] = useCookies(['cookie-name']);
+  const [cookies, setCookie, removeCookie] = useCookies(["cookie-name"]);
   const [accessToken, setAccessToken] = useContext(StateContext).AccessToken;
   const [loading, setLoading] = useState(false);
-  const [userTracks, setTracks] = props.userTracks;
+  const [userTracks, setUserTracks] = useState({ loading: true, songs: [] });
   const [chartValues, setChartValues] = props.chartValues;
   const [openNav, setOpenNav] = props.openNav;
-  const [openCreatePlaylistModal, setOpenCreatePlaylistModal] = props.openCreatePlaylistModal;
+  const [
+    openCreatePlaylistModal,
+    setOpenCreatePlaylistModal,
+  ] = props.openCreatePlaylistModal;
   const [playlistMinMax, setPlaylistMinMax] = props.playlistMinMax;
   const [playlists, setPlaylists] = useState([]);
   const [openSavePresetModal, setOpenSavePresetModal] = useState(false);
-  const [selectedPlaylist, setSelectedPlaylist] = useState({title:' Your Liked Songs', description: 'A collection of all the tracks you have ever liked on Spotify.', imgUrl: null})
+  const [selectedPlaylist, setSelectedPlaylist] = useState({
+    title: " Your Liked Songs",
+    description:
+      "A collection of all the tracks you have ever liked on Spotify.",
+    imgUrl: null,
+  });
   const [marks, setMarks] = useState({});
   const [snackbar, setSnackbar] = useState({
     open: false,
-    message: 'empty',
-    variant: '',
+    message: "empty",
+    variant: "",
   });
   const [open, setOpen] = useState(false);
   const toggleDropdown = () => {
-    setOpen(prev => !open);
+    setOpen((prev) => !open);
   };
-  const [displayedPresets, setDisplayedPresets] = useState('popular');
+  const [displayedPresets, setDisplayedPresets] = useState("popular");
   const [refreshPresetsToggle, setRefreshPresetsToggle] = useState(false);
 
   const refreshPresets = () => {
@@ -368,90 +382,98 @@ const Main = (props) => {
   };
 
   const getSavedTracks = () => {
-    axios.post(`${serverRoot}/tracks/saved`, {
-      accessToken,
-    })
-    .then((res) => {
-      setTracks({
-        loading: true,
-        songs: res.data.songs,
+    axios
+      .post(`${serverRoot}/tracks/saved`, {
+        accessToken,
+      })
+      .then((res) => {
+        setUserTracks((prev) => ({
+          loading: false,
+          songs: res.data.songs,
+        }));
+        setChartValues(res.data.averages);
+        setPlaylistMinMax({ data: res.data.minMax, loaded: true });
+        setSliderMarks(res.data.minMax, setMarks);
+      })
+      .catch((res) => {
+        setSnackbar({ ...snackbar, open: true, message: res.message });
       });
-      setChartValues(res.data.averages);
-      setPlaylistMinMax({ data: res.data.minMax, loaded: true });
-      setSliderMarks(res.data.minMax, setMarks);
-    })
-    .catch(res => {
-      setSnackbar({...snackbar, open: true, message: res.message});
-    });
   };
 
   const getPlaylists = () => {
-    axios.post(`${serverRoot}/playlists/ids`, { accessToken }).then((res) => {
-      setPlaylists(res.data);
-      
-    })
-    .catch(res => {
-      setSnackbar({...snackbar, open: true, message: res.message, variant: 'error'});
-    });
+    axios
+      .post(`${serverRoot}/playlists/ids`, { accessToken })
+      .then((res) => {
+        setPlaylists(res.data);
+      })
+      .catch((res) => {
+        setSnackbar({
+          ...snackbar,
+          open: true,
+          message: res.message,
+          variant: "error",
+        });
+      });
   };
 
   const getSessionData = () => {
-    setTracks(JSON.parse(localStorage.getItem('userTracks')));
-    setChartValues(JSON.parse(localStorage.getItem('chartValues')));
-    setPlaylistMinMax(JSON.parse(localStorage.getItem('playlistMinMax')));
-    setPlaylists(JSON.parse(localStorage.getItem('playlists')));
-    setMarks(JSON.parse(localStorage.getItem('marks')));
+    setUserTracks((prev) => JSON.parse(localStorage.getItem("userTracks")));
+    setChartValues(JSON.parse(localStorage.getItem("chartValues")));
+    setPlaylistMinMax(JSON.parse(localStorage.getItem("playlistMinMax")));
+    setPlaylists(JSON.parse(localStorage.getItem("playlists")));
+    setMarks(JSON.parse(localStorage.getItem("marks")));
 
     localStorage.clear();
   };
 
   useEffect(() => {
-    if (localStorage.getItem('userTracks')) {
+    if (localStorage.getItem("userTracks")) {
       getSessionData();
     } else {
       getSavedTracks();
       getPlaylists();
     }
-  },[]);
+  }, []);
 
   const closeSnackbar = () => {
     setSnackbar({ ...snackbar, open: false });
   };
 
   const login = () => {
-    removeCookie('accessToken');
-    removeCookie('refreshToken');
-    removeCookie('userData');
+    removeCookie("accessToken");
+    removeCookie("refreshToken");
+    removeCookie("userData");
     setAccessToken(null);
 
-    localStorage.setItem('userTracks', JSON.stringify(userTracks));
-    localStorage.setItem('chartValues', JSON.stringify(chartValues));
-    localStorage.setItem('playlistMinMax', JSON.stringify(playlistMinMax));
-    localStorage.setItem('playlists', JSON.stringify(playlists));
-    localStorage.setItem('marks', JSON.stringify(marks));
+    localStorage.setItem("userTracks", JSON.stringify(userTracks));
+    localStorage.setItem("chartValues", JSON.stringify(chartValues));
+    localStorage.setItem("playlistMinMax", JSON.stringify(playlistMinMax));
+    localStorage.setItem("playlists", JSON.stringify(playlists));
+    localStorage.setItem("marks", JSON.stringify(marks));
 
-    axios.get(`${serverRoot}/auth/login`)
-      .then(res => {
+    axios
+      .get(`${serverRoot}/auth/login`)
+      .then((res) => {
         window.location = res.data;
       })
-      .catch(err => console.log(err));
+      .catch((err) => console.log(err));
   };
 
-  const presetDropdownItems = displayedPresetsPaths.map(path => {
+  const presetDropdownItems = displayedPresetsPaths.map((path) => {
     return (
       <li onClick={() => setDisplayedPresets(path)} key={uuidv4()}>
         {displayedPresetsLabels[path]}
       </li>
     );
   });
-  
+
   return (
     <>
-      <StyledSnackbar 
-        key={ 'top' + 'center' }
-        anchorOrigin={{ 
-          vertical: 'top', 
-          horizontal: 'center' 
+      <StyledSnackbar
+        key={"top" + "center"}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "center",
         }}
         open={snackbar.open}
         onClose={closeSnackbar}
@@ -459,20 +481,20 @@ const Main = (props) => {
         TransitionComponent={TransitionDown}
         variant={snackbar.variant}
       >
-        <div className='snackbar'>
-          {  
-            snackbar.variant === 'success'
-            ? <ion-icon name="checkmark-circle-outline"></ion-icon>
-            : <ion-icon name="alert-circle-outline"></ion-icon>
-          }
-          {
-            snackbar.message.includes('401')
-            ? <div className='login-again'>
-                <p>Your session ended</p>
-                <button onClick={login}>Login</button>
-              </div>
-            : <p>{snackbar.message}</p>
-          }
+        <div className="snackbar">
+          {snackbar.variant === "success" ? (
+            <ion-icon name="checkmark-circle-outline"></ion-icon>
+          ) : (
+            <ion-icon name="alert-circle-outline"></ion-icon>
+          )}
+          {snackbar.message.includes("401") ? (
+            <div className="login-again">
+              <p>Your session ended</p>
+              <button onClick={login}>Login</button>
+            </div>
+          ) : (
+            <p>{snackbar.message}</p>
+          )}
         </div>
       </StyledSnackbar>
 
@@ -501,7 +523,7 @@ const Main = (props) => {
             marksState={[marks, setMarks]}
             playlistMinMax={props.playlistMinMax}
             openNav={props.openNav}
-            userTracks={props.userTracks}
+            userTracks={[userTracks, setUserTracks]}
             chartValues={props.chartValues}
             snackbar={[snackbar, setSnackbar]}
             setSelectedPlaylist={setSelectedPlaylist}
@@ -509,82 +531,90 @@ const Main = (props) => {
         </Sidebar>
 
         <MainContent>
-          <SavePresetModal 
+          <SavePresetModal
             openSavePresetModal={[openSavePresetModal, setOpenSavePresetModal]}
             snackbar={[snackbar, setSnackbar]}
             playlistMinMax={props.playlistMinMax}
             setDisplayedPresets={setDisplayedPresets}
             displayedPresets={displayedPresets}
-            refreshPresets={refreshPresets} 
+            refreshPresets={refreshPresets}
           />
           <CreatePlaylistModal
             playlistMinMax={props.playlistMinMax}
             openCreatePlaylistModal={props.openCreatePlaylistModal}
-            userTracks={props.userTracks}
+            userTracks={[userTracks, setUserTracks]}
             snackbar={[snackbar, setSnackbar]}
             getPlaylists={getPlaylists}
           />
 
           <div className="playlists-container">
             <div className="playlist-image-container">
-              <PlaylistImage playlistMinMax={props.playlistMinMax} userTracks={props.userTracks} selectedPlaylist={selectedPlaylist} />
+              <PlaylistImage
+                playlistMinMax={props.playlistMinMax}
+                userTracks={[userTracks, setUserTracks]}
+                selectedPlaylist={selectedPlaylist}
+              />
             </div>
           </div>
           <PlaylistItemContainer
             loading={[loading, setLoading]}
             playlistMinMax={props.playlistMinMax}
-            userTracks={props.userTracks}
+            userTracks={[userTracks, setUserTracks]}
             chartValues={props.chartValues}
             snackbar={[snackbar, setSnackbar]}
           />
-         
         </MainContent>
-        <PlaylistControls open={open} >
-          <div className='radar-chart-container'>
-            <RadarChart chartValues={props.chartValues} chartData={props.chartData} />
+        <PlaylistControls open={open}>
+          <div className="radar-chart-container">
+            <RadarChart
+              chartValues={props.chartValues}
+              chartData={props.chartData}
+            />
           </div>
 
-          <div className='sliders-container'>
+          <div className="sliders-container">
             <ControlsContainer>
               <Sliders
                 marksState={[marks, setMarks]}
                 playlistMinMax={props.playlistMinMax}
-                userTracks={props.userTracks}
+                userTracks={[userTracks, setUserTracks]}
                 chartValues={props.chartValues}
               />
-              <CreatePlaylistButton onClick={() => setOpenCreatePlaylistModal(true)}>
+              <CreatePlaylistButton
+                onClick={() => setOpenCreatePlaylistModal(true)}
+              >
                 Create Playlist
               </CreatePlaylistButton>
             </ControlsContainer>
           </div>
 
-          <div className="presets-container" >
-            <div className='title' >
-              <div className='presets-dropdown' onClick={toggleDropdown}>
-              <h3>{displayedPresetsLabels[displayedPresets]}</h3>
-              <ion-icon className='dropdown-icon' name="chevron-down-outline"></ion-icon>
-                <div className='dropdown-container'>
-                  <ul>
-                    {presetDropdownItems}
-                  </ul>
+          <div className="presets-container">
+            <div className="title">
+              <div className="presets-dropdown" onClick={toggleDropdown}>
+                <h3>{displayedPresetsLabels[displayedPresets]}</h3>
+                <ion-icon
+                  className="dropdown-icon"
+                  name="chevron-down-outline"
+                ></ion-icon>
+                <div className="dropdown-container">
+                  <ul>{presetDropdownItems}</ul>
                 </div>
               </div>
-              <VerticalDivider/>
+              <VerticalDivider />
               <SavePresetButton
-                className="save-preset-btn" 
+                className="save-preset-btn"
                 onClick={() => setOpenSavePresetModal(true)}
               >
                 Save Preset
               </SavePresetButton>
             </div>
-            <PresetsContainer 
+            <PresetsContainer
               playlistMinMax={props.playlistMinMax}
               chartValues={props.chartValues}
               displayedPresets={displayedPresets}
               refreshPresetsToggle={refreshPresetsToggle}
-            /> 
+            />
           </div>
-    
         </PlaylistControls>
       </MainContainer>
     </>
