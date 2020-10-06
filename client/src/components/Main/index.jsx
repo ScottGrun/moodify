@@ -360,6 +360,11 @@ const Main = (props) => {
     setOpen(prev => !open);
   };
   const [displayedPresets, setDisplayedPresets] = useState('popular');
+  const [refreshPresetsToggle, setRefreshPresetsToggle] = useState(false);
+
+  const refreshPresets = () => {
+    setRefreshPresetsToggle(!refreshPresetsToggle);
+  };
 
   const getSavedTracks = () => {
     axios.post(`http://localhost:9000/tracks/saved`, {
@@ -506,7 +511,10 @@ const Main = (props) => {
           <SavePresetModal 
             openSavePresetModal={[openSavePresetModal, setOpenSavePresetModal]}
             snackbar={[snackbar, setSnackbar]}
-            playlistMinMax={props.playlistMinMax}  
+            playlistMinMax={props.playlistMinMax}
+            setDisplayedPresets={setDisplayedPresets}
+            displayedPresets={displayedPresets}
+            refreshPresets={refreshPresets} 
           />
           <CreatePlaylistModal
             playlistMinMax={props.playlistMinMax}
@@ -572,6 +580,7 @@ const Main = (props) => {
               playlistMinMax={props.playlistMinMax}
               chartValues={props.chartValues}
               displayedPresets={displayedPresets}
+              refreshPresetsToggle={refreshPresetsToggle}
             /> 
           </div>
     

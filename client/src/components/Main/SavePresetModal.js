@@ -157,7 +157,9 @@ export default function SavePresetModal(props) {
       .then((res) => {
         setImageUrl(randomImageUrl());
         setOpenSavePresetModal(false);
-        setSnackbar({ ...snackbar, open: true, message: `${res.data.name} has been saved!`, variant: 'success' })
+        setName('');
+        setSnackbar({ ...snackbar, open: true, message: `${res.data.name} has been saved!`, variant: 'success' });
+        props.displayedPresets === 'yourpresets' ? props.refreshPresets() : props.setDisplayedPresets('yourpresets');
         // console.log(res);
       })
       .catch((res) => {
