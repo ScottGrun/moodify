@@ -1,13 +1,8 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import { useCookies } from 'react-cookie';
 import { StateContext } from '../../App';
-import logo from '../../assets/logo.svg';
-import pattern from './assets/pattern.png';
-import AlbumCovers from './AlbumCovers';
-import Sliders from './Sliders';
-import Playlists from './Playlists';
 import { clientRoot, serverRoot } from '../../env';
 
 // React-GA for Google Analytics
@@ -15,6 +10,7 @@ import ReactGA from 'react-ga';
 
 // images
 import vinylRecord from './assets/vinyl-record.png';
+import patternSmall from './assets/pattern-small.svg';
 
 const LandingPageContainer = styled.div`
   @keyframes rotation {
@@ -32,7 +28,7 @@ const LandingPageContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
+  overflow-x: hidden;
 
   .section1 {
     width: 100%;
@@ -40,7 +36,6 @@ const LandingPageContainer = styled.div`
     position: relative;
     display: flex;
     justify-content: center;
-    overflow: hidden;
 
     .content-container {
       width: 100%;
@@ -121,6 +116,64 @@ const LandingPageContainer = styled.div`
       }
     }
   }
+
+  @media (max-width: 1100px) {
+
+    .section1 {
+
+      .content-container {
+
+
+        .content {
+          flex-direction: column-reverse;
+
+          .text {
+            width: 100%;
+            height: 100%;
+            padding: 20px;
+
+            .text-container {
+
+              h1 {
+                font-size: 48px;
+                letter-spacing: 3px;
+                margin-bottom: 40px;
+                max-width: 357px;
+              }
+              p {
+                font-size: 14px;
+                letter-spacing: 1px;
+                margin-bottom: 20px;
+                max-width: 338px;
+              }
+              button {
+                font-size: 18px;
+                letter-spacing: 0;
+                width: 212px;
+                height: 40px;
+              }
+            } 
+          }
+
+          .vinyl-record {
+            background-image: url(${props => props.patternSmall});
+            background-size: cover;
+            background-position: bottom;
+            width: 100%;
+
+            img {
+              max-width: 300px;
+              margin-bottom: 20px;
+
+              &:hover {
+                
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 `;
 
 const Landing = () => {
@@ -180,25 +233,8 @@ const Landing = () => {
     }
   },[]);
 
-  const [rotation, setRotation] = useState(0);
-  const [offsetY, setOffsetY] = useState(0);
-  const handleResize = () => setRotation(window.innerWidth)
-  const handleScroll = () => {
-    setOffsetY(window.pageYOffset)
-  };
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  },[]);
-
-  useEffect(() => {
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  },[]);
-
   return(
-    <LandingPageContainer>
+    <LandingPageContainer patternSmall={patternSmall}>
       <section className='section1'>
         <div className='content-container'>
           <div className='content'>
@@ -215,9 +251,6 @@ const Landing = () => {
           </div>
         </div>
       </section>
-      {/* <AlbumCovers />
-      <Sliders />
-      <Playlists /> */}
     </LandingPageContainer>
   );
 

@@ -254,7 +254,7 @@ const PlaylistItem = (props) => {
 
         const newTracks = filterTracks(allSongs, playlistMinMax);
         if (newTracks.length === totalSongs) {
-          setSnackbar({...snackbar, open: true, message: 'Sorry, could not find any similar songs'});
+          setSnackbar({...snackbar, open: true, message: 'Sorry, could not find any similar songs', variant: 'error'});
         }
         setChartValues(getAverages(allSongs.songs));
 
