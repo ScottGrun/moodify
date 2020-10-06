@@ -160,7 +160,7 @@ export default function SavePresetModal(props) {
     const user_id = cookies.MoodifyUserData.display_name;
     ReactGA.event({
       category: "Save Preset",
-      action: "User clicked the save preset button.",
+      action: "User clicked the save preset button in the modal.",
     });
     axios
       .post(`${serverRoot}/presets`, {

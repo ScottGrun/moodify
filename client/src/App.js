@@ -5,7 +5,9 @@ import Main from './components/Main/index';
 
 // React-GA for Google Analytics
 import ReactGA from 'react-ga';
-const trackingID = "UA-179872103-1"
+const trackingID = "UA-179872103-1";
+ReactGA.initialize(trackingID);
+ReactGA.pageview(window.location.pathname + window.location.search);
 
 export const StateContext = React.createContext();
 
@@ -26,12 +28,6 @@ export default function App() {
   if (cookies.MoodifyAccessToken && !accessToken) {
     setAccessToken(cookies.MoodifyAccessToken);
   }
-
-  useEffect(() => {
-    console.log('useeffect react-ga being called');
-    ReactGA.initialize(trackingID);
-    ReactGA.pageview(window.location.pathname + window.location.search);
-  });
 
   return (
     <StateContext.Provider value={ {

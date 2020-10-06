@@ -198,8 +198,8 @@ export default function CreatePlaylistModal(props) {
   const savePlaylist = (songs) => {
     const uris = filterTracks(songs, playlistMinMax).map(song => song.uri)
     ReactGA.event({
-      category: "Create Playlist",
-      action: "User clicked the create playlist button.",
+      category: "Save Playlist",
+      action: "User clicked the save playlist button in the modal.",
     });
     axios.post(`${serverRoot}/playlists/create`, {
       accessToken,
