@@ -246,7 +246,7 @@ export default function Sliders(props) {
               <span>
                 <b>Danceability</b>
                 <br />
-                How danceable a song feels,the higher the danceability better it
+                How danceable a song feels, the higher the danceability, the better it
                 is to dance to.
               </span>
             }
