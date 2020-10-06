@@ -194,6 +194,8 @@ export default function CreatePlaylistModal(props) {
     })
     .then((res) => {
       setOpenCreatePlaylistModal(false);
+      setName('');
+      setDescription('');
       setSnackbar({...snackbar, open: true, message: `${res.data.name} has been saved!`, variant: 'success'})
       props.getPlaylists();
     })
