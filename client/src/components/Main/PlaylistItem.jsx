@@ -17,6 +17,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 // React-GA for Google Analytics
 import ReactGA from "react-ga";
 import setCurrentSongPlaying from "../../helpers/songPreviewManager";
+import { NIL } from "uuid";
 
 const StyledSongCoverContainer = styled.div`
   position: relative;
@@ -193,7 +194,7 @@ const PlaylistItem = (props) => {
   const [userTracks, setTracks] = props.userTracks;
   const [playlistMinMax, setPlaylistMinMax] = props.playlistMinMax;
   const [snackbar, setSnackbar] = props.snackbar;
-  const [currentlyPlaying, setCurrentlyPlaying] = props.currentlyPlaying;
+  const [currentlyPlaying, setCurrentlyPlaying] = useState(null);
 
   const [currentSong, setCurrentSong] = useState(null);
   const [isPlaying, setPlaying] = useState(false);
@@ -206,35 +207,38 @@ const PlaylistItem = (props) => {
     });
   };
 
-  const playPreviewDemo = async () => {
-    const newSong = await new Audio(props.previewUrl);
-    return newSong;
-  };
-
   useEffect(() => {
     if (isPlaying) {
-      const newSong = new Audio(props.previewUrl);
-      setCurrentSong(newSong);
+      let newSong = new Audio(props.previewUrl);
 
-      setCurrentSongPlaying(props.previewUrl, () => {
-        newSong.pause();
-        setCurrentSong(null);
-        setPlaying(false);
-      });
+      setCurrentSongPlaying(
+        props.previewUrl,
+        () => {
+          setCurrentlyPlaying(false);
 
-      newSong.play();
+          newSong.pause();
+          setCurrentSong(null);
+          setPlaying(false);
+        },
+        () => {
+          setCurrentlyPlaying(true);
+          setCurrentSong(newSong);
+          newSong.play();
+        }
+      );
     } else if (currentSong !== null) {
       currentSong.pause();
+      setCurrentlyPlaying(false);
     }
   }, [isPlaying]);
 
   const playPreview = () => {
-    setPlaying(!isPlaying);
-
     if (!props.previewUrl) return;
+
+    setPlaying(!isPlaying);
   };
 
-  const playing = isPlaying;
+  const playing = currentlyPlaying;
 
   const handleClose = (event) => {
     event.stopPropagation();
@@ -334,7 +338,7 @@ const PlaylistItem = (props) => {
     <StyledPlaylistItem
       idx={props.idx}
       className="playlist-item"
-      onClick={debounce(playPreview, 300)}
+      onClick={playPreview}
       onContextMenu={handleClick}
       styled={{ cursor: "context-menu" }}
       previewUrl={props.previewUrl}
