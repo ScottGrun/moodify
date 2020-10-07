@@ -13,6 +13,8 @@ const setCurrentSongPlaying = async (key, stopCallback, playCallback) => {
   currentSongPlaying.play = playCallback;
   const timer = setTimeout(() => {
     if (currentSongPlaying.key === key) {
+      currentSongPlaying.play = playCallback;
+
       currentSongPlaying.play();
     } else {
       //Overide and stop
