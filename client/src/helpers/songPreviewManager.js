@@ -1,17 +1,30 @@
-let currentSongPlaying = { stop: () => {}, key: null };
+const debounce = require("debounce");
 
-const setCurrentSongPlaying = (key, stopCallback) => {
+let currentSongPlaying = {
+  stop: () => {},
+  play: () => {},
+  key: null,
+  timer: null,
+};
+
+const setCurrentSongPlaying = async (key, stopCallback, playCallback) => {
   if (currentSongPlaying.key === key) {
-    // currentSongPlaying.stop();
-    // currentSongPlaying.stop = stopCallback;
     console.log(currentSongPlaying.key);
     return true;
   }
-  currentSongPlaying.key = key;
-  currentSongPlaying.stop();
-  currentSongPlaying.stop = stopCallback;
 
-  return true;
+  currentSongPlaying.play = playCallback;
+  const timer = setTimeout(() => {
+    currentSongPlaying.play();
+
+    //Overide and stop
+    currentSongPlaying.key = key;
+    currentSongPlaying.stop();
+    currentSongPlaying.stop = stopCallback;
+  }, 300);
+
+  clearTimeout(currentSongPlaying.timer);
+  currentSongPlaying.timer = timer;
 };
 
 module.exports = setCurrentSongPlaying;

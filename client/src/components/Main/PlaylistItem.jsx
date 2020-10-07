@@ -2,11 +2,12 @@ import React, { useContext, useState, useEffect } from "react";
 import { StateContext } from "../../App";
 import axios from "axios";
 import { serverRoot } from "../../env";
+import { debounce } from "debounce";
 
 import styled, { keyframes } from "styled-components";
 import PlayButton from "../../assets/icons/PlayButton.svg";
 import WaveFormSource from "../../assets/icons/audio.svg";
-import setCurrentSongPlaying from "../../helpers/songPreviewManager";
+// import setCurrentSongPlaying from "../../helpers/songPreviewManager";
 import { filterTracks } from "../../helpers/filter";
 import { getAudioFeatures, getAverages } from "../../helpers/calculations";
 
@@ -15,6 +16,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 
 // React-GA for Google Analytics
 import ReactGA from "react-ga";
+import setCurrentSongPlaying from "../../helpers/songPreviewManager";
+import { NIL } from "uuid";
 
 const StyledSongCoverContainer = styled.div`
   position: relative;
@@ -191,6 +194,7 @@ const PlaylistItem = (props) => {
   const [userTracks, setTracks] = props.userTracks;
   const [playlistMinMax, setPlaylistMinMax] = props.playlistMinMax;
   const [snackbar, setSnackbar] = props.snackbar;
+  const [currentlyPlaying, setCurrentlyPlaying] = useState(null);
 
   const [currentSong, setCurrentSong] = useState(null);
   const [isPlaying, setPlaying] = useState(false);
@@ -205,29 +209,36 @@ const PlaylistItem = (props) => {
 
   useEffect(() => {
     if (isPlaying) {
-      const newSong = new Audio(props.previewUrl);
-      setCurrentSong(newSong);
+      let newSong = new Audio(props.previewUrl);
 
-      setCurrentSongPlaying(props.id, () => {
-        newSong.pause();
-        setCurrentSong(null);
-        newSong.setAttribute("src", props.previewUrl);
+      setCurrentSongPlaying(
+        props.previewUrl,
+        () => {
+          setCurrentlyPlaying(false);
 
-        setPlaying(false);
-      });
-
-      newSong.play();
+          newSong.pause();
+          setCurrentSong(null);
+          setPlaying(false);
+        },
+        () => {
+          setCurrentlyPlaying(true);
+          setCurrentSong(newSong);
+          newSong.play();
+        }
+      );
     } else if (currentSong !== null) {
       currentSong.pause();
+      setCurrentlyPlaying(false);
     }
   }, [isPlaying]);
 
   const playPreview = () => {
     if (!props.previewUrl) return;
+
     setPlaying(!isPlaying);
   };
 
-  const playing = isPlaying;
+  const playing = currentlyPlaying;
 
   const handleClose = (event) => {
     event.stopPropagation();
