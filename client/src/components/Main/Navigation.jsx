@@ -239,7 +239,10 @@ export default function Navigation(props) {
               <img src={trending} />
               <p>Featured Songs</p>
             </li>
-            <li onClick={props.getSavedTracks}>
+            <li onClick={() => {
+              setTracks({loading: true, songs: []})
+              props.getSavedTracks()
+            }}>
               <img src={albums} />
               <p>Saved Songs</p>
             </li>

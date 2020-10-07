@@ -534,6 +534,7 @@ const Main = (props) => {
             chartValues={props.chartValues}
             snackbar={[snackbar, setSnackbar]}
             setSelectedPlaylist={setSelectedPlaylist}
+            getSavedTracks={getSavedTracks}
           />
         </Sidebar>
 
