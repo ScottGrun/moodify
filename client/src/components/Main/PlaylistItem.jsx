@@ -2,11 +2,12 @@ import React, { useContext, useState, useEffect } from "react";
 import { StateContext } from "../../App";
 import axios from "axios";
 import { serverRoot } from "../../env";
+import { debounce } from "debounce";
 
 import styled, { keyframes } from "styled-components";
 import PlayButton from "../../assets/icons/PlayButton.svg";
 import WaveFormSource from "../../assets/icons/audio.svg";
-import setCurrentSongPlaying from "../../helpers/songPreviewManager";
+// import setCurrentSongPlaying from "../../helpers/songPreviewManager";
 import { filterTracks } from "../../helpers/filter";
 import { getAudioFeatures, getAverages } from "../../helpers/calculations";
 
@@ -15,6 +16,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 
 // React-GA for Google Analytics
 import ReactGA from "react-ga";
+import setCurrentSongPlaying from "../../helpers/songPreviewManager";
 
 const StyledSongCoverContainer = styled.div`
   position: relative;
@@ -191,6 +193,7 @@ const PlaylistItem = (props) => {
   const [userTracks, setTracks] = props.userTracks;
   const [playlistMinMax, setPlaylistMinMax] = props.playlistMinMax;
   const [snackbar, setSnackbar] = props.snackbar;
+  const [currentlyPlaying, setCurrentlyPlaying] = props.currentlyPlaying;
 
   const [currentSong, setCurrentSong] = useState(null);
   const [isPlaying, setPlaying] = useState(false);
@@ -203,16 +206,19 @@ const PlaylistItem = (props) => {
     });
   };
 
+  const playPreviewDemo = async () => {
+    const newSong = await new Audio(props.previewUrl);
+    return newSong;
+  };
+
   useEffect(() => {
     if (isPlaying) {
       const newSong = new Audio(props.previewUrl);
       setCurrentSong(newSong);
 
-      setCurrentSongPlaying(props.id, () => {
+      setCurrentSongPlaying(props.previewUrl, () => {
         newSong.pause();
         setCurrentSong(null);
-        newSong.setAttribute("src", props.previewUrl);
-
         setPlaying(false);
       });
 
@@ -223,8 +229,9 @@ const PlaylistItem = (props) => {
   }, [isPlaying]);
 
   const playPreview = () => {
-    if (!props.previewUrl) return;
     setPlaying(!isPlaying);
+
+    if (!props.previewUrl) return;
   };
 
   const playing = isPlaying;
@@ -327,7 +334,7 @@ const PlaylistItem = (props) => {
     <StyledPlaylistItem
       idx={props.idx}
       className="playlist-item"
-      onClick={playPreview}
+      onClick={debounce(playPreview, 300)}
       onContextMenu={handleClick}
       styled={{ cursor: "context-menu" }}
       previewUrl={props.previewUrl}

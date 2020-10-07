@@ -13,6 +13,7 @@ import { filterTracks } from "../../helpers/filter";
 
 //Spinners
 import Loading from "./Loading";
+import setCurrentSongPlaying from "../../helpers/songPreviewManager";
 
 const StyledHeader = styled.div`
   display: flex;
@@ -128,6 +129,7 @@ const StyledPlaylistContainer = styled.div`
 `;
 
 const PlaylistItemContainer = (props) => {
+  const [currentlyPlaying, setCurrentlyPLaying] = useState(null);
   const [songsInView, setSongsInView] = useContext(StateContext).SongsInView;
   const [playlistMinMax] = props.playlistMinMax;
   const [userTracks, setUserTracks] = props.userTracks;
@@ -159,6 +161,7 @@ const PlaylistItemContainer = (props) => {
     const songs = filteredTracks.slice(0, songsInView).map((song, index) => {
       return (
         <PlaylistItem
+          currentlyPlaying={[currentlyPlaying, setCurrentlyPLaying]}
           idx={index}
           {...song}
           key={song.id}
