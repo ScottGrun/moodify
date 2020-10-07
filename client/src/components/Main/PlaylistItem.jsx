@@ -209,8 +209,9 @@ const PlaylistItem = (props) => {
   };
 
   useEffect(() => {
-    console.log(isPlaying);
-    if (isPlaying) {
+    console.log(`Currently Play State: ${currentlyPlaying}`);
+
+    if (currentlyPlaying) {
       let newSong = new Audio(props.previewUrl);
 
       setCurrentSongPlaying(
@@ -226,20 +227,22 @@ const PlaylistItem = (props) => {
           setCurrentSong(newSong);
           newSong.play();
           console.log("Play");
+        },
+        () => {
+          newSong.play();
         }
       );
     } else if (currentSong !== null) {
       currentSong.pause();
 
       setCurrentlyPlaying(false);
-      console.log("Hit");
     }
-  }, [isPlaying]);
+  }, [currentlyPlaying]);
 
   const playPreview = () => {
     if (!props.previewUrl) return;
 
-    setPlaying(!currentlyPlaying);
+    setCurrentlyPlaying(!currentlyPlaying);
   };
 
   const playing = currentlyPlaying;
