@@ -230,7 +230,9 @@ const PlaylistItem = (props) => {
       );
     } else if (currentSong !== null) {
       currentSong.pause();
+
       setCurrentlyPlaying(false);
+      console.log("Hit");
     }
   }, [isPlaying]);
 

@@ -6,20 +6,23 @@ let currentSongPlaying = {
 };
 
 const setCurrentSongPlaying = async (key, stopCallback, playCallback) => {
-  if (currentSongPlaying.key === key) {
-    currentSongPlaying.play();
-    return true;
-  }
+  // if (currentSongPlaying.key === key) {
+  //   return true;
+  // }
 
   currentSongPlaying.play = playCallback;
   const timer = setTimeout(() => {
-    currentSongPlaying.play();
+    if (currentSongPlaying.key === key) {
+      currentSongPlaying.play();
+    } else {
+      //Overide and stop
+      currentSongPlaying.play();
 
-    //Overide and stop
-    currentSongPlaying.stop();
-    currentSongPlaying.key = key;
+      currentSongPlaying.stop();
+      currentSongPlaying.key = key;
 
-    currentSongPlaying.stop = stopCallback;
+      currentSongPlaying.stop = stopCallback;
+    }
   }, 300);
 
   clearTimeout(currentSongPlaying.timer);
