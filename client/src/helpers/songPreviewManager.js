@@ -10,8 +10,6 @@ const setCurrentSongPlaying = (key, stopCallback) => {
   currentSongPlaying.key = key;
   currentSongPlaying.stop();
   currentSongPlaying.stop = stopCallback;
-
-  return true;
 };
 
 module.exports = setCurrentSongPlaying;
