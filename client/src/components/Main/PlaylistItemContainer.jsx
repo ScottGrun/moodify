@@ -14,6 +14,7 @@ import { filterTracks } from "../../helpers/filter";
 //Spinners
 import Loading from "./Loading";
 import setCurrentSongPlaying from "../../helpers/songPreviewManager";
+import { NIL } from "uuid";
 
 const StyledHeader = styled.div`
   display: flex;
@@ -129,7 +130,12 @@ const StyledPlaylistContainer = styled.div`
 `;
 
 const PlaylistItemContainer = (props) => {
-  const [currentlyPlaying, setCurrentlyPLaying] = useState(null);
+  const [songSrc, setSongSrc] = useState({
+    playing: false,
+    src:
+      ' "https://p.scdn.co/mp3-preview/a9eaf189f409998fb9315b9405c8cda91b6ea9fe?cid=60eafbfca0174c00afe35882d73ad389"',
+  });
+  const [lastPlayer, setLastPlayer] = useState(null);
   const [songsInView, setSongsInView] = useContext(StateContext).SongsInView;
   const [playlistMinMax] = props.playlistMinMax;
   const [userTracks, setUserTracks] = props.userTracks;
@@ -142,6 +148,26 @@ const PlaylistItemContainer = (props) => {
     instrumentalness: null,
     loudness: null,
   });
+
+  useEffect(() => {
+    let player = document.querySelector("audio");
+
+    if (player.src === songSrc.src) {
+      player.pause();
+      player.load();
+      // player.play();
+    } else {
+      player.setAttribute("src", songSrc.src);
+      player.load();
+      player.play();
+    }
+
+    // if (songSrc.playing) {
+    //   player.play();
+    // } else {
+    //   player.pause();
+    // }
+  }, [songSrc]);
 
   const observer = useRef();
   const lastSongElement = useCallback((node) => {
@@ -161,7 +187,7 @@ const PlaylistItemContainer = (props) => {
     const songs = filteredTracks.slice(0, songsInView).map((song, index) => {
       return (
         <PlaylistItem
-          currentlyPlaying={[currentlyPlaying, setCurrentlyPLaying]}
+          setSongSrc={setSongSrc}
           idx={index}
           {...song}
           key={song.id}
@@ -219,6 +245,10 @@ const PlaylistItemContainer = (props) => {
 
   return (
     <StyledPlaylistContainer>
+      <audio autoPlay={songSrc.playing}>
+        <source src={null} type="audio/mpeg" />
+        Your browser does not support the audio element.
+      </audio>
       <StyledHeader>
         <SectionHeader>Your Songs</SectionHeader>
         <ColumnHeaderContainer>
