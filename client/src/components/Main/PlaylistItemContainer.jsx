@@ -150,23 +150,20 @@ const PlaylistItemContainer = (props) => {
   });
 
   useEffect(() => {
-    let player = document.querySelector("audio");
+    const player = document.querySelector("audio");
+    player.currentTime = 0;
 
     if (player.src === songSrc.src) {
-      player.pause();
-      player.load();
-      // player.play();
+      if (player.paused) {
+        player.play();
+      } else {
+        player.pause();
+      }
     } else {
       player.setAttribute("src", songSrc.src);
       player.load();
       player.play();
     }
-
-    // if (songSrc.playing) {
-    //   player.play();
-    // } else {
-    //   player.pause();
-    // }
   }, [songSrc]);
 
   const observer = useRef();

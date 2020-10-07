@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { StateContext } from "../../App";
 import axios from "axios";
 import { serverRoot } from "../../env";
-// import { debounce } from "debounce";
+import { debounce } from "debounce";
 
 import styled, { keyframes } from "styled-components";
 import PlayButton from "../../assets/icons/PlayButton.svg";
@@ -246,7 +246,7 @@ const PlaylistItem = (props) => {
       playing: !prev.playing,
       src: props.previewUrl,
     }));
-    setCurrentlyPlaying(!currentlyPlaying);
+    // setCurrentlyPlaying(!currentlyPlaying);
   };
 
   const handleClose = (event) => {
