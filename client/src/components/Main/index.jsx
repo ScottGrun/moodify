@@ -128,7 +128,7 @@ const PlaylistControls = styled.div`
   grid-area: playlist-controls;
 
   .presets-container {
-    padding: 5px;
+    padding: 25px 0;
 
     .title {
       display: flex;
@@ -151,6 +151,12 @@ const PlaylistControls = styled.div`
       min-width: 192px;
       user-select: none;
 
+      h3 {
+        font-size: 16px;
+        font-weight: 400;
+        padding-left: 10px;
+      }
+
       &:hover {
         cursor: pointer;
       }
@@ -161,10 +167,11 @@ const PlaylistControls = styled.div`
         color: white;
         font-size: 20px;
       }
+    }
 
-      .save-preset-btn {
-        user-select: none;
-      }
+    .save-preset-btn {
+      font-size: 16px;
+      font-weight: 400;
     }
 
     .dropdown-container {

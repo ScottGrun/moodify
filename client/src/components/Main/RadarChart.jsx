@@ -93,7 +93,7 @@ export default function RadarChart(props) {
 
   return (
     <RadarChartContainer>
-      <h2>Curate Your Playlist</h2>
+      {/* <h2>Curate Your Playlist</h2> */}
       <Radar data={chartData} height={null} width={null} options={chartOptions} />
     </RadarChartContainer>
   );
