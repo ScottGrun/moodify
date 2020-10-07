@@ -16,28 +16,19 @@ A live version of Moodify can be found at [moodify.ca](https://moodify.ca).
 ![landing page](https://github.com/ScottGrun/moodify/blob/master/client/docs/landing.png?raw=true)
 
 ### Main Page On Login
-![screenshot]()
+![main page on login](https://github.com/ScottGrun/moodify/blob/master/client/docs/main%20page%20on%20login.png?raw=true)
 
 ### Adjust Sliders to Filter Music
-![screenshot]()
+![adjust sliders](https://github.com/ScottGrun/moodify/blob/master/client/docs/adjust%20sliders.gif?raw=true)
 
 ### Save Values of Adjusted Sliders as a Preset (Save Preset Modal)
-![screenshot]()
-
-### Presets Dropdown: Your Presets
-![screenshot]()
+![save preset modal](https://github.com/ScottGrun/moodify/blob/master/client/docs/save%20preset%20modal.png?raw=true)
 
 ### Save Filtered Songs as a New Playlist (Create Playlist Modal)
-![screenshot]()
-
-### Select Different Playlist On Sidebar
-![screenshot]()
-
-### Apply a Preset From Popular Presets to Filter Music
-![screenshot]()
+![create playlist modal](https://github.com/ScottGrun/moodify/blob/master/client/docs/create%20playlist%20modal.png?raw=true)
 
 ### Right Click On Track For Options
-![screenshot]()
+![right click on track](https://github.com/ScottGrun/moodify/blob/master/client/docs/right%20click%20on%20track.png?raw=true)
 
 ## Tech Stack
 
