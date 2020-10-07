@@ -229,14 +229,15 @@ const PlaylistItem = (props) => {
           console.log("Play");
         },
         () => {
+          setCurrentlyPlaying(false);
           newSong.play();
         }
       );
     } else if (currentSong !== null) {
       currentSong.pause();
-
       setCurrentlyPlaying(false);
     }
+    console.log("----");
   }, [currentlyPlaying]);
 
   const playPreview = () => {
