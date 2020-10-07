@@ -1,5 +1,3 @@
-const debounce = require("debounce");
-
 let currentSongPlaying = {
   stop: () => {},
   play: () => {},
@@ -9,7 +7,8 @@ let currentSongPlaying = {
 
 const setCurrentSongPlaying = async (key, stopCallback, playCallback) => {
   if (currentSongPlaying.key === key) {
-    console.log(currentSongPlaying.key);
+    currentSongPlaying.play();
+
     return true;
   }
 
@@ -18,8 +17,9 @@ const setCurrentSongPlaying = async (key, stopCallback, playCallback) => {
     currentSongPlaying.play();
 
     //Overide and stop
-    currentSongPlaying.key = key;
     currentSongPlaying.stop();
+    currentSongPlaying.key = key;
+
     currentSongPlaying.stop = stopCallback;
   }, 300);
 
