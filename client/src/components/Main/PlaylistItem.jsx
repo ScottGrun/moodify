@@ -213,7 +213,7 @@ const PlaylistItem = (props) => {
 
     if (currentlyPlaying) {
       let newSong = new Audio(props.previewUrl);
-
+      newSong.volume = 0.05;
       setCurrentSongPlaying(
         props.previewUrl,
         () => {
