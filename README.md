@@ -19,7 +19,7 @@ A live version of Moodify can be found at [moodify.ca](https://moodify.ca).
 ![main page on login](https://github.com/ScottGrun/moodify/blob/master/client/docs/main%20page%20on%20login.png?raw=true)
 
 ### Adjust Sliders to Filter Music
-![adjust sliders](https://github.com/ScottGrun/moodify/blob/master/client/docs/adjust%20sliders.gif?raw=true)
+![adjust sliders]()
 
 ### Save Values of Adjusted Sliders as a Preset (Save Preset Modal)
 ![save preset modal](https://github.com/ScottGrun/moodify/blob/master/client/docs/save%20preset%20modal.png?raw=true)
