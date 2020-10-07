@@ -65,6 +65,7 @@ const CreatePlaylistModalContainer = styled.div`
         width: 212px;
         height: 212px;
         margin-bottom: 10px;
+        object-fit: cover;
 
         @media (max-width: 600px) {
           width: 100px;
@@ -264,7 +265,7 @@ export default function CreatePlaylistModal(props) {
       <h1>Create Your Playlist</h1>
       <div className='content-container'>
         <div className='image-container'>
-          <img src={image} />
+          <img src={image.size ? image : 'https://i.imgur.com/ZccWhG4.jpg'} />
           <div className='playlist-stats'>
             <p>Songs In Playlist — {filteredTracks && filteredTracks.length || 'NA'}</p>
             <p>Total Listening Time  — {duration || 'NA'}</p>
