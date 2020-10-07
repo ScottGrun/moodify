@@ -213,7 +213,7 @@ const PlaylistItem = (props) => {
 
     if (currentlyPlaying) {
       let newSong = new Audio(props.previewUrl);
-
+      newSong.volume = 0.05;
       setCurrentSongPlaying(
         props.previewUrl,
         () => {
@@ -229,13 +229,13 @@ const PlaylistItem = (props) => {
           console.log("Play");
         },
         () => {
-          setCurrentlyPlaying(false);
           newSong.play();
         }
       );
     } else if (currentSong !== null) {
-      currentSong.pause();
       setCurrentlyPlaying(false);
+
+      currentSong.pause();
     }
     console.log("----");
   }, [currentlyPlaying]);
@@ -347,7 +347,7 @@ const PlaylistItem = (props) => {
     <StyledPlaylistItem
       idx={props.idx}
       className="playlist-item"
-      onClick={playPreview}
+      onClick={debounce(playPreview, 200)}
       onContextMenu={handleClick}
       styled={{ cursor: "context-menu" }}
       previewUrl={props.previewUrl}
