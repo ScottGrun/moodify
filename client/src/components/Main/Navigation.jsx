@@ -5,6 +5,7 @@ import { StateContext } from "../../App";
 import { filterTracks } from "../../helpers/filter";
 import { setSliderMarks } from "../../helpers/util";
 import { serverRoot } from "../../env";
+import debounce from "debounce";
 // components
 import Profile from "./Profile";
 
@@ -235,14 +236,16 @@ export default function Navigation(props) {
         <div className="section discover-container">
           <h3 className="title">Discover</h3>
           <ul className="playlists">
-            <li onClick={loadFeaturedSongs}>
+            <li onClick={debounce(loadFeaturedSongs, 200)}>
               <img src={trending} />
               <p>Featured Songs</p>
             </li>
-            <li onClick={() => {
-              setTracks({loading: true, songs: []})
-              props.getSavedTracks()
-            }}>
+            <li
+              onClick={debounce(() => {
+                setTracks({ loading: true, songs: [] });
+                props.getSavedTracks();
+              }, 200)}
+            >
               <img src={albums} />
               <p>Saved Songs</p>
             </li>
@@ -257,15 +260,17 @@ export default function Navigation(props) {
                 return (
                   <li
                     key={playlist.id}
-                    onClick={() =>
-                      handlePlaylistClick(
-                        playlist.id,
-                        playlist.tracks.total,
-                        playlist.name,
-                        playlist.description,
-                        playlist.images[0]
-                      )
-                    }
+                    onClick={debounce(
+                      () =>
+                        handlePlaylistClick(
+                          playlist.id,
+                          playlist.tracks.total,
+                          playlist.name,
+                          playlist.description,
+                          playlist.images[0]
+                        ),
+                      200
+                    )}
                   >
                     <img src={musicIcon} />
                     <p>
