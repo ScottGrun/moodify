@@ -194,10 +194,11 @@ const PlaylistItem = (props) => {
   const [userTracks, setTracks] = props.userTracks;
   const [playlistMinMax, setPlaylistMinMax] = props.playlistMinMax;
   const [snackbar, setSnackbar] = props.snackbar;
-  const [currentlyPlaying, setCurrentlyPlaying] = useState(null);
 
   const [currentSong, setCurrentSong] = useState(null);
   const [isPlaying, setPlaying] = useState(false);
+  const [currentlyPlaying, setCurrentlyPlaying] = useState(false);
+
   const [position, setPosition] = useState(initialPosition);
   const handleClick = (event) => {
     event.preventDefault();
@@ -208,21 +209,27 @@ const PlaylistItem = (props) => {
   };
 
   useEffect(() => {
-    if (isPlaying) {
+    console.log(`Currently Play State: ${currentlyPlaying}`);
+
+    if (currentlyPlaying) {
       let newSong = new Audio(props.previewUrl);
 
       setCurrentSongPlaying(
         props.previewUrl,
         () => {
           setCurrentlyPlaying(false);
-
           newSong.pause();
           setCurrentSong(null);
-          setPlaying(false);
+          console.log("pause");
         },
         () => {
           setCurrentlyPlaying(true);
           setCurrentSong(newSong);
+          newSong.play();
+          console.log("Play");
+        },
+        () => {
+          setCurrentlyPlaying(false);
           newSong.play();
         }
       );
@@ -230,12 +237,13 @@ const PlaylistItem = (props) => {
       currentSong.pause();
       setCurrentlyPlaying(false);
     }
-  }, [isPlaying]);
+    console.log("----");
+  }, [currentlyPlaying]);
 
   const playPreview = () => {
     if (!props.previewUrl) return;
 
-    setPlaying(!isPlaying);
+    setCurrentlyPlaying(!currentlyPlaying);
   };
 
   const playing = currentlyPlaying;
