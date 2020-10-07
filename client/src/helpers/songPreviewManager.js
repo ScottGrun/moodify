@@ -1,38 +1,14 @@
-let currentSongPlaying = {
-  stop: () => {},
-  play: () => {},
-  sameSongPlay: () => {},
-  key: null,
-  timer: null,
-};
+let currentSongPlaying = { stop: () => {}, key: null };
 
-const setCurrentSongPlaying = async (
-  key,
-  stopCallback,
-  playCallback,
-  sameSongPlayCallback
-) => {
+const setCurrentSongPlaying = (key, stopCallback) => {
   if (currentSongPlaying.key === key) {
-    console.log("Clicked Same Song");
-    currentSongPlaying.sameSongPlay();
-
     return true;
   }
+  currentSongPlaying.key = key;
+  currentSongPlaying.stop();
+  currentSongPlaying.stop = stopCallback;
 
-  currentSongPlaying.sameSongPlay = sameSongPlayCallback;
-  currentSongPlaying.play = playCallback;
-  const timer = setTimeout(() => {
-    currentSongPlaying.play();
-
-    //Overide and stop
-    currentSongPlaying.stop();
-    currentSongPlaying.key = key;
-
-    currentSongPlaying.stop = stopCallback;
-  }, 300);
-
-  clearTimeout(currentSongPlaying.timer);
-  currentSongPlaying.timer = timer;
+  return true;
 };
 
 module.exports = setCurrentSongPlaying;

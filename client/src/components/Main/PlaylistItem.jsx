@@ -208,37 +208,13 @@ const PlaylistItem = (props) => {
     });
   };
 
-  // useEffect(() => {
-  //   console.log(`Currently Play State: ${currentlyPlaying}`);
-
-  //   if (currentlyPlaying) {
-  //     let newSong = new Audio(props.previewUrl);
-  //     newSong.volume = 0.05;
-  //     setCurrentSongPlaying(
-  //       props.previewUrl,
-  //       () => {
-  //         newSong.pause();
-  //         setCurrentSong(null);
-  //         console.log("pause");
-  //       },
-  //       () => {
-  //         setCurrentSong(newSong);
-  //         newSong.play();
-  //         console.log("Play");
-  //         setCurrentlyPlaying(true);
-  //       },
-  //       () => {
-  //         console.log("blah");
-  //         newSong.play();
-  //       }
-  //     );
-  //   } else if (currentSong !== null) {
-  //     setCurrentlyPlaying(false);
-
-  //     currentSong.pause();
-  //   }
-  //   console.log("----");
-  // }, [currentlyPlaying]);
+  useEffect(() => {
+    if (isPlaying) {
+      setCurrentSongPlaying(props.previewUrl, () => {
+        setPlaying(false);
+      });
+    }
+  }, [isPlaying]);
 
   const playPreview = () => {
     if (!props.previewUrl) return;
@@ -246,8 +222,10 @@ const PlaylistItem = (props) => {
       playing: !prev.playing,
       src: props.previewUrl,
     }));
-    // setCurrentlyPlaying(!currentlyPlaying);
+    setPlaying(!isPlaying);
   };
+
+  const playing = isPlaying;
 
   const handleClose = (event) => {
     event.stopPropagation();
@@ -281,7 +259,7 @@ const PlaylistItem = (props) => {
               ...snackbar,
               open: true,
               message: "Sorry, could not find any similar songs",
-              variant: 'error',
+              variant: "error",
             });
           }
           setChartValues(getAverages(allSongs.songs));
@@ -352,7 +330,7 @@ const PlaylistItem = (props) => {
       onContextMenu={handleClick}
       styled={{ cursor: "context-menu" }}
       previewUrl={props.previewUrl}
-      playing={currentlyPlaying}
+      playing={playing}
     >
       <Menu
         open={position.mouseY !== null}
@@ -380,12 +358,12 @@ const PlaylistItem = (props) => {
         <StyledSongImage src={props.img} />
       </StyledSongCoverContainer>
 
-      <OverlayContainer playing={currentlyPlaying}>
-        {currentlyPlaying && <img src={WaveFormSource} />}
-        {!currentlyPlaying && <img src={PlayButton} />}
+      <OverlayContainer playing={playing}>
+        {playing && <img src={WaveFormSource} />}
+        {!playing && <img src={PlayButton} />}
       </OverlayContainer>
       <SongMetaData>
-        <SongName playing={currentlyPlaying}>
+        <SongName playing={playing}>
           {props.name.length > 26
             ? props.name.slice(0, 20) + "..."
             : props.name}
@@ -400,7 +378,7 @@ const PlaylistItem = (props) => {
         <p>{Math.round(props.audio.instrumentalness * 100)}</p>
         <p>{Math.round(props.audio.loudness)}db</p>
       </AudioFeatures>
-      <StyledProgressContainer playing={currentlyPlaying}>
+      <StyledProgressContainer playing={playing}>
         <div></div>
       </StyledProgressContainer>
     </StyledPlaylistItem>
