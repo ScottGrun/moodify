@@ -266,7 +266,7 @@ const PlaylistItem = (props) => {
           setChartValues(getAverages(allSongs.songs));
 
           return {
-            loading: true,
+            loading: false,
             songs: [...prev.songs, ...res.data.songs],
           };
         });
