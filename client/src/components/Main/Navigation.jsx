@@ -194,7 +194,7 @@ export default function Navigation(props) {
       })
       .then((res) => {
         setTracks({
-          loading: true,
+          loading: false,
           songs: res.data.songs,
         });
         setChartValues(res.data.averages);

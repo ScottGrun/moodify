@@ -348,11 +348,11 @@ const PlaylistItemContainer = (props) => {
         </ColumnHeaderContainer>
       </StyledHeader>
       <div className="song-list">
-        {userTracks.loading === true ? <Loading /> : renderSongs}
-        {renderSongs.length === 0 && userTracks.loading === false ? (
+        {userTracks.loading === true ? (
+          <Loading />
+        ) : renderSongs.length === 0 ? (
           <EmptyStateMessage>
-            {" "}
-            Sorry ! We found no tracks match that filter.{" "}
+            Sorry ! We found no tracks match that filter.
           </EmptyStateMessage>
         ) : (
           renderSongs

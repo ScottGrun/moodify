@@ -292,7 +292,7 @@ const PlaylistItem = (props) => {
       const newSongs = filterTracks(prev, playlistMinMax, trackId);
 
       return {
-        loading: true,
+        loading: false,
         songs: newSongs,
       };
     });

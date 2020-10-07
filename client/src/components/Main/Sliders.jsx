@@ -8,7 +8,7 @@ import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css"; // optional
 
 // React-GA for Google Analytics
-import ReactGA from 'react-ga';
+import ReactGA from "react-ga";
 
 //images
 import InfoIcon from "../../assets/icons/info-icon.svg";
@@ -253,8 +253,8 @@ export default function Sliders(props) {
               <span>
                 <b>Danceability</b>
                 <br />
-                How danceable a song feels, the higher the danceability, the better it
-                is to dance to.
+                How danceable a song feels, the higher the danceability, the
+                better it is to dance to.
               </span>
             }
           >
