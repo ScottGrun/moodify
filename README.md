@@ -13,7 +13,7 @@ A live version of Moodify can be found at [moodify.ca](https://moodify.ca).
 ## Final Product
 
 ### Landing Page
-![screenshot]()
+![landing page]()
 
 ### Main Page On Login
 ![screenshot]()
