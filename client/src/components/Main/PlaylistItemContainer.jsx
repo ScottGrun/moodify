@@ -152,6 +152,7 @@ const PlaylistItemContainer = (props) => {
   useEffect(() => {
     const player = document.querySelector("audio");
     player.currentTime = 0;
+    player.volume = 0.3;
 
     if (player.src === songSrc.src) {
       if (player.paused) {
