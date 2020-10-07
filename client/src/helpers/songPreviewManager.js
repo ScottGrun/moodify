@@ -8,7 +8,6 @@ let currentSongPlaying = {
 const setCurrentSongPlaying = async (key, stopCallback, playCallback) => {
   if (currentSongPlaying.key === key) {
     currentSongPlaying.play();
-
     return true;
   }
 
