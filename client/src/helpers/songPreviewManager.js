@@ -14,7 +14,7 @@ const setCurrentSongPlaying = async (
 ) => {
   if (currentSongPlaying.key === key) {
     console.log("Clicked Same Song");
-    currentSongPlaying.play();
+    currentSongPlaying.sameSongPlay();
 
     return true;
   }
