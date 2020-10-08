@@ -383,7 +383,7 @@ const PlaylistItemContainer = (props) => {
           <Loading />
         ) : renderSongs.length === 0 ? (
           <EmptyStateMessage>
-            Sorry ! We found no tracks match that filter.
+            Sorry ! We found no tracks that match your filter.
           </EmptyStateMessage>
         ) : (
           renderSongs

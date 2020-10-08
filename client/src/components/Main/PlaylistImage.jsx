@@ -80,7 +80,6 @@ export default function PlaylistImage(props) {
   const {title, description, image} = props.selectedPlaylist;
   const filteredTracks = filterTracks(userTracks, playlistMinMax);
   const duration = getTotalDuration(filteredTracks);
-  const randomImageFromSpotify = 'https://i.imgur.com/iuyq8dP.png'
   const userData = cookies.MoodifyUserData;
   const userImageUrl = userData && userData.images && userData.images.length > 0 ? userData.images[0].url : null;
 
