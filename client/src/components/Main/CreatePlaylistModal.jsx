@@ -259,7 +259,7 @@ export default function CreatePlaylistModal(props) {
             Playlist Name
             <input placeholder={'Best Playlist'} value={name} onChange={e => setName(e.target.value)}/>
           </label>
-          <label className='image-label'>Image (optional)</label>
+          <label className='image-label'>Image</label>
           <input className='upload-file' type='file' onChange={e => handleFileUpload(e)}/>
           {
             imageErrors.length > 0 && imageErrors.map((error, index) => <p key={index} className='image-error'>{error}</p>)
