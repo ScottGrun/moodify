@@ -183,14 +183,7 @@ export default function CreatePlaylistModal(props) {
   const [snackbar, setSnackbar] = props.snackbar;
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [image, setImage] = useState({
-    lastModified: null,
-    lastModifiedDate: null,
-    name: null,
-    size: null,
-    type: 'image/jpeg',
-    webkitRelativePath: ''
-  });
+  const [image, setImage] = useState(null);
   const [imageErrors, setImageErrors] = useState('');
 
   const filteredTracks = filterTracks(userTracks, playlistMinMax);
@@ -224,14 +217,7 @@ export default function CreatePlaylistModal(props) {
   };
 
   const setImageToInitial = () => {
-    setImage({
-      lastModified: null,
-      lastModifiedDate: null,
-      name: null,
-      size: null,
-      type: 'image/jpeg',
-      webkitRelativePath: ''
-    });
+    setImage(null);
   };
 
   const handleFileUpload = (e) => {
@@ -243,10 +229,7 @@ export default function CreatePlaylistModal(props) {
       setImageToInitial();
       return;
     }
-    if (imageFile.size > 1024 * 256) {
-      errors.push('max size - 256kb');
-      setImageToInitial();
-    }
+    
     if (imageFile.type !== 'image/jpeg') {
       errors.push('file type must be jpeg');
       setImageToInitial();
@@ -265,7 +248,7 @@ export default function CreatePlaylistModal(props) {
       <h1>Create Your Playlist</h1>
       <div className='content-container'>
         <div className='image-container'>
-          <img src={image.size ? image : 'https://i.imgur.com/ZccWhG4.jpg'} />
+          <img src={image} />
           <div className='playlist-stats'>
             <p>Songs In Playlist — {filteredTracks && filteredTracks.length || 'NA'}</p>
             <p>Total Listening Time  — {duration || 'NA'}</p>
