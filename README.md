@@ -2,8 +2,6 @@
 
 Moodify is a single-page application built using React and Styled-Components. It allows users to filter through their Spotify playlists using custom filtering based on Spotify's audio features data. Users can also create new playlists, create their own custom filter presets, or apply and like existing presets. Data is persisted by the API server using a PostgreSQL database. 
 
-A live version of Moodify can be found at [moodify.ca](https://moodify.ca).
-
 ## Team
 
 ### [Jeffrey Cao](https://github.com/jeffreycao1998)
